@@ -4,6 +4,7 @@ import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import StickyCTA from '../components/layout/StickyCTA.astro';
 import BrochureFab from '../components/layout/BrochureFab.astro';
+import CustomCursor from '../components/layout/CustomCursor.astro';
 import { brand, contact } from '../data/brand';
 
 interface Props {
@@ -89,6 +90,7 @@ const organizationSchema = {
     <Footer />
     <StickyCTA />
     <BrochureFab />
+    <CustomCursor />
     <script>
       import { initMotion } from '../utils/motion';
       initMotion();
