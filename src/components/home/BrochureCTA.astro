@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import { contact } from '../../data/brand';
+import coverMain from '../../assets/images/brochure/photos/cover-brochure.jpg';
+import coverLam from '../../assets/images/brochure/photos/cover-laminates.jpg';
+---
+
+<section class="relative isolate overflow-hidden bg-gradient-to-br from-primary-800 via-primary-900 to-primary-950 py-20 text-white sm:py-28">
+  <div class="pointer-events-none absolute -right-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-accent-500/20 blur-3xl" aria-hidden="true"></div>
+  <div class="container-prom grid items-center gap-14 lg:grid-cols-2">
+    <div class="flex flex-col gap-6">
+      <span class="reveal text-xs font-bold uppercase tracking-[0.14em] text-accent-300">Take the full story with you</span>
+      <h2 class="reveal text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">Share it with your architect, builder or family.</h2>
+      <p class="reveal max-w-lg text-lg leading-relaxed text-white/75">The Prominance brochure covers every system with section drawings, performance data and certificates. The laminates brochure shows each finish in a real room.</p>
+      <div class="reveal flex flex-wrap gap-3" data-reveal-delay="100">
+        <a href="/downloads/Prominance-uPVC-Windows-Brochure.pdf" download="Prominance-uPVC-Windows-Brochure.pdf" class="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-primary-800 transition-colors hover:bg-accent-100">
+          <svg class="h-4 w-4 transition-transform group-hover:translate-y-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8m0 0 3-3m-3 3-3-3M3 13h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Product brochure · 16 MB
+        </a>
+        <a href="/downloads/Prominance-Laminates-Brochure.pdf" download="Prominance-Laminates-Brochure.pdf" class="inline-flex items-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10">
+          Laminates · 1.4 MB
+        </a>
+      </div>
+      <div class="reveal mt-4 flex flex-col gap-3 border-t border-white/15 pt-6 sm:flex-row sm:items-center sm:gap-6" data-reveal-delay="200">
+        <Button href="/quote/" variant="secondary" size="lg">Get a Free Quote</Button>
+        <a href={contact.tollFreeHref} class="flex flex-col text-sm text-white/70 hover:text-white">
+          Or call toll-free
+          <strong class="text-xl text-white">{contact.tollFree}</strong>
+        </a>
+      </div>
+    </div>
+
+    <div class="relative mx-auto flex h-[320px] w-full max-w-[520px] items-center justify-center sm:h-[400px]">
+      <div class="reveal absolute left-0 top-4 w-[78%] sm:top-2" data-reveal="left" data-reveal-delay="100">
+        <div class="-rotate-6 overflow-hidden rounded-xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] transition-transform duration-500 hover:-rotate-3 hover:-translate-y-2">
+          <Image src={coverMain} alt="Prominance uPVC Window Systems product brochure cover" class="h-auto w-full" widths={[500, 800]} sizes="(min-width: 1024px) 400px, 70vw" />
+        </div>
+      </div>
+      <div class="reveal absolute bottom-0 right-2 w-[36%]" data-reveal="right" data-reveal-delay="250">
+        <div class="rotate-6 overflow-hidden rounded-xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] transition-transform duration-500 hover:rotate-3 hover:-translate-y-2">
+          <Image src={coverLam} alt="Prominance laminates brochure cover" class="h-auto w-full" widths={[300, 500]} sizes="200px" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import { certifications, testResults, standards } from '../../data/brand';
+import skz from '../../assets/images/brochure/photos/cert-skz.jpg';
+import bsi from '../../assets/images/brochure/photos/cert-bsi.jpg';
+import leadFree from '../../assets/images/brochure/icons/why-lead-free.png';
+import qa from '../../assets/images/brochure/icons/why-quality-assurance.png';
+import rawIcon from '../../assets/images/brochure/icons/why-raw-materials.png';
+import stateArt from '../../assets/images/brochure/icons/why-state-of-art.png';
+import design from '../../assets/images/brochure/icons/why-better-design.png';
+
+const certs = [
+  { img: skz, name: 'SKZ – Germany', note: 'Test certificate · DIN EN 12608-1:2016-08' },
+  { img: bsi, name: 'BSI – UK', note: 'Test report · uPVC window profiles' },
+];
+
+const promises = [
+  { icon: leadFree, title: 'Lead-free profiles', text: 'Eco-friendly Calcium-Zinc formulation with high UV resistance and weld strength.' },
+  { icon: qa, title: 'Conforms to European standards', text: 'EN 12608 quality assurance from procurement to manufacturing, accredited by BSI-UK and SKZ Germany.' },
+  { icon: rawIcon, title: "World's best raw materials", text: 'Sourced from Europe and processed on a PLC/SCADA-based weighing and batching system.' },
+  { icon: stateArt, title: 'State-of-the-art facility', text: 'Quality consciousness at every stage, from machine selection and tooling to testing.' },
+  { icon: design, title: 'Better product design', text: 'Master-crafted profiles balancing ventilation, view, robustness and aesthetics.' },
+];
+
+const rows = testResults.slice(0, 5);
+---
+
+<section id="certified" class="bg-surface-alt py-20 sm:py-28">
+  <div class="container-prom flex flex-col gap-16">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-4">
+          <span class="reveal text-xs font-bold uppercase tracking-[0.14em] text-accent-700">Proof, not promises</span>
+          <h2 class="reveal text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-4xl lg:text-[2.75rem]">Certified by the labs that set the standard.</h2>
+          <p class="reveal text-lg leading-relaxed text-ink-muted">Independent testing in Germany and the UK, against European standards — with the certificates to show for it. Tap one to read it.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 sm:gap-6">
+          {certs.map((c, i) => (
+            <button type="button" data-cert={i} class="reveal group flex flex-col gap-3 text-left" data-reveal="scale" data-reveal-delay={i * 120} aria-label={`Open ${c.name} certificate`}>
+              <span class="relative block overflow-hidden rounded-xl border border-border bg-white shadow-[var(--shadow-card)] transition-all duration-500 group-hover:-translate-y-2 group-hover:rotate-[-1.2deg] group-hover:shadow-[var(--shadow-card-hover)]" data-tilt="5">
+                <Image src={c.img} alt={`${c.name} certificate`} class="h-auto w-full" widths={[320, 520]} sizes="(min-width: 1024px) 20vw, 45vw" />
+                <span class="absolute inset-0 flex items-center justify-center bg-primary-900/0 opacity-0 transition-all duration-300 group-hover:bg-primary-900/40 group-hover:opacity-100">
+                  <span class="rounded-full bg-white px-4 py-2 text-xs font-bold text-primary-800">View full size</span>
+                </span>
+              </span>
+              <span class="flex flex-col">
+                <strong class="text-sm text-ink">{c.name}</strong>
+                <span class="text-xs text-ink-muted">{c.note}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <ul class="reveal flex flex-wrap gap-2" aria-label="Standards">
+          {standards.map((s) => <li class="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-bold text-ink-muted">{s}</li>)}
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        <div class="reveal overflow-hidden rounded-3xl border border-border bg-white shadow-[var(--shadow-card)]" data-reveal="right">
+          <div class="flex items-center justify-between gap-3 border-b border-border px-5 py-4 sm:px-7">
+            <h3 class="font-extrabold">Lab results vs. required</h3>
+            <span class="rounded-full bg-accent-100 px-3 py-1 text-xs font-bold text-accent-800">All requirements met</span>
+          </div>
+          <div class="divide-y divide-border">
+            {rows.map((r) => (
+              <div class="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-5 py-4 sm:grid-cols-[1.4fr_1fr_1fr] sm:px-7">
+                <span class="text-sm font-semibold text-ink">{r.metric}</span>
+                <span class="flex items-center gap-1.5 justify-self-end text-sm font-extrabold text-primary-700 sm:justify-self-start">
+                  <svg class="h-4 w-4 text-accent-600" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  {r.result}
+                </span>
+                <span class="col-span-2 text-xs text-ink-muted sm:col-span-1 sm:text-right">Required: {r.requirement}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" data-stagger="80">
+          {certifications.slice(0, 4).map((c) => (
+            <div class="reveal rounded-2xl border border-border bg-white p-4">
+              <strong class="text-sm text-ink">{c.body}</strong>
+              <p class="mt-1 text-xs leading-relaxed text-ink-muted">{c.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-8">
+      <h3 class="reveal text-2xl font-extrabold tracking-tight sm:text-3xl">Why builders and homeowners choose Prominance</h3>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5" data-stagger="90">
+        {promises.map((p) => (
+          <div class="reveal group flex flex-col gap-4 rounded-2xl border border-border bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]">
+            <Image src={p.icon} alt="" class="h-16 w-16 transition-transform duration-500 group-hover:scale-110" width={64} height={64} />
+            <h4 class="text-base font-bold leading-snug text-ink">{p.title}</h4>
+            <p class="text-sm leading-relaxed text-ink-muted">{p.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <Button href="/why-prominance/quality-standards/" variant="ghost">Quality standards in depth</Button>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="m-auto max-h-[92vh] w-[min(94vw,760px)] overflow-hidden rounded-2xl bg-white p-0 backdrop:bg-neutral-950/80 backdrop:backdrop-blur-sm" data-cert-dialog>
+    <div class="flex items-center justify-between border-b border-border px-5 py-3">
+      <strong class="text-sm" data-cert-title></strong>
+      <form method="dialog"><button class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100" aria-label="Close">✕</button></form>
+    </div>
+    <div class="max-h-[80vh] overflow-auto bg-neutral-100 p-3" data-lenis-prevent>
+      {certs.map((c, i) => (
+        <Image src={c.img} alt={`${c.name} certificate, full size`} class="mx-auto hidden h-auto w-full max-w-[640px]" widths={[900, 1400]} sizes="700px" loading="lazy" data-cert-full={i} />
+      ))}
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('[data-cert-dialog]');
+  const title = dlg?.querySelector<HTMLElement>('[data-cert-title]');
+  const names = ['SKZ – Germany certificate', 'BSI – UK test report'];
+  if (dlg) {
+    document.querySelectorAll<HTMLElement>('[data-cert]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const i = b.dataset.cert!;
+        dlg.querySelectorAll<HTMLElement>('[data-cert-full]').forEach((im) => im.classList.toggle('hidden', im.dataset.certFull !== i));
+        if (title) title.textContent = names[Number(i)];
+        dlg.showModal();
+      })
+    );
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+  }
+</script>

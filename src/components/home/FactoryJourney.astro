@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Button from '../ui/Button.astro';
+import raw from '../../assets/images/brochure/photos/raw-materials.jpg';
+import batching from '../../assets/images/brochure/photos/batching.jpg';
+import tooling from '../../assets/images/brochure/photos/tooling-team.jpg';
+import extrusion from '../../assets/images/brochure/photos/extrusion-line.jpg';
+import testing from '../../assets/images/brochure/photos/testing-machine.jpg';
+import aerial from '../../assets/images/brochure/photos/factory-aerial.jpg';
+
+interface Step { n: string; title: string; kicker: string; text: string; tags: string[]; img: ImageMetadata; alt: string }
+
+const steps: Step[] = [
+  { n: '01', title: 'World-class raw materials', kicker: 'Sourced from Europe, USA & Japan', text: 'Quality starts with the ingredients: titanium dioxide for UV resistance, fine-grade fillers, impact modifiers and processing aids, and lead-free Calcium-Zinc stabilisers from leading European, American, Japanese and German suppliers.', tags: ['Lead-free Ca-Zn', 'UV-resistant TiO₂', 'Impact modifiers'], img: raw, alt: 'Warehouse of raw material bags on pallets' },
+  { n: '02', title: 'Weighing & high-speed mixing', kicker: 'PLC/SCADA controlled', text: 'Raw materials are blended by an automatic weighing and batching system, so every batch is homogeneous — no manual errors, and the formulation your windows are promised.', tags: ['Auto weighing', 'Homogeneous blend', 'Zero manual error'], img: batching, alt: 'High-speed mixers and automatic batching system' },
+  { n: '03', title: 'Precision tooling', kicker: 'German tool steel, in-house maintenance', text: 'Extrusion dies, calibrators and cooling tools are made from high-quality German tool steel and maintained in-house, so profile dimensions stay consistent run after run.', tags: ['German tool steel', 'In-house die care', 'Dimensional accuracy'], img: tooling, alt: 'Technicians inspecting an extrusion die' },
+  { n: '04', title: 'Extrusion on imported lines', kicker: 'European-standard extruders', text: 'Imported extruders built to European quality standards turn the blend into multi-chambered profiles, with advanced calibration and chilled-water cooling for accuracy.', tags: ['Imported machinery', 'Multi-chamber profiles', 'Chilled cooling'], img: extrusion, alt: 'Row of extrusion lines on the Prominance shop floor' },
+  { n: '05', title: 'Tested before it ships', kicker: 'Internal and independent labs', text: 'Profiles are checked for dimensional accuracy, colour, appearance, straightness, heat reversion and impact resistance — then validated by SKZ-Germany and BSI-UK, including 25,000-hour accelerated weathering.', tags: ['Heat reversion', 'Impact tests', 'SKZ · BSI validated'], img: testing, alt: 'Technician operating a profile testing machine' },
+];
+---
+
+<section id="factory" class="relative bg-surface-alt" data-journey style={`--steps:${steps.length}`}>
+  <div class="container-prom grid gap-10 pb-12 pt-20 sm:pt-28 lg:grid-cols-[1fr_auto] lg:items-end">
+    <div class="flex max-w-3xl flex-col gap-4">
+      <span class="reveal text-xs font-bold uppercase tracking-[0.14em] text-accent-700">Made in Coimbatore</span>
+      <h2 class="reveal text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-4xl lg:text-[2.75rem]">From raw material to finished profile — all under one roof.</h2>
+      <p class="reveal text-lg leading-relaxed text-ink-muted">Prominance doesn't assemble other people's profiles. We extrude our own, in a plant built to international standards, and test every stage.</p>
+    </div>
+    <div class="reveal hidden w-72 overflow-hidden rounded-2xl shadow-[var(--shadow-card-hover)] lg:block" data-reveal="scale">
+      <Image src={aerial} alt="Aerial view of the Prominance manufacturing facility in Coimbatore" class="aspect-[16/10] w-full object-cover" widths={[400, 600]} sizes="288px" />
+      <div class="bg-white px-4 py-2.5 text-xs font-semibold text-ink-muted">Our Sulur, Coimbatore facility</div>
+    </div>
+  </div>
+
+  <!-- Desktop: pinned, scroll-driven -->
+  <div class="relative hidden lg:block" style="height: calc(var(--steps) * 85vh + 20vh);" data-journey-track>
+    <div class="sticky top-[76px] flex h-[calc(100svh-76px)] items-center overflow-hidden">
+      <div class="container-prom grid w-full grid-cols-[minmax(0,7fr)_minmax(0,5fr)] items-center gap-16">
+        <div class="relative aspect-[4/3] max-h-[68vh] w-full overflow-hidden rounded-[2rem] bg-neutral-200 shadow-[var(--shadow-card-hover)]">
+          {steps.map((s, i) => (
+            <div class={`journey-img absolute inset-0 ${i === 0 ? 'is-active' : ''}`} data-journey-img={i}>
+              <Image src={s.img} alt={s.alt} class="h-full w-full object-cover" widths={[800, 1200]} sizes="55vw" loading={i < 2 ? 'eager' : 'lazy'} />
+            </div>
+          ))}
+          <div class="absolute bottom-4 left-4 rounded-full bg-white/90 px-4 py-1.5 text-xs font-bold tracking-wide text-primary-800 backdrop-blur">
+            Step <span data-journey-count>1</span> / {steps.length}
+          </div>
+        </div>
+
+        <div class="relative flex gap-8">
+          <div class="relative w-0.5 shrink-0 self-stretch rounded-full bg-border" aria-hidden="true">
+            <div class="brand-bar absolute inset-x-0 top-0 origin-top rounded-full" style="height:100%; scale: 1 0;" data-journey-rail></div>
+          </div>
+          <div class="stack min-h-[24rem] flex-1">
+            {steps.map((s, i) => (
+              <div class={`fade-panel flex flex-col justify-center gap-5 ${i === 0 ? 'is-active' : ''}`} data-journey-text={i}>
+                <span class="text-6xl font-extrabold leading-none tracking-tighter text-primary-100">{s.n}</span>
+                <div class="flex flex-col gap-2">
+                  <span class="text-xs font-bold uppercase tracking-[0.14em] text-accent-700">{s.kicker}</span>
+                  <h3 class="text-3xl font-extrabold leading-tight tracking-tight">{s.title}</h3>
+                </div>
+                <p class="leading-relaxed text-ink-muted">{s.text}</p>
+                <ul class="flex flex-wrap gap-2">
+                  {s.tags.map((t) => <li class="rounded-full border border-border bg-white px-3.5 py-1.5 text-xs font-bold text-ink">{t}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile / tablet: simple stacked cards -->
+  <div class="container-prom flex flex-col gap-6 pb-4 lg:hidden">
+    {steps.map((s) => (
+      <article class="reveal overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-card)]">
+        <div class="relative aspect-[16/10] overflow-hidden">
+          <Image src={s.img} alt={s.alt} class="h-full w-full object-cover" widths={[480, 800]} sizes="100vw" loading="lazy" />
+          <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-extrabold text-primary-800 backdrop-blur">Step {s.n}</span>
+        </div>
+        <div class="flex flex-col gap-3 p-5">
+          <span class="text-xs font-bold uppercase tracking-[0.12em] text-accent-700">{s.kicker}</span>
+          <h3 class="text-xl font-extrabold leading-tight">{s.title}</h3>
+          <p class="text-sm leading-relaxed text-ink-muted">{s.text}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="container-prom flex justify-center py-12 lg:pb-24 lg:pt-4">
+    <Button href="/why-prominance/infrastructure/" variant="ghost" size="lg">Tour our infrastructure</Button>
+  </div>
+</section>
+
+<style>
+  .journey-img {
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 0.8s var(--ease-smooth), transform 1.2s var(--ease-smooth);
+  }
+  .journey-img.is-active {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-journey]');
+  const track = root?.querySelector<HTMLElement>('[data-journey-track]');
+  if (root && track) {
+    const imgs = Array.from(root.querySelectorAll<HTMLElement>('[data-journey-img]'));
+    const texts = Array.from(root.querySelectorAll<HTMLElement>('[data-journey-text]'));
+    const rail = root.querySelector<HTMLElement>('[data-journey-rail]');
+    const count = root.querySelector<HTMLElement>('[data-journey-count]');
+    const n = imgs.length;
+    let current = -1;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      if (getComputedStyle(track).display === 'none') return;
+      const rect = track.getBoundingClientRect();
+      const range = rect.height - window.innerHeight;
+      const p = Math.min(Math.max(-rect.top / range, 0), 1);
+      const idx = Math.min(n - 1, Math.floor(p * n));
+      if (rail) rail.style.scale = `1 ${Math.max(p, 0.04)}`;
+      if (idx !== current) {
+        current = idx;
+        imgs.forEach((el, i) => el.classList.toggle('is-active', i === idx));
+        texts.forEach((el, i) => el.classList.toggle('is-active', i === idx));
+        if (count) count.textContent = String(idx + 1);
+      }
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+</script>

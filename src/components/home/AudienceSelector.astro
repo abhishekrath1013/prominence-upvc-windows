@@ -1,0 +1,103 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const audiences = [
+  {
+    key: 'homeowner',
+    label: 'Homeowner',
+    links: [
+      { href: '/quote/', label: 'Get a quote for your home' },
+      { href: '/colours/', label: 'Browse colour finishes' },
+      { href: '/compare/', label: 'Compare window styles' },
+    ],
+  },
+  {
+    key: 'architect',
+    label: 'Architect',
+    links: [
+      { href: '/why-prominance/quality-standards/', label: 'View technical specifications' },
+      { href: '/resources/downloads/', label: 'Download CAD & spec sheets' },
+      { href: '/why-prominance/infrastructure/', label: 'Manufacturing capability' },
+    ],
+  },
+  {
+    key: 'fabricator',
+    label: 'Fabricator',
+    links: [
+      { href: '/resources/downloads/', label: 'Technical resources & downloads' },
+      { href: '/why-prominance/quality-standards/', label: 'Certifications & test data' },
+      { href: '/contact/', label: 'Talk to our channel team' },
+    ],
+  },
+  {
+    key: 'builder',
+    label: 'Builder',
+    links: [
+      { href: '/why-prominance/infrastructure/', label: 'Production capacity & scale' },
+      { href: '/why-prominance/quality-standards/', label: 'Performance & test results' },
+      { href: '/quote/', label: 'Get project pricing' },
+    ],
+  },
+];
+---
+
+<section class="py-20 sm:py-28">
+  <div class="container-prom flex flex-col items-center gap-10">
+    <SectionHeading eyebrow="Wherever you're starting from" heading="I'm a..." align="center" class="mx-auto" />
+
+    <div class="flex flex-wrap justify-center gap-2" role="tablist" data-audience-tabs>
+      {audiences.map((a, i) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          class="rounded-full px-5 py-2.5 text-sm font-bold transition-colors data-[active]:bg-primary-700 data-[active]:text-white"
+          class:list={[i !== 0 && 'bg-surface-alt text-ink-muted hover:bg-neutral-200']}
+          data-audience-tab={a.key}
+          data-active={i === 0 ? '' : undefined}
+        >
+          {a.label}
+        </button>
+      ))}
+    </div>
+
+    <div class="grid w-full max-w-3xl grid-cols-1 gap-3">
+      {audiences.map((a, i) => (
+        <div data-audience-panel={a.key} class={i === 0 ? '' : 'hidden'}>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {a.links.map((l) => (
+              <a href={l.href} class="rounded-xl border border-border bg-white p-5 text-center text-sm font-semibold text-ink transition-colors hover:border-primary-300 hover:bg-primary-50">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupAudienceTabs() {
+    const root = document.querySelector<HTMLElement>('[data-audience-tabs]');
+    if (!root) return;
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-audience-tab]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const key = tab.dataset.audienceTab;
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.toggleAttribute('data-active', active);
+          t.setAttribute('aria-selected', String(active));
+          t.classList.toggle('bg-surface-alt', !active);
+          t.classList.toggle('text-ink-muted', !active);
+        });
+        document.querySelectorAll<HTMLElement>('[data-audience-panel]').forEach((panel) => {
+          panel.classList.toggle('hidden', panel.dataset.audiencePanel !== key);
+        });
+      });
+    });
+  }
+  setupAudienceTabs();
+</script>

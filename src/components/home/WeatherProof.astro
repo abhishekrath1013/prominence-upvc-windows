@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import uvMap from '../../assets/images/brochure/photos/uv-map.jpg';
+
+// Plot geometry: x = radiant dose (GJ/m²) 0–60, y = hours 0–30,000
+const X0 = 70, X1 = 610, Y0 = 310, Y1 = 30;
+const px = (gj: number) => X0 + (gj / 60) * (X1 - X0);
+const py = (h: number) => Y0 - (h / 30000) * (Y0 - Y1);
+
+const marks = [
+  { gj: 12, h: 6000, label: '5 years equivalent', dx: 12, dy: 22, anchor: 'start' },
+  { gj: 24, h: 12000, label: '10 years equivalent', dx: 12, dy: 22, anchor: 'start' },
+  { gj: 50, h: 25000, label: '20 years equivalent', dx: -12, dy: 28, anchor: 'end', hero: true },
+];
+const yTicks = [0, 6000, 12000, 18000, 24000, 30000];
+const xTicks = [0, 10, 20, 30, 40, 50, 60];
+---
+
+<section id="weather" class="relative isolate overflow-hidden bg-primary-950 py-20 text-white sm:py-28">
+  <div class="absolute inset-0 -z-10 opacity-[0.14]" aria-hidden="true">
+    <div class="h-[120%] w-full -translate-y-[8%]" data-parallax="0.08">
+      <Image src={uvMap} alt="" class="h-full w-full object-cover" widths={[960, 1600]} sizes="100vw" loading="lazy" />
+    </div>
+  </div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-primary-950 via-primary-950/60 to-primary-950" aria-hidden="true"></div>
+
+  <div class="container-prom flex flex-col gap-14">
+    <div class="flex max-w-3xl flex-col gap-4">
+      <span class="reveal text-xs font-bold uppercase tracking-[0.14em] text-accent-300">Built for Indian weather</span>
+      <h2 class="reveal text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-4xl lg:text-[2.75rem]">Tested for 25,000 hours of harsh Indian sun.</h2>
+      <p class="reveal text-lg leading-relaxed text-white/75">Prominance profiles were exposed to the equivalent of 50 GJ/m² of radiant UV energy under a Xenon arc lamp, to the EN 12608 standard. The result is a window whose colour holds — and a 20-year warranty to match.</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)]">
+      <div class="reveal rounded-3xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm sm:p-8" data-reveal="left">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-white/80">Accelerated weathering vs. real-world years</h3>
+          <span class="flex items-center gap-2 text-xs text-white/60"><span class="h-0.5 w-5 bg-accent-400"></span>Prominance profiles</span>
+        </div>
+        <div class="-mx-2 overflow-x-auto px-2 no-scrollbar"><svg viewBox="0 0 640 350" class="h-auto w-full min-w-[540px]" role="img" aria-label="Line chart showing 25,000 hours of accelerated weathering at 50 GJ per square metre equals 20 years, versus the EN standard of 8,000 hours">
+          <defs>
+            <linearGradient id="wp-line" x1="0" x2="1">
+              <stop offset="0" stop-color="#5fb04c" />
+              <stop offset="1" stop-color="#4d93cb" />
+            </linearGradient>
+            <linearGradient id="wp-area" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#5fb04c" stop-opacity="0.35" />
+              <stop offset="1" stop-color="#5fb04c" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+
+          {yTicks.map((h) => (
+            <g>
+              <line x1={X0} x2={X1} y1={py(h)} y2={py(h)} stroke="white" stroke-opacity="0.1" />
+              <text x={X0 - 10} y={py(h) + 4} text-anchor="end" font-size="11" fill="white" fill-opacity="0.55">{h.toLocaleString('en-IN')}</text>
+            </g>
+          ))}
+          {xTicks.map((g) => (
+            <text x={px(g)} y={Y0 + 22} text-anchor="middle" font-size="11" fill="white" fill-opacity="0.55">{g}</text>
+          ))}
+          <text x={X1} y={Y0 + 42} text-anchor="end" font-size="11" fill="white" fill-opacity="0.45">Radiant dose, GJ/m²</text>
+          <text x={X0 - 10} y={Y1 - 16} text-anchor="end" font-size="11" fill="white" fill-opacity="0.45">Hours</text>
+
+          <path d={`M${px(0)},${py(0)} L${px(50)},${py(25000)} L${px(50)},${Y0} L${px(0)},${Y0} Z`} fill="url(#wp-area)" class="reveal" data-reveal="fade" data-reveal-delay="900" />
+          <path d={`M${px(0)},${py(0)} L${px(50)},${py(25000)}`} stroke="url(#wp-line)" stroke-width="3.5" stroke-linecap="round" fill="none" data-draw="2400" />
+
+          <!-- EN standard marker -->
+          <g class="reveal" data-reveal="fade" data-reveal-delay="600">
+            <line x1={px(16)} x2={px(16)} y1={py(8000)} y2={Y0} stroke="#f0a1c7" stroke-dasharray="3 4" stroke-opacity="0.8" />
+            <circle cx={px(16)} cy={py(8000)} r="5" fill="#0b3d63" stroke="#f0a1c7" stroke-width="2" />
+            <text x={px(16) - 10} y={py(8000) - 10} text-anchor="end" font-size="11" font-weight="700" fill="#f0a1c7">EN standard · 8,000 h</text>
+          </g>
+
+          {marks.map((m, i) => (
+            <g class="reveal" data-reveal="fade" data-reveal-delay={1100 + i * 350}>
+              <circle cx={px(m.gj)} cy={py(m.h)} r={m.hero ? 9 : 5.5} fill={m.hero ? '#5fb04c' : '#0b3d63'} stroke="white" stroke-width="2" />
+              <text x={px(m.gj) + m.dx} y={py(m.h) + m.dy} text-anchor={m.anchor} font-size={m.hero ? 13 : 11.5} font-weight="700" fill="white">{m.label}</text>
+              <text x={px(m.gj) + m.dx} y={py(m.h) + m.dy + 14} text-anchor={m.anchor} font-size="10.5" fill="white" fill-opacity="0.6">{m.h.toLocaleString('en-IN')} hours</text>
+            </g>
+          ))}
+        </svg></div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <div class="reveal flex items-center gap-5 rounded-3xl bg-gradient-to-br from-white to-primary-50 p-6 text-ink" data-reveal="right">
+          <svg class="h-28 w-28 shrink-0" viewBox="0 0 120 130" role="img" aria-label="20 years warranty seal" style="animation: float-y 6s ease-in-out infinite;">
+            <defs>
+              <radialGradient id="seal-g" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#b3281a" /><stop offset="1" stop-color="#6b0f0a" /></radialGradient>
+            </defs>
+            <polygon points="60,4 68,10 78,6 84,15 95,15 98,26 108,31 106,42 114,50 108,60 114,70 106,78 108,89 98,94 95,105 84,105 78,114 68,110 60,116 52,110 42,114 36,105 25,105 22,94 12,89 14,78 6,70 12,60 6,50 14,42 12,31 22,26 25,15 36,15 42,6 52,10" fill="#d9a441" />
+            <circle cx="60" cy="60" r="44" fill="url(#seal-g)" />
+            <text x="60" y="68" text-anchor="middle" font-size="40" font-weight="800" fill="white">20</text>
+            <text x="60" y="84" text-anchor="middle" font-size="12" font-weight="800" fill="#f3d58a" letter-spacing="1">YEARS</text>
+            <path d="M16 100 L104 100 L112 118 L8 118 Z" fill="#9c2a17" />
+            <text x="60" y="113" text-anchor="middle" font-size="12" font-weight="800" fill="white" letter-spacing="0.5">WARRANTY</text>
+          </svg>
+          <div class="flex flex-col gap-1.5">
+            <h3 class="text-lg font-extrabold leading-tight">20-year warranty against colour degradation</h3>
+            <p class="text-sm leading-snug text-ink-muted">Backed by test compliance of 50 GJ/m² at 25,000 hours, with ΔE under 5 and Δb under 3.</p>
+          </div>
+        </div>
+
+        <div class="reveal flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm" data-reveal="right" data-reveal-delay="150">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-white/80">Colour change after testing</h3>
+          {[
+            { k: 'ΔE', ours: 1.6, max: 5, label: 'Colour shift' },
+            { k: 'Δb', ours: 1.4, max: 3, label: 'Yellowing' },
+          ].map((r) => (
+            <div class="flex flex-col gap-2" data-bar-group>
+              <div class="flex items-baseline justify-between text-sm">
+                <span class="font-semibold">{r.k} · {r.label}</span>
+                <span class="text-white/60">Prominance <strong class="text-accent-300">{r.ours}</strong> vs. limit {r.max}</span>
+              </div>
+              <div class="relative h-3 overflow-hidden rounded-full bg-white/10">
+                <div class="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-white/15" aria-hidden="true"></div>
+                <div class="brand-bar absolute inset-y-0 left-0 origin-left scale-x-0 rounded-full transition-transform duration-[1800ms] ease-out" style={`width:${(r.ours / r.max) * 100}%`} data-bar></div>
+              </div>
+              <span class="text-xs text-white/50">Lower is better — the bar's full width is the maximum allowed by EN 12608.</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const bars = document.querySelectorAll<HTMLElement>('[data-bar]');
+  if (bars.length) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).style.scale = '1 1';
+          io.unobserve(e.target);
+        }),
+      { threshold: 0.6 }
+    );
+    bars.forEach((b) => io.observe(b));
+  }
+</script>

@@ -1,0 +1,47 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import { certifications } from '../../data/brand';
+
+const displayStats = [
+  { to: 22000, suffix: ' MT', label: 'Annual production capacity' },
+  { to: 13, suffix: ' yrs', label: 'Years of manufacturing experience' },
+  { to: 25000, suffix: '+ hrs', label: 'Accelerated weather testing' },
+  { to: 30, suffix: '%', label: 'Typical reduction in energy loss' },
+];
+---
+
+<section class="bg-primary-900 py-20 text-white sm:py-28">
+  <div class="container-prom flex flex-col gap-14">
+    <SectionHeading
+      eyebrow="Why Prominance"
+      heading="Tested for the conditions your home actually faces."
+      description="Every claim here is backed by an independent lab, not just a marketing line."
+      light
+      align="center"
+      class="mx-auto"
+    />
+
+    <div class="reveal grid grid-cols-2 gap-6 sm:grid-cols-4">
+      {displayStats.map((s) => (
+        <div class="flex flex-col items-center gap-1 text-center">
+          <span class="text-3xl font-extrabold sm:text-4xl" data-count-to={s.to} data-count-suffix={s.suffix}>0</span>
+          <span class="max-w-[10rem] text-sm text-white/70">{s.label}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="reveal grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-delay="150">
+      {certifications.map((c) => (
+        <div class="rounded-xl border border-white/10 bg-white/5 p-5">
+          <span class="text-sm font-bold text-accent-400">{c.body}</span>
+          <p class="mt-1.5 text-sm leading-relaxed text-white/70">{c.detail}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="reveal flex justify-center">
+      <Button href="/why-prominance/" variant="white" size="lg">See the full story</Button>
+    </div>
+  </div>
+</section>

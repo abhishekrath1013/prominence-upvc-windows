@@ -1,0 +1,109 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const problems = [
+  { label: 'Outside noise', icon: 'noise' },
+  { label: 'Summer heat', icon: 'heat' },
+  { label: 'Dust & pollution', icon: 'dust' },
+  { label: 'Driving rain', icon: 'rain' },
+  { label: 'Break-in risk', icon: 'lock-open' },
+];
+const solutions = [
+  { label: 'Up to 40dB quieter', icon: 'check' },
+  { label: '30%+ less energy loss', icon: 'check' },
+  { label: 'Sealed, dust-resistant', icon: 'check' },
+  { label: 'Weatherproof gaskets', icon: 'check' },
+  { label: 'Multi-point locking', icon: 'check' },
+];
+---
+
+<section class="overflow-hidden bg-neutral-900 py-20 text-white sm:py-28">
+  <div class="container-prom flex flex-col gap-12">
+    <SectionHeading
+      eyebrow="Your windows should do more"
+      heading="Old windows let the outside in. Prominance keeps it out."
+      light
+      align="center"
+    />
+
+    <div class="mx-auto grid w-full max-w-4xl grid-cols-1 items-center gap-6 sm:grid-cols-[1fr_auto_1fr] sm:gap-4" data-problem-solution>
+      <div class="reveal flex flex-col gap-3">
+        <span class="text-center text-xs font-bold uppercase tracking-[0.14em] text-white/40 sm:text-left">Without Prominance</span>
+        {problems.map((p, i) => (
+          <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3.5" style={`animation-delay:${i * 90}ms`} data-chip="problem">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-red-400">
+              <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="text-[15px] font-semibold text-white/80">{p.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex items-center justify-center py-4 sm:py-0" aria-hidden="true">
+        <svg width="56" height="140" viewBox="0 0 56 140" fill="none" class="rotate-90 text-accent-500 sm:rotate-0">
+          <rect x="4" y="4" width="48" height="132" rx="6" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+          <line x1="28" y1="4" x2="28" y2="136" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+          <path d="M14 70h28M32 60l10 10-10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-ps-arrow/>
+        </svg>
+      </div>
+
+      <div class="reveal flex flex-col gap-3" data-reveal-delay="150">
+        <span class="text-center text-xs font-bold uppercase tracking-[0.14em] text-accent-400 sm:text-left">With Prominance</span>
+        {solutions.map((s, i) => (
+          <div class="flex items-center gap-3 rounded-xl border border-accent-500/20 bg-accent-500/10 px-4 py-3.5" style={`animation-delay:${i * 90 + 200}ms`} data-chip="solution">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-500/20 text-accent-400">
+              <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="text-[15px] font-semibold text-white">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-chip] {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  [data-chip='solution'] {
+    transform: translateX(8px);
+  }
+  [data-problem-solution].is-active [data-chip] {
+    animation: chip-in 0.6s var(--ease-smooth) forwards;
+  }
+  @keyframes chip-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-chip] {
+      opacity: 1;
+      transform: none;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupProblemSolution() {
+    const el = document.querySelector<HTMLElement>('[data-problem-solution]');
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            el.classList.add('is-active');
+            observer.disconnect();
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+  }
+  setupProblemSolution();
+</script>

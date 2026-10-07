@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import facility from '../../assets/images/real/infra/facility-overview.jpg';
+import infra01 from '../../assets/images/real/infra/infra-01.jpg';
+import infra02 from '../../assets/images/real/infra/infra-02.jpg';
+import infra03 from '../../assets/images/real/infra/infra-03.jpg';
+import infra04 from '../../assets/images/real/infra/infra-04.jpg';
+
+const steps = [
+  { title: 'Raw material & weighing', copy: 'PLC and SCADA-controlled weighing keeps every batch chemically consistent.', img: facility },
+  { title: 'Extrusion', copy: 'Imported extruders that meet European quality compliances shape every profile.', img: infra01 },
+  { title: 'Calibration', copy: 'Advanced calibration units hold dimensional accuracy across the full profile length.', img: infra02 },
+  { title: 'Quality lab testing', copy: 'European and Japanese test equipment verifies compliance with EN 12608.', img: infra03 },
+  { title: 'Fabrication', copy: 'Fusion-welded joints and precision cutting, run by trained technicians.', img: infra04 },
+];
+---
+
+<section class="py-20 sm:py-28">
+  <div class="container-prom flex flex-col gap-10">
+    <div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+      <SectionHeading
+        eyebrow="See what goes into every window"
+        heading="A state-of-the-art facility, 22,000 MT a year."
+        description="Real photos from the Prominance manufacturing facility in Coimbatore."
+      />
+      <Button href="/why-prominance/infrastructure/" variant="ghost" class="shrink-0">See the full process</Button>
+    </div>
+
+    <div class="reveal -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0">
+      {steps.map((s, i) => (
+        <div class="flex w-[75vw] shrink-0 snap-start flex-col gap-3 sm:w-[45vw] md:w-auto" data-reveal-delay={i * 80}>
+          <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100">
+            <Image src={s.img} alt={s.title} class="h-full w-full object-cover" widths={[300, 450]} sizes="(min-width: 768px) 20vw, 60vw" />
+          </div>
+          <div>
+            <span class="text-xs font-bold text-primary-700">Step {i + 1}</span>
+            <h3 class="mt-0.5 text-base font-bold text-ink">{s.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-ink-muted">{s.copy}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

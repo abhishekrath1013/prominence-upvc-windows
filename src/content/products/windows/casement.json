@@ -1,0 +1,54 @@
+{
+  "category": "window",
+  "style": "casement",
+  "title": "Casement uPVC Windows",
+  "shortName": "Casement",
+  "heroImage": "products/windows/casement",
+  "whatIsIt": "A side-hinged window that opens outward like a door, sealed on all sides by a continuous compression gasket when closed.",
+  "whyChooseIt": "The tightest seal of any window style, which is why it's the go-to choice for busy roads and noisy neighbourhoods — plus it can carry large fixed glass panels for an unbroken view.",
+  "idealFor": ["Homes facing busy or noisy streets", "Rooms where you want the largest possible glass view", "Bedrooms and living rooms"],
+  "benefits": [
+    { "title": "Tightest seal in the range", "description": "Twin gasket sealing on every edge minimises air and noise leakage." },
+    { "title": "Multi-point locking", "description": "Locks at 2–3 points around the sash for stronger, more even security." },
+    { "title": "Large glass panels", "description": "Supports large fixed panes alongside operable sashes for uninterrupted views." }
+  ],
+  "designOptions": "Single, double or triple sash configurations, with optional fixed panels combined alongside operable sashes.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Built for strength and large openings",
+      "description": "Designed for strength with twin gasket sealing and multi-point locks. Supports large fixed glass panels and is well suited to noisy streets.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Single, double or triple glazing",
+        "locking": "Multi-point locking (2–3 points)"
+      }
+    },
+    {
+      "series": "Optima",
+      "tagline": "Engineered for small-to-medium openings",
+      "description": "Engineered for small-to-medium openings in medium-rise buildings, delivering 100% opening capability where Inventa's larger reinforcement isn't required.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Single or double glazing",
+        "openingPercent": "100%"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608-1:2016"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last", "what-is-upvc"],
+  "comparisonTraits": {
+    "spaceSaving": false,
+    "ventilation": true,
+    "easyOperation": true,
+    "largeOpenings": false,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

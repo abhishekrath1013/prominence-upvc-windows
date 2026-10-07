@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Button from '../../../components/ui/Button.astro';
+
+export async function getStaticPaths() {
+  const faqs = await getCollection('faqs');
+  return faqs.map((f) => ({
+    params: { slug: f.id.replace(/\.md$/, '') },
+    props: { entry: f },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const categoryMeta: Record<string, string> = {
+  general: 'General',
+  performance: 'Performance & Safety',
+  maintenance: 'Maintenance & Care',
+  buying: 'Buying & Cost',
+  technical: 'Technical',
+};
+---
+
+<BaseLayout title={entry.data.question} description={entry.data.question}>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom max-w-2xl">
+      <a href="/resources/faqs/" class="mb-6 inline-flex items-center gap-1.5 text-sm font-bold text-primary-700">
+        ← All FAQs
+      </a>
+      <span class="text-xs font-bold uppercase tracking-wide text-accent-700">{categoryMeta[entry.data.category]}</span>
+      <h1 class="mb-8 mt-2 text-3xl font-extrabold leading-tight text-ink sm:text-4xl">{entry.data.question}</h1>
+      <div class="prose max-w-none text-lg leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-primary-700">
+        <Content />
+      </div>
+      <div class="mt-12 flex flex-wrap gap-3 border-t border-border pt-8">
+        <Button href="/quote/" variant="primary">Get a Quote</Button>
+        <Button href="/resources/faqs/" variant="ghost">Browse more FAQs</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

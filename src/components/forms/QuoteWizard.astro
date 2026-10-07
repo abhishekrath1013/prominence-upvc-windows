@@ -1,0 +1,150 @@
+---
+const propertyTypes = ['Apartment', 'Villa', 'Independent House', 'Commercial'];
+const lookingFor = ['Windows', 'Doors', 'Both'];
+---
+
+{/* Front-end only: wire the submit handler below to a real backend or form service before launch. */}
+<div class="rounded-3xl border border-border bg-white p-6 sm:p-10" data-quote-wizard>
+  <div class="mb-8 flex items-center gap-2" data-quote-progress>
+    {[1, 2, 3, 4, 5].map((n) => (
+      <span class="h-1.5 flex-1 rounded-full bg-border" data-progress-step={n}></span>
+    ))}
+  </div>
+
+  <form data-quote-form novalidate>
+    <fieldset data-quote-step="1" class="flex flex-col gap-5">
+      <legend class="text-xl font-extrabold text-ink">What are you looking for?</legend>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {lookingFor.map((opt) => (
+          <button type="button" class="rounded-xl border-2 border-border bg-white px-5 py-4 text-center text-[15px] font-semibold text-ink transition-colors data-[selected]:border-primary-700 data-[selected]:bg-primary-50" data-quote-option="lookingFor" data-value={opt}>
+            {opt}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset data-quote-step="2" class="hidden flex-col gap-5">
+      <legend class="text-xl font-extrabold text-ink">What type of property?</legend>
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {propertyTypes.map((opt) => (
+          <button type="button" class="rounded-xl border-2 border-border bg-white px-4 py-4 text-center text-sm font-semibold text-ink transition-colors data-[selected]:border-primary-700 data-[selected]:bg-primary-50" data-quote-option="propertyType" data-value={opt}>
+            {opt}
+          </button>
+        ))}
+      </div>
+      <div class="flex gap-3">
+        <button type="button" class="text-sm font-bold text-ink-muted hover:text-ink" data-quote-back>← Back</button>
+      </div>
+    </fieldset>
+
+    <fieldset data-quote-step="3" class="hidden flex-col gap-5">
+      <legend class="text-xl font-extrabold text-ink">Where are you located?</legend>
+      <input type="text" name="city" placeholder="City" required class="rounded-xl border border-border px-4 py-3.5 text-[15px] outline-none focus:border-primary-500" data-quote-input />
+      <div class="flex gap-3">
+        <button type="button" class="text-sm font-bold text-ink-muted hover:text-ink" data-quote-back>← Back</button>
+        <button type="button" class="rounded-full bg-primary-700 px-6 py-2.5 text-sm font-bold text-white" data-quote-next>Next</button>
+      </div>
+    </fieldset>
+
+    <fieldset data-quote-step="4" class="hidden flex-col gap-5">
+      <legend class="text-xl font-extrabold text-ink">What do you need?</legend>
+      <textarea name="requirement" rows="3" placeholder="e.g. 6 windows and 1 balcony door for a 3BHK apartment" class="resize-none rounded-xl border border-border px-4 py-3.5 text-[15px] outline-none focus:border-primary-500"></textarea>
+      <div class="flex gap-3">
+        <button type="button" class="text-sm font-bold text-ink-muted hover:text-ink" data-quote-back>← Back</button>
+        <button type="button" class="rounded-full bg-primary-700 px-6 py-2.5 text-sm font-bold text-white" data-quote-next>Next</button>
+      </div>
+    </fieldset>
+
+    <fieldset data-quote-step="5" class="hidden flex-col gap-5">
+      <legend class="text-xl font-extrabold text-ink">Your contact details</legend>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <input type="text" name="name" placeholder="Full name" required class="rounded-xl border border-border px-4 py-3.5 text-[15px] outline-none focus:border-primary-500" />
+        <input type="tel" name="phone" placeholder="Phone number" required class="rounded-xl border border-border px-4 py-3.5 text-[15px] outline-none focus:border-primary-500" />
+      </div>
+      <input type="email" name="email" placeholder="Email" required class="rounded-xl border border-border px-4 py-3.5 text-[15px] outline-none focus:border-primary-500" />
+      <div class="flex gap-3">
+        <button type="button" class="text-sm font-bold text-ink-muted hover:text-ink" data-quote-back>← Back</button>
+        <button type="submit" class="rounded-full bg-accent-600 px-7 py-3 text-sm font-bold text-white hover:bg-accent-700">Get My Quote</button>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="hidden flex-col items-center gap-3 py-8 text-center" data-quote-success>
+    <span class="flex h-14 w-14 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+      <svg class="h-7 w-7" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <h3 class="text-xl font-extrabold text-ink">That's it — you're done.</h3>
+    <p class="max-w-sm text-ink-muted">A Prominance team member will call you shortly to confirm details and share pricing.</p>
+  </div>
+</div>
+
+<script>
+  function setupQuoteWizard() {
+    const root = document.querySelector<HTMLElement>('[data-quote-wizard]');
+    if (!root) return;
+    const form = root.querySelector<HTMLFormElement>('[data-quote-form]');
+    const success = root.querySelector<HTMLElement>('[data-quote-success]');
+    const progressSteps = root.querySelectorAll<HTMLElement>('[data-progress-step]');
+    if (!form || !success) return;
+
+    let currentStep = 1;
+
+    function updateProgress() {
+      progressSteps.forEach((el) => {
+        const n = Number(el.dataset.progressStep);
+        el.classList.toggle('bg-primary-700', n <= currentStep);
+        el.classList.toggle('bg-border', n > currentStep);
+      });
+    }
+
+    function goToStep(n: number) {
+      currentStep = n;
+      form!.querySelectorAll<HTMLElement>('[data-quote-step]').forEach((step) => {
+        const isTarget = Number(step.dataset.quoteStep) === n;
+        step.classList.toggle('hidden', !isTarget);
+        step.classList.toggle('flex', isTarget);
+      });
+      updateProgress();
+    }
+
+    // Single-select option buttons (steps 1 & 2) auto-advance
+    form.querySelectorAll<HTMLButtonElement>('[data-quote-option]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.quoteOption;
+        form!.querySelectorAll<HTMLButtonElement>(`[data-quote-option="${group}"]`).forEach((b) => b.removeAttribute('data-selected'));
+        btn.setAttribute('data-selected', '');
+        window.setTimeout(() => goToStep(currentStep + 1), 200);
+      });
+    });
+
+    form.querySelectorAll<HTMLButtonElement>('[data-quote-next]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const stepEl = btn.closest<HTMLElement>('[data-quote-step]');
+        const input = stepEl?.querySelector<HTMLInputElement>('[required]');
+        if (input && !input.value.trim()) {
+          input.focus();
+          return;
+        }
+        goToStep(currentStep + 1);
+      });
+    });
+
+    form.querySelectorAll<HTMLButtonElement>('[data-quote-back]').forEach((btn) => {
+      btn.addEventListener('click', () => goToStep(Math.max(1, currentStep - 1)));
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+      success.classList.add('flex');
+    });
+
+    goToStep(1);
+  }
+  setupQuoteWizard();
+</script>

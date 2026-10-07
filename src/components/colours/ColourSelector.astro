@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../data/images';
+import roomImg from '../../assets/images/stock/open-living-dining-windows.jpg';
+
+const colours = (await getCollection('colours')).sort((a, b) => a.data.order - b.data.order);
+const categories: { key: string; label: string }[] = [
+  { key: 'base', label: 'Classic' },
+  { key: 'wood', label: 'Wood Finishes' },
+  { key: 'contemporary', label: 'Contemporary' },
+];
+---
+
+<div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center" data-colour-selector>
+  <div class="relative overflow-hidden rounded-3xl bg-neutral-900 shadow-[var(--shadow-pop)]">
+    <Image src={roomImg} alt="Living room with large windows" class="aspect-[4/3] w-full object-cover" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 55vw, 100vw" />
+    <div
+      class="pointer-events-none absolute inset-x-[8%] top-[8%] h-[55%] rounded-lg border-[10px] shadow-[0_0_0_2px_rgba(255,255,255,0.4)] transition-all duration-300"
+      style="border-color: #f7f6f3"
+      data-frame-overlay
+    ></div>
+    <div class="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-neutral-950/80 to-transparent p-6">
+      <span class="text-sm font-semibold text-white/70">Frame finish</span>
+      <span class="text-lg font-bold text-white" data-colour-name>Classic White</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    {categories.map((cat) => {
+      const items = colours.filter((c) => c.data.category === cat.key);
+      if (items.length === 0) return null;
+      return (
+        <div class="flex flex-col gap-3">
+          <span class="text-xs font-bold uppercase tracking-wide text-ink-muted">{cat.label}</span>
+          <div class="flex flex-wrap gap-3">
+            {items.map((c) => (
+              <button
+                type="button"
+                class="group flex flex-col items-center gap-2"
+                data-colour-swatch
+                data-colour-name={c.data.name}
+                data-colour-hex={c.data.swatchHex ?? ''}
+                aria-label={c.data.name}
+              >
+                <span class="h-12 w-12 overflow-hidden rounded-full border-2 border-transparent shadow-[var(--shadow-card)] transition-all duration-150 group-hover:scale-110 group-data-[active]:border-primary-700 group-data-[active]:ring-2 group-data-[active]:ring-primary-200">
+                  {c.data.image ? (
+                    <Image src={resolveImage(c.data.image)} alt="" class="h-full w-full object-cover" width={48} height={48} />
+                  ) : (
+                    <span class="block h-full w-full" style={`background-color:${c.data.swatchHex}`}></span>
+                  )}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+
+    <p class="max-w-sm text-sm leading-relaxed text-ink-muted" data-colour-description>
+      The standard uPVC profile finish — clean, bright and the easiest to match with any interior.
+    </p>
+  </div>
+</div>
+
+<script>
+  function setupColourSelector() {
+    const root = document.querySelector<HTMLElement>('[data-colour-selector]');
+    if (!root) return;
+    const swatches = root.querySelectorAll<HTMLButtonElement>('[data-colour-swatch]');
+    const overlay = root.querySelector<HTMLElement>('[data-frame-overlay]');
+    const nameEl = root.querySelector<HTMLElement>('[data-colour-name]');
+
+    swatches.forEach((swatch) => {
+      swatch.addEventListener('click', () => {
+        swatches.forEach((s) => s.removeAttribute('data-active'));
+        swatch.setAttribute('data-active', '');
+        const name = swatch.dataset.colourName ?? '';
+        const hex = swatch.dataset.colourHex;
+        if (nameEl) nameEl.textContent = name;
+        if (!overlay) return;
+
+        if (hex) {
+          overlay.style.borderColor = hex;
+          overlay.style.borderImage = 'none';
+        } else {
+          const img = swatch.querySelector('img');
+          if (img) {
+            overlay.style.borderImage = `url(${img.src}) 30 fill / 10px / 0 round`;
+          }
+        }
+      });
+    });
+
+    if (swatches[0]) swatches[0].setAttribute('data-active', '');
+  }
+  setupColourSelector();
+</script>

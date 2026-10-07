@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  slugs: string[];
+}
+const { slugs } = Astro.props;
+
+const allFaqs = await getCollection('faqs');
+const faqs = slugs
+  .map((slug) => allFaqs.find((f) => f.id.replace(/\.md$/, '') === slug))
+  .filter((f): f is NonNullable<typeof f> => Boolean(f));
+
+const rendered = await Promise.all(
+  faqs.map(async (f) => {
+    const { Content } = await render(f);
+    return { title: f.data.question, Content };
+  })
+);
+---
+
+{rendered.length > 0 && (
+  <section class="py-16 sm:py-20">
+    <div class="container-prom flex flex-col gap-8">
+      <h2 class="reveal text-2xl font-extrabold text-ink sm:text-3xl">Common questions</h2>
+      <div class="reveal divide-y divide-border rounded-2xl border border-border bg-white">
+        {rendered.map((item, i) => (
+          <details class="group px-5 py-1 open:pb-4 sm:px-6" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-ink marker:content-none">
+              <span>{item.title}</span>
+              <svg class="h-5 w-5 shrink-0 text-primary-700 transition-transform duration-200 group-open:rotate-45" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </summary>
+            <div class="prose-sm max-w-none pr-8 text-[15px] leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-primary-700">
+              <item.Content />
+            </div>
+          </details>
+        ))}
+      </div>
+      <Button href="/resources/faqs/" variant="ghost" class="w-fit">See all FAQs</Button>
+    </div>
+  </section>
+)}

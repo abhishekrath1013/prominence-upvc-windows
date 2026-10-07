@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { resolveImage } from '../../data/images';
+
+const all = await getCollection('products', (p) => p.data.category === 'window');
+const order = ['casement', 'sliding', 'tilt-turn'];
+const products = order.map((s) => all.find((p) => p.data.style === s)!).filter(Boolean);
+---
+
+<section class="py-16 sm:py-20">
+  <div class="container-prom flex flex-col gap-10">
+    <SectionHeading
+      eyebrow="See the difference"
+      heading="Same home, three ways to open a window."
+      description="Tap a style to see how it looks and what changes — more than a paragraph can tell you."
+      align="center"
+      class="mx-auto"
+    />
+
+    <div class="mx-auto flex w-fit gap-1 rounded-full bg-surface-alt p-1" role="tablist" data-visualizer-tabs>
+      {products.map((p, i) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-visualizer-tab={p.data.style}
+          data-active={i === 0 ? '' : undefined}
+          class="rounded-full px-5 py-2.5 text-sm font-bold text-ink-muted transition-colors data-[active]:bg-primary-700 data-[active]:text-white"
+        >
+          {p.data.shortName}
+        </button>
+      ))}
+    </div>
+
+    <div class="mx-auto grid w-full max-w-4xl grid-cols-1 items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-3xl bg-neutral-900 shadow-[var(--shadow-pop)]">
+        {products.map((p, i) => (
+          <div data-visualizer-panel={p.data.style} class={`absolute inset-0 transition-opacity duration-300 ${i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <Image src={resolveImage(p.data.heroImage)} alt={p.data.title} class="h-full w-full object-cover" widths={[500, 800]} sizes="(min-width: 1024px) 50vw, 90vw" />
+          </div>
+        ))}
+      </div>
+
+      <div class="flex flex-col gap-4">
+        {products.map((p, i) => {
+          const openingSpec = p.data.series[0]?.specs.openingPercent;
+          return (
+            <div data-visualizer-info={p.data.style} class={i === 0 ? '' : 'hidden'}>
+              <h3 class="text-xl font-bold text-ink">{p.data.shortName}</h3>
+              <p class="mt-2 leading-relaxed text-ink-muted">{p.data.whyChooseIt}</p>
+              <dl class="mt-4 flex flex-col gap-2 border-t border-border pt-4 text-sm">
+                {openingSpec && (
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-ink-muted">Opening</dt>
+                    <dd class="font-semibold text-ink">{openingSpec}</dd>
+                  </div>
+                )}
+                <div class="flex justify-between gap-4">
+                  <dt class="text-ink-muted">Best for</dt>
+                  <dd class="text-right font-semibold text-ink">{p.data.idealFor[0]}</dd>
+                </div>
+              </dl>
+              <a href={`/windows/${p.data.style}/`} class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-primary-700 hover:underline">
+                Explore {p.data.shortName}
+                <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8h9M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupVisualizer() {
+    const root = document.querySelector<HTMLElement>('[data-visualizer-tabs]');
+    if (!root) return;
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-visualizer-tab]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const key = tab.dataset.visualizerTab;
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.toggleAttribute('data-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+        document.querySelectorAll<HTMLElement>('[data-visualizer-panel]').forEach((panel) => {
+          const match = panel.dataset.visualizerPanel === key;
+          panel.classList.toggle('opacity-100', match);
+          panel.classList.toggle('opacity-0', !match);
+          panel.classList.toggle('pointer-events-none', !match);
+        });
+        document.querySelectorAll<HTMLElement>('[data-visualizer-info]').forEach((info) => {
+          info.classList.toggle('hidden', info.dataset.visualizerInfo !== key);
+        });
+      });
+    });
+  }
+  setupVisualizer();
+</script>

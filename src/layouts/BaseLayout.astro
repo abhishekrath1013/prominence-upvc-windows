@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import StickyCTA from '../components/layout/StickyCTA.astro';
+import BrochureFab from '../components/layout/BrochureFab.astro';
+import { brand, contact } from '../data/brand';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImagePath?: string;
+  noIndex?: boolean;
+  structuredData?: Record<string, unknown>;
+}
+
+const { title, description, noIndex = false, structuredData } = Astro.props;
+const pageTitle = title.includes(brand.name) ? title : `${title} | ${brand.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: brand.name,
+  legalName: brand.legalName,
+  url: 'https://prominance.com',
+  logo: 'https://prominance.com/favicon.png',
+  description: brand.short,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.hq.line1,
+    addressLocality: 'Coimbatore',
+    addressRegion: 'Tamil Nadu',
+    addressCountry: 'IN',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: contact.tollFree,
+    contactType: 'customer service',
+    email: contact.email,
+  },
+  sameAs: Object.values(contact.social),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonicalURL} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={brand.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <meta name="theme-color" content="#005a97" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-screen flex-col bg-surface text-ink font-sans antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-primary-700 focus:px-4 focus:py-2 focus:text-white"
+    >
+      Skip to content
+    </a>
+    <div class="fixed inset-x-0 top-0 z-[60] h-[3px] bg-transparent" aria-hidden="true">
+      <div class="brand-bar h-full origin-left" style="transform: scaleX(0)" data-scroll-progress></div>
+    </div>
+    <Header />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <StickyCTA />
+    <BrochureFab />
+    <script>
+      import { initMotion } from '../utils/motion';
+      initMotion();
+    </script>
+  </body>
+</html>

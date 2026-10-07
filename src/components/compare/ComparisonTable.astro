@@ -1,0 +1,49 @@
+---
+import { type CollectionEntry } from 'astro:content';
+
+interface Props {
+  products: CollectionEntry<'products'>[];
+  basePath: string;
+}
+const { products, basePath } = Astro.props;
+
+const traits: { key: keyof CollectionEntry<'products'>['data']['comparisonTraits']; label: string }[] = [
+  { key: 'spaceSaving', label: 'Space saving' },
+  { key: 'ventilation', label: 'Adjustable ventilation' },
+  { key: 'easyOperation', label: 'Easy, low-effort operation' },
+  { key: 'largeOpenings', label: 'Good for large openings' },
+  { key: 'weatherSealing', label: 'Tightest weather seal' },
+  { key: 'securityLocking', label: 'Multi-point security locking' },
+];
+---
+
+<div class="overflow-x-auto rounded-2xl border border-border bg-white">
+  <table class="w-full min-w-[560px] border-collapse text-left">
+    <thead>
+      <tr class="border-b border-border">
+        <th class="p-4 text-sm font-bold text-ink-muted">&nbsp;</th>
+        {products.map((p) => (
+          <th class="p-4 text-center">
+            <a href={`${basePath}/${p.data.style}/`} class="text-base font-bold text-primary-700 hover:underline">{p.data.shortName}</a>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {traits.map((t, i) => (
+        <tr class={i % 2 === 0 ? 'bg-surface-alt/60' : ''}>
+          <td class="p-4 text-sm font-semibold text-ink">{t.label}</td>
+          {products.map((p) => (
+            <td class="p-4 text-center">
+              {p.data.comparisonTraits[t.key] ? (
+                <svg class="mx-auto h-5 w-5 text-accent-600" viewBox="0 0 16 16" fill="none" aria-label="Yes"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              ) : (
+                <span class="mx-auto block h-1 w-3 rounded-full bg-border" aria-label="No"></span>
+              )}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,159 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../assets/images/real/brand/logo.png';
+import Button from '../ui/Button.astro';
+import MobileNav from './MobileNav.astro';
+import { contact } from '../../data/brand';
+
+const windowLinks = [
+  { style: 'casement', label: 'Casement', desc: 'The tightest seal — best for noisy streets' },
+  { style: 'sliding', label: 'Sliding', desc: 'Space-saving, glides open on rollers' },
+  { style: 'tilt-turn', label: 'Tilt & Turn', desc: 'Tilt for airflow, turn to fully open' },
+];
+const doorLinks = [
+  { style: 'casement', label: 'Casement', desc: 'Weatherproof balcony & entry doors' },
+  { style: 'sliding', label: 'Sliding', desc: 'Wide openings, maximum natural light' },
+  { style: 'slide-fold', label: 'Slide & Fold', desc: 'Full 100% opening, indoor meets outdoor' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-border bg-white/90 backdrop-blur-md" data-header>
+  <div class="container-prom flex h-[76px] items-center justify-between gap-4">
+    <a href="/" class="flex shrink-0 items-center" aria-label="Prominance home">
+      <Image src={logo} alt="Prominance uPVC Window Systems" height={40} width={151} loading="eager" />
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Primary">
+      <div class="relative" data-menu="windows">
+        <button
+          type="button"
+          class="group flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100"
+          aria-expanded="false"
+          data-menu-trigger="windows"
+        >
+          Windows
+          <svg class="h-3.5 w-3.5 transition-transform duration-200 group-data-[open]:rotate-180" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div
+          class="invisible absolute left-1/2 top-full mt-2 w-[520px] -translate-x-1/2 translate-y-1 rounded-2xl border border-border bg-white p-3 opacity-0 shadow-[0_20px_50px_-12px_rgba(26,24,21,0.25)] transition-all duration-150"
+          data-menu-panel="windows"
+        >
+          <div class="grid grid-cols-3 gap-1">
+            {windowLinks.map((w) => (
+              <a href={`/windows/${w.style}/`} class="flex flex-col gap-1 rounded-xl p-3 hover:bg-primary-50">
+                <span class="font-bold text-ink">{w.label}</span>
+                <span class="text-xs leading-snug text-ink-muted">{w.desc}</span>
+              </a>
+            ))}
+          </div>
+          <div class="mt-2 flex items-center justify-between rounded-xl bg-surface-alt px-4 py-3">
+            <span class="text-sm text-ink-muted">Not sure which window fits your home?</span>
+            <a href="/windows/#discovery" class="whitespace-nowrap text-sm font-bold text-primary-700 hover:underline">Help me choose →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative" data-menu="doors">
+        <button
+          type="button"
+          class="group flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100"
+          aria-expanded="false"
+          data-menu-trigger="doors"
+        >
+          Doors
+          <svg class="h-3.5 w-3.5 transition-transform duration-200 group-data-[open]:rotate-180" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div
+          class="invisible absolute left-1/2 top-full mt-2 w-[520px] -translate-x-1/2 translate-y-1 rounded-2xl border border-border bg-white p-3 opacity-0 shadow-[0_20px_50px_-12px_rgba(26,24,21,0.25)] transition-all duration-150"
+          data-menu-panel="doors"
+        >
+          <div class="grid grid-cols-3 gap-1">
+            {doorLinks.map((d) => (
+              <a href={`/doors/${d.style}/`} class="flex flex-col gap-1 rounded-xl p-3 hover:bg-primary-50">
+                <span class="font-bold text-ink">{d.label}</span>
+                <span class="text-xs leading-snug text-ink-muted">{d.desc}</span>
+              </a>
+            ))}
+          </div>
+          <div class="mt-2 flex items-center justify-between rounded-xl bg-surface-alt px-4 py-3">
+            <span class="text-sm text-ink-muted">Want doors that open your home outward?</span>
+            <a href="/compare/" class="whitespace-nowrap text-sm font-bold text-primary-700 hover:underline">Compare styles →</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="/why-prominance/" class="rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100">Why Prominance</a>
+      <a href="/colours/" class="rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100">Colours</a>
+      <a href="/projects/" class="rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100">Projects</a>
+      <a href="/resources/" class="rounded-full px-4 py-2 text-[15px] font-semibold text-ink hover:bg-neutral-100">Resources</a>
+    </nav>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <a href={contact.tollFreeHref} class="text-sm font-bold text-primary-700 hover:underline">{contact.tollFree}</a>
+      <Button href="/quote/" size="md">Get a Quote</Button>
+    </div>
+
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-neutral-100 lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      data-mobile-menu-trigger
+    >
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<MobileNav />
+
+<script>
+  function setupMegaMenu() {
+    const menus = document.querySelectorAll<HTMLElement>('[data-menu]');
+
+    function closeAll() {
+      menus.forEach((menu) => {
+        const trigger = menu.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+        const panel = menu.querySelector<HTMLElement>('[data-menu-panel]');
+        trigger?.setAttribute('aria-expanded', 'false');
+        trigger?.removeAttribute('data-open');
+        panel?.classList.add('invisible', 'opacity-0', 'translate-y-1');
+      });
+    }
+
+    menus.forEach((menu) => {
+      const trigger = menu.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+      const panel = menu.querySelector<HTMLElement>('[data-menu-panel]');
+      if (!trigger || !panel) return;
+
+      trigger.addEventListener('click', () => {
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        closeAll();
+        if (!isOpen) {
+          trigger.setAttribute('aria-expanded', 'true');
+          trigger.setAttribute('data-open', '');
+          panel.classList.remove('invisible', 'opacity-0', 'translate-y-1');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof Node)) return;
+      const insideAnyMenu = Array.from(menus).some((m) => m.contains(e.target as Node));
+      if (!insideAnyMenu) closeAll();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
+    });
+  }
+
+  setupMegaMenu();
+  document.addEventListener('astro:page-load', setupMegaMenu);
+</script>

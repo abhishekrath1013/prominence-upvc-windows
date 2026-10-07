@@ -1,0 +1,53 @@
+{
+  "category": "window",
+  "style": "sliding",
+  "title": "Sliding uPVC Windows",
+  "shortName": "Sliding",
+  "heroImage": "products/windows/sliding",
+  "whatIsIt": "Sashes that glide horizontally on rollers within the frame, rather than swinging open — nothing projects into the room or outside.",
+  "whyChooseIt": "Doesn't need clearance to open, so it works in tight balconies and corridors, and the wide track supports larger window sizes with smooth, low-effort operation.",
+  "idealFor": ["Balconies and tight spaces", "Kitchens and utility areas", "Large window openings"],
+  "benefits": [
+    { "title": "Space saving", "description": "No swing radius needed — ideal where furniture or walkways sit close to the window." },
+    { "title": "Smooth, easy operation", "description": "SS 304 friction stays and co-extruded gaskets keep the sash gliding smoothly for years." },
+    { "title": "Up to 66% opening", "description": "Wide ventilation area for a window style that stays flush and unobtrusive." }
+  ],
+  "designOptions": "2-track or 3-track configurations with multiple shutter counts depending on opening width.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Reinforced for larger openings",
+      "description": "Offers up to 66% opening with a space-saving design that minimises air leakage, with reinforcement that supports larger window sizes.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Single, double or triple glazing",
+        "openingPercent": "Up to 66%"
+      }
+    },
+    {
+      "series": "Optima",
+      "tagline": "Simple and space-efficient",
+      "description": "Designed for constrained spaces, balancing simplicity with visual uniformity across the rest of the product line.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Single or double glazing"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608-1:2016"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last", "what-is-upvc"],
+  "comparisonTraits": {
+    "spaceSaving": true,
+    "ventilation": false,
+    "easyOperation": true,
+    "largeOpenings": true,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

@@ -1,0 +1,21 @@
+---
+import Button from '../ui/Button.astro';
+import { contact } from '../../data/brand';
+---
+
+<section class="bg-gradient-to-br from-primary-700 to-primary-900 py-20 text-white sm:py-28">
+  <div class="container-prom reveal flex flex-col items-center gap-6 text-center">
+    <h2 class="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
+      Ready to see what Prominance windows would cost for your home?
+    </h2>
+    <p class="max-w-lg text-lg text-white/80">
+      Tell us a little about your project — it takes under two minutes, no site visit required to start.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <Button href="/quote/" variant="white" size="lg">Get a Quote</Button>
+      <Button href={contact.tollFreeHref} variant="ghost" size="lg" class="border-white text-white hover:bg-white/10">
+        Talk to an Expert
+      </Button>
+    </div>
+  </div>
+</section>

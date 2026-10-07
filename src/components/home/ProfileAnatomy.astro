@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { constructionFacts } from '../../data/brand';
+import chambers from '../../assets/images/real/diagrams/multi-chambered-profile.jpg';
+import steel from '../../assets/images/real/diagrams/steel-reinforcement.jpg';
+import weld from '../../assets/images/real/diagrams/fusion-welded-joints.jpg';
+import seal from '../../assets/images/real/diagrams/weather-seal.jpg';
+import lock from '../../assets/images/real/diagrams/multi-point-lock.jpg';
+import glazing from '../../assets/images/real/diagrams/glazing-types.jpg';
+import drain from '../../assets/images/real/diagrams/drain-holes.jpg';
+
+const parts = [
+  { id: 'chambers', title: 'Multi-chambered profile', stat: '2.3–2.5 mm', img: chambers, text: 'Separate air chambers inside thick profile walls slow heat and sound on their way through the frame.' },
+  { id: 'steel', title: 'Galvanised steel core', stat: '1.5 mm', img: steel, text: `${constructionFacts.steelReinforcement}. It keeps large windows straight against wind load, year after year.` },
+  { id: 'weld', title: 'Fusion-welded corners', stat: '0 screws', img: weld, text: `${constructionFacts.joints} — the corners are melted into one piece, so they cannot loosen or leak.` },
+  { id: 'seal', title: 'Dual weather seals', stat: '2 gaskets', img: seal, text: `${constructionFacts.weatherSeal} close tight against dust, rain and draughts.` },
+  { id: 'lock', title: 'Multi-point locking', stat: '2–3 points', img: lock, text: 'Locks engage at several points around the sash, spreading security along the whole frame.' },
+  { id: 'glazing', title: 'Single, double or triple glazing', stat: 'Sealed units', img: glazing, text: `${constructionFacts.glazing}, chosen to suit your noise and heat needs.` },
+  { id: 'drain', title: 'Built-in drainage', stat: 'Rain-ready', img: drain, text: 'Designed water outlets with an inherent slope let rain drain out instead of sitting in the system.' },
+];
+---
+
+<section id="anatomy" class="relative overflow-hidden py-20 sm:py-28" data-anatomy>
+  <div class="container-prom flex flex-col gap-14">
+    <SectionHeading
+      eyebrow="Inside the profile"
+      heading="Strength you can't see — but will feel."
+      description="A Prominance window is more than its frame. Here is what's built into every one."
+    />
+
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
+      <div class="reveal relative mx-auto w-full max-w-[520px]" data-reveal="scale">
+        <div class="absolute inset-[-6%] rounded-full border border-dashed border-primary-200" style="animation: spin-slow 60s linear infinite;" aria-hidden="true"></div>
+        <div class="absolute inset-[-14%] rounded-full border border-primary-100" aria-hidden="true"></div>
+        <div class="relative aspect-square overflow-hidden rounded-full bg-primary-50 shadow-[var(--shadow-pop)]">
+          {parts.map((p, i) => (
+            <div class={`anatomy-img absolute inset-0 ${i === 0 ? 'is-active' : ''}`} data-anatomy-img={p.id}>
+              <Image src={p.img} alt={p.title} class="h-full w-full object-cover" widths={[400, 640]} sizes="(min-width: 1024px) 520px, 90vw" loading={i === 0 ? 'eager' : 'lazy'} />
+            </div>
+          ))}
+        </div>
+        <div class="absolute -right-2 bottom-6 rounded-2xl bg-white px-5 py-3 shadow-[var(--shadow-pop)] sm:-right-6">
+          <div class="text-[10px] font-bold uppercase tracking-wide text-ink-muted">Key figure</div>
+          <div class="text-2xl font-extrabold text-primary-700" data-anatomy-stat>{parts[0].stat}</div>
+        </div>
+      </div>
+
+      <ol class="flex flex-col" data-stagger="60">
+        {parts.map((p, i) => (
+          <li class="reveal border-b border-border last:border-b-0">
+            <button
+              type="button"
+              class="group relative flex w-full flex-col gap-2 py-4 text-left"
+              aria-expanded={i === 0 ? 'true' : 'false'}
+              data-anatomy-btn={p.id}
+              data-stat={p.stat}
+            >
+              <span class="flex items-center gap-4">
+                <span class="w-7 text-sm font-extrabold tabular-nums text-ink-muted transition-colors group-aria-expanded:text-accent-600">{String(i + 1).padStart(2, '0')}</span>
+                <span class="flex-1 text-lg font-bold text-ink transition-colors group-hover:text-primary-700 group-aria-expanded:text-primary-700 sm:text-xl">{p.title}</span>
+                <svg class="h-5 w-5 text-ink-muted transition-transform duration-300 group-aria-expanded:rotate-45 group-aria-expanded:text-primary-700" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+              </span>
+              <span class="grid grid-cols-1 grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-aria-expanded:grid-rows-[1fr]">
+                <span class="overflow-hidden pl-11">
+                  <span class="block max-w-lg pb-2 leading-relaxed text-ink-muted">{p.text}</span>
+                </span>
+              </span>
+              <span class="absolute bottom-[-1px] left-0 h-0.5 w-full origin-left scale-x-0 brand-bar group-aria-expanded:[animation:anatomy-progress_var(--anatomy-dur,5500ms)_linear_forwards]" aria-hidden="true"></span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .anatomy-img {
+    opacity: 0;
+    transform: scale(1.12) rotate(-3deg);
+    transition: opacity 0.7s var(--ease-smooth), transform 1s var(--ease-smooth);
+  }
+  .anatomy-img.is-active {
+    opacity: 1;
+    transform: none;
+  }
+  [data-anatomy][data-paused] [data-anatomy-btn][aria-expanded='true'] > span:last-child {
+    animation: none;
+    scale: 1 1;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-anatomy]');
+  if (root) {
+    const btns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-anatomy-btn]'));
+    const statEl = root.querySelector<HTMLElement>('[data-anatomy-stat]');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DUR = 5500;
+    let index = 0;
+    let timer: number | undefined;
+    let inView = false;
+    let userTook = false;
+
+    const show = (i: number) => {
+      index = i;
+      btns.forEach((b, k) => {
+        const on = k === i;
+        if (on) {
+          b.setAttribute('aria-expanded', 'false');
+          void b.offsetWidth; // restart the progress-bar animation
+        }
+        b.setAttribute('aria-expanded', String(on));
+      });
+      const id = btns[i].dataset.anatomyBtn;
+      root.querySelectorAll<HTMLElement>('[data-anatomy-img]').forEach((el) => el.classList.toggle('is-active', el.dataset.anatomyImg === id));
+      if (statEl) statEl.textContent = btns[i].dataset.stat ?? '';
+    };
+
+    const stop = () => window.clearTimeout(timer);
+    const schedule = () => {
+      stop();
+      if (reduce || userTook || !inView) return;
+      timer = window.setTimeout(() => {
+        show((index + 1) % btns.length);
+        schedule();
+      }, DUR);
+    };
+
+    btns.forEach((b, i) =>
+      b.addEventListener('click', () => {
+        userTook = true;
+        root.setAttribute('data-paused', '');
+        stop();
+        show(i);
+      })
+    );
+
+    new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+        if (inView) {
+          // restart the progress animation for the active item
+          show(index);
+          schedule();
+        } else stop();
+      },
+      { threshold: 0.35 }
+    ).observe(root);
+  }
+</script>

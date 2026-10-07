@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteWizard from '../components/forms/QuoteWizard.astro';
+import { contact } from '../data/brand';
+---
+
+<BaseLayout
+  title="Get a Quote"
+  description="Get a quote for Prominance uPVC windows and doors — tell us about your home in under two minutes."
+>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom grid grid-cols-1 items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div class="reveal flex flex-col gap-5 lg:sticky lg:top-28">
+        <span class="text-xs font-bold uppercase tracking-[0.14em] text-accent-700">Get a Quote</span>
+        <h1 class="text-3xl font-extrabold leading-tight text-ink sm:text-4xl">Tell us about your home. It takes under two minutes.</h1>
+        <p class="text-ink-muted">No site visit needed to get started — just a few quick questions, and a Prominance team member will follow up with pricing.</p>
+        <p class="text-sm text-ink-muted">
+          Prefer to talk? Call <a href={contact.tollFreeHref} class="font-bold text-primary-700 hover:underline">{contact.tollFree}</a> (toll-free).
+        </p>
+      </div>
+
+      <div class="reveal" data-reveal-delay="100">
+        <QuoteWizard />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

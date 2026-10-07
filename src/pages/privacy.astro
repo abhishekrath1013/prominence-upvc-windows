@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, brand } from '../data/brand';
+---
+
+<BaseLayout title="Privacy Policy" description="Prominance privacy policy." noIndex>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom max-w-2xl">
+      <h1 class="mb-6 text-3xl font-extrabold text-ink">Privacy Policy</h1>
+      <p class="leading-relaxed text-ink-muted">
+        This page is a placeholder. Replace it with {brand.legalName}'s actual privacy policy — covering what
+        information is collected through this site (e.g. quote and contact forms), how it's used, how long it's
+        retained, and how visitors can request access or deletion — before this site goes live.
+      </p>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        For privacy questions in the meantime, contact <a href={`mailto:${contact.email}`} class="font-semibold text-primary-700">{contact.email}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

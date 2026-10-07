@@ -1,0 +1,41 @@
+{
+  "category": "door",
+  "style": "sliding",
+  "title": "Sliding uPVC Doors",
+  "shortName": "Sliding",
+  "heroImage": "products/doors/inventa-sliding",
+  "whatIsIt": "A multi-track door system where large glass panels slide horizontally, built for maximum daylight and airflow across wide openings.",
+  "whyChooseIt": "Handles expansive, wall-sized openings that a hinged door can't — ideal when you want a room to open straight onto a balcony or garden.",
+  "idealFor": ["Living rooms opening to balconies", "Floor-to-ceiling openings", "Spaces connecting indoors and outdoors"],
+  "benefits": [
+    { "title": "Maximum natural light", "description": "Large glass panels flood interiors with daylight." },
+    { "title": "Flexible configurations", "description": "Available in 3-track 3-shutter or 3-track 6-shutter layouts." },
+    { "title": "Built for big openings", "description": "Supports floor-to-ceiling installations with wind-load resistance for larger sizes." }
+  ],
+  "designOptions": "3-track 3-shutter or 3-track 6-shutter configurations.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Wide openings, maximum light",
+      "description": "Ideal for large openings requiring maximum natural light and airflow, with flexible track-and-shutter configurations and wind-load resistance for bigger sizes.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Toughened or laminated glass",
+        "configurations": "3-track 3-shutter or 3-track 6-shutter"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last"],
+  "comparisonTraits": {
+    "spaceSaving": true,
+    "ventilation": false,
+    "easyOperation": true,
+    "largeOpenings": true,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

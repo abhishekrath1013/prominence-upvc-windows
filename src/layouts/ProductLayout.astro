@@ -1,0 +1,43 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import ProductHero from '../components/product/ProductHero.astro';
+import BenefitList from '../components/product/BenefitList.astro';
+import SeriesToggle from '../components/product/SeriesToggle.astro';
+import ProductFAQ from '../components/product/ProductFAQ.astro';
+import RelatedProducts from '../components/product/RelatedProducts.astro';
+import FinalCTA from '../components/home/FinalCTA.astro';
+import { resolveImage } from '../data/images';
+
+interface Props {
+  category: 'window' | 'door';
+  style: string;
+}
+const { category, style } = Astro.props;
+
+const id = `${category === 'window' ? 'windows' : 'doors'}/${style}`;
+const entry = await getEntry('products', id);
+if (!entry) throw new Error(`Product not found: ${id}`);
+const p = entry.data;
+
+const categoryLabel = category === 'window' ? 'uPVC Window' : 'uPVC Door';
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.title,
+  description: p.whatIsIt,
+  category: categoryLabel,
+  brand: { '@type': 'Brand', name: 'Prominance' },
+  material: 'uPVC',
+};
+---
+
+<BaseLayout title={p.title} description={p.whyChooseIt} structuredData={productSchema}>
+  <ProductHero categoryLabel={categoryLabel} title={p.title} whatIsIt={p.whatIsIt} heroImage={resolveImage(p.heroImage)} idealFor={p.idealFor} />
+  <BenefitList heading={`Why homeowners choose ${p.shortName.toLowerCase()}`} benefits={p.benefits} />
+  <SeriesToggle series={p.series} designOptions={p.designOptions} />
+  <ProductFAQ slugs={p.relatedFaqSlugs} />
+  <RelatedProducts category={category} excludeStyle={style} />
+  <FinalCTA />
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, brand } from '../data/brand';
+---
+
+<BaseLayout title="Terms & Conditions" description="Prominance terms and conditions." noIndex>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom max-w-2xl">
+      <h1 class="mb-6 text-3xl font-extrabold text-ink">Terms &amp; Conditions</h1>
+      <p class="leading-relaxed text-ink-muted">
+        This page is a placeholder. Replace it with {brand.legalName}'s actual terms of use, warranty terms and
+        sales conditions before this site goes live.
+      </p>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        For questions in the meantime, contact <a href={`mailto:${contact.email}`} class="font-semibold text-primary-700">{contact.email}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

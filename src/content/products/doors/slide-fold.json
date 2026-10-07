@@ -1,0 +1,41 @@
+{
+  "category": "door",
+  "style": "slide-fold",
+  "title": "Slide & Fold uPVC Doors",
+  "shortName": "Slide & Fold",
+  "heroImage": "products/doors/inventa-slide-fold",
+  "whatIsIt": "A bi-fold panel system where each leaf folds and slides back concertina-style, opening the entire width of the wall.",
+  "whyChooseIt": "The only door style that gives you a full 100% opening — when you want indoor and outdoor space to genuinely merge into one room, this is the system that does it.",
+  "idealFor": ["Villas connecting living rooms to gardens", "High-rise balcony systems", "Entertaining spaces that open outward"],
+  "benefits": [
+    { "title": "100% opening", "description": "Folds completely to one side, removing the barrier between spaces entirely." },
+    { "title": "Weather performance of a casement", "description": "Maintains sealing comparable to casement systems even with multiple folding joints." },
+    { "title": "Built for wind and rain", "description": "Sturdy against heavy winds and rain — installation requires structural analysis for safety." }
+  ],
+  "designOptions": "Multi-panel folding configurations sized to the opening; structural analysis required before installation.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Full-width opening",
+      "description": "A bi-fold system providing full 100% opening capability while maintaining weather performance comparable to casement systems — suited to high-rise balconies and villa applications that merge interior and exterior spaces.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Toughened or laminated glass",
+        "openingPercent": "100%"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last"],
+  "comparisonTraits": {
+    "spaceSaving": true,
+    "ventilation": false,
+    "easyOperation": true,
+    "largeOpenings": true,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

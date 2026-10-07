@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubHero from '../../components/product/HubHero.astro';
+import InteriorVisualizer from '../../components/product/InteriorVisualizer.astro';
+import ProductShowcase from '../../components/home/ProductShowcase.astro';
+import ProductDiscoveryQuiz from '../../components/home/ProductDiscoveryQuiz.astro';
+import ComparisonTeaser from '../../components/home/ComparisonTeaser.astro';
+import ColourTeaser from '../../components/home/ColourTeaser.astro';
+import FinalCTA from '../../components/home/FinalCTA.astro';
+import heroImg from '../../assets/images/stock/living-room-bright-windows.jpg';
+---
+
+<BaseLayout
+  title="uPVC Windows"
+  description="Casement, Sliding and Tilt & Turn uPVC windows — energy-efficient, secure and weather-tested for Indian homes."
+>
+  <HubHero
+    eyebrow="uPVC Windows"
+    heading="Find your perfect window."
+    description="Three ways to open a window, all built to the same tested standard. The right one depends on how you actually live in the room."
+    image={heroImg}
+  />
+  <ProductShowcase category="window" hideViewAll />
+  <InteriorVisualizer />
+  <ProductDiscoveryQuiz />
+  <ComparisonTeaser />
+  <ColourTeaser />
+  <FinalCTA />
+</BaseLayout>

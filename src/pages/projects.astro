@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import FinalCTA from '../components/home/FinalCTA.astro';
+
+import villaPool from '../assets/images/stock/villa-pool-staircase.jpg';
+import villaWhite from '../assets/images/stock/villa-white-minimal.jpg';
+import brickHome from '../assets/images/stock/brick-family-home.jpg';
+import villaGlass from '../assets/images/stock/villa-glass-pool-indoor-outdoor.jpg';
+import woodHouse from '../assets/images/stock/modern-house-wood-cladding.jpg';
+import villaPoolExt from '../assets/images/stock/villa-pool-exterior.jpg';
+import livingDark from '../assets/images/stock/living-room-dark-accent.jpg';
+import commercial from '../assets/images/stock/commercial-office-lounge.jpg';
+
+const categories = [
+  {
+    name: 'Villas',
+    entries: [
+      { img: villaGlass, product: 'Slide & Fold Doors', note: 'Full-width folding doors let the living room open directly onto the pool deck.' },
+      { img: villaPool, product: 'Sliding Windows', note: 'Floor-to-ceiling sliding glass keeps the staircase and living area flooded with light.' },
+      { img: villaPoolExt, product: 'Casement Windows', note: 'Large fixed and operable panels frame the garden without breaking up the facade.' },
+    ],
+  },
+  {
+    name: 'Independent Houses',
+    entries: [
+      { img: woodHouse, product: 'Casement Windows', note: 'Clean sightlines and a tight seal suit a home close to the road.' },
+      { img: brickHome, product: 'Sliding Windows', note: 'Wide sills and low-profile frames fit a traditional facade without looking out of place.' },
+      { img: villaWhite, product: 'Tilt & Turn Windows', note: 'Upper-floor rooms use tilt mode for background ventilation that stays secure.' },
+    ],
+  },
+  {
+    name: 'Apartments',
+    entries: [
+      { img: livingDark, product: 'Casement Windows', note: 'A tight seal matters most in dense buildings — this is where it’s felt every day.' },
+    ],
+  },
+  {
+    name: 'Commercial Spaces',
+    entries: [
+      { img: commercial, product: 'Sliding Windows', note: 'Large glazed openings bring daylight deep into open-plan work spaces.' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Projects"
+  description="See Prominance uPVC windows and doors across villas, independent houses, apartments and commercial spaces."
+>
+  <section class="bg-surface-alt py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-6">
+      <SectionHeading
+        eyebrow="See Prominance in real homes"
+        heading="Picture it in your home."
+        description="A look at how each window and door style works across different kinds of properties."
+      />
+    </div>
+  </section>
+
+  {categories.map((cat) => (
+    <section class="border-b border-border py-16 sm:py-20">
+      <div class="container-prom flex flex-col gap-8">
+        <h2 class="reveal text-2xl font-extrabold text-ink sm:text-3xl">{cat.name}</h2>
+        <div class={`grid grid-cols-1 gap-6 ${cat.entries.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'}`}>
+          {cat.entries.map((e, i) => (
+            <div class="reveal group relative flex aspect-[4/5] overflow-hidden rounded-2xl" data-reveal-delay={i * 90}>
+              <Image src={e.img} alt={`${cat.name} featuring Prominance ${e.product}`} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" widths={[400, 600]} sizes="(min-width: 640px) 33vw, 100vw" />
+              <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/10 to-transparent"></div>
+              <div class="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-5 text-white">
+                <span class="text-xs font-bold uppercase tracking-wide text-accent-400">{e.product}</span>
+                <p class="text-sm leading-snug text-white/90">{e.note}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <FinalCTA />
+</BaseLayout>

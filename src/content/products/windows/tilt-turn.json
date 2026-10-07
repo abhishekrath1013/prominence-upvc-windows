@@ -1,0 +1,41 @@
+{
+  "category": "window",
+  "style": "tilt-turn",
+  "title": "Tilt & Turn uPVC Windows",
+  "shortName": "Tilt & Turn",
+  "heroImage": "products/windows/tilt-turn",
+  "whatIsIt": "A dual-function window on a Z-sash hardware set: tilt inward from the top for secure ventilation, or turn fully open on a side hinge for cleaning and full airflow.",
+  "whyChooseIt": "One window, two modes — crack it open on tilt for ventilation you can leave unattended, or swing it fully open when you want maximum airflow or need to clean the outside glass from indoors.",
+  "idealFor": ["Upper-floor apartments", "Rooms needing secure background ventilation", "Windows that are hard to reach from outside"],
+  "benefits": [
+    { "title": "100% opening capability", "description": "The turn mode opens the sash fully on its side hinge." },
+    { "title": "Secure tilt ventilation", "description": "Tilt mode allows airflow while keeping the window in a locked, restricted-opening position." },
+    { "title": "Easy to clean", "description": "Fully turns inward so outer glass can be cleaned without external access." }
+  ],
+  "designOptions": "Single or twin-sash configurations with the Z-sash tilt-and-turn hardware set.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Z-sash dual function",
+      "description": "Features a Z-sash configuration enabling 100% opening in turn mode, plus a secure tilt mode for controlled privacy and ventilation.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Single, double or triple glazing",
+        "openingPercent": "100% (turn mode)"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608-1:2016"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last", "what-is-upvc"],
+  "comparisonTraits": {
+    "spaceSaving": false,
+    "ventilation": true,
+    "easyOperation": true,
+    "largeOpenings": false,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

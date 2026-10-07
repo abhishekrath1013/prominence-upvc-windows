@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ComparisonTable from '../components/compare/ComparisonTable.astro';
+import FinalCTA from '../components/home/FinalCTA.astro';
+
+const allProducts = await getCollection('products');
+const windowOrder = ['casement', 'sliding', 'tilt-turn'];
+const doorOrder = ['casement', 'sliding', 'slide-fold'];
+const windows = windowOrder.map((s) => allProducts.find((p) => p.data.category === 'window' && p.data.style === s)!);
+const doors = doorOrder.map((s) => allProducts.find((p) => p.data.category === 'door' && p.data.style === s)!);
+---
+
+<BaseLayout
+  title="Compare uPVC Windows & Doors"
+  description="Compare Prominance Casement, Sliding and Tilt & Turn windows and doors side by side, in plain language."
+>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-16">
+      <SectionHeading
+        eyebrow="Which one is right for you?"
+        heading="Compare without needing an expert."
+        description="Every Prominance product meets the same tested quality standard — the difference is how it opens and where it fits best."
+        align="center"
+        class="mx-auto"
+      />
+
+      <div class="reveal flex flex-col gap-6">
+        <h2 class="text-xl font-extrabold text-ink">Windows</h2>
+        <ComparisonTable products={windows} basePath="/windows" />
+      </div>
+
+      <div class="reveal flex flex-col gap-6">
+        <h2 class="text-xl font-extrabold text-ink">Doors</h2>
+        <ComparisonTable products={doors} basePath="/doors" />
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

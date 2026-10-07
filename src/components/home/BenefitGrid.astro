@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import noiseImg from '../../assets/images/real/diagrams/noise-decibel-chart.jpg';
+import thermalImg from '../../assets/images/real/diagrams/thermal-efficiency.jpg';
+import lockImg from '../../assets/images/real/diagrams/multi-point-lock.jpg';
+import sealImg from '../../assets/images/real/diagrams/weather-seal.jpg';
+import lightImg from '../../assets/images/stock/bedroom-window-light.jpg';
+import cleanImg from '../../assets/images/stock/living-room-bright-windows.jpg';
+
+const benefits = [
+  {
+    title: 'Quieter home',
+    copy: 'Multi-chambered profiles and dual EPDM gaskets cut sound transmission by up to 40dB.',
+    img: noiseImg,
+  },
+  {
+    title: 'Energy efficient',
+    copy: 'Thermally efficient glazing typically reduces energy loss by over 30%.',
+    img: thermalImg,
+  },
+  {
+    title: 'Better security',
+    copy: 'Multi-point locking along the full sash, reinforced with galvanized steel.',
+    img: lockImg,
+  },
+  {
+    title: 'Weather resistant',
+    copy: 'Tested for 25,000+ hours of extreme weather — sun, rain and everything between.',
+    img: sealImg,
+  },
+  {
+    title: 'Better light & views',
+    copy: 'Slim, strong profiles mean more glass and less frame in every opening.',
+    img: lightImg,
+  },
+  {
+    title: 'Low maintenance',
+    copy: 'No painting, no sanding, no annual upkeep — just an occasional wipe-down.',
+    img: cleanImg,
+  },
+];
+---
+
+<section class="bg-surface-alt py-20 sm:py-28">
+  <div class="container-prom flex flex-col gap-12">
+    <SectionHeading
+      eyebrow="Why your home will feel different"
+      heading="Six ways new windows change how a home feels."
+      description="Not just glass and frames — a quieter, cooler, more secure home from the day they're installed."
+    />
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {benefits.map((b, i) => (
+        <div class="reveal group overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-card)] transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)]" data-reveal-delay={i * 80}>
+          <div class="aspect-[4/3] overflow-hidden bg-neutral-100">
+            <Image
+              src={b.img}
+              alt=""
+              class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              widths={[400, 600]}
+              sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+            />
+          </div>
+          <div class="flex flex-col gap-2 p-6">
+            <h3 class="text-lg font-bold text-ink">{b.title}</h3>
+            <p class="text-[15px] leading-relaxed text-ink-muted">{b.copy}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

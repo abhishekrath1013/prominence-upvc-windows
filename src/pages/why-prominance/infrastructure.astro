@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import FinalCTA from '../../components/home/FinalCTA.astro';
+import facility from '../../assets/images/real/infra/facility-overview.jpg';
+import infra01 from '../../assets/images/real/infra/infra-01.jpg';
+import infra02 from '../../assets/images/real/infra/infra-02.jpg';
+import infra03 from '../../assets/images/real/infra/infra-03.jpg';
+import infra04 from '../../assets/images/real/infra/infra-04.jpg';
+import infra05 from '../../assets/images/real/infra/infra-05.jpg';
+import sector1 from '../../assets/images/real/infra/sector1.jpg';
+import sector2 from '../../assets/images/real/infra/sector2.jpg';
+import sector3 from '../../assets/images/real/infra/sector3.jpg';
+
+const steps = [
+  {
+    title: 'Weighing & batching',
+    img: facility,
+    copy: 'A PLC and SCADA-based system gives precise control over weighment, timing and temperature — keeping chemical composition consistent and removing manual error. Every batch is evaluated to confirm it meets the target formulation before it moves forward.',
+  },
+  {
+    title: 'Tool design & maintenance',
+    img: infra01,
+    copy: 'Extrusion dies, calibrators and cooling tanks are built from high-quality Tool Steel complying with DIN 1.2316, warranted for 2 million metres. An in-house die design team and certified tooling specialists keep every tool at 100% readiness.',
+  },
+  {
+    title: 'Extrusion',
+    img: infra02,
+    copy: 'Imported extruders adhering to European quality compliances shape each profile, backed by advanced metallurgy and European-sourced water purification systems for the cooling process.',
+  },
+  {
+    title: 'Calibration',
+    img: infra03,
+    copy: 'An advanced calibration unit holds dimensional accuracy across the full profile length — the difference between a window that seals properly for twenty years and one that doesn’t.',
+  },
+  {
+    title: 'Quality lab testing',
+    img: infra04,
+    copy: 'Sophisticated testing equipment sourced from Europe and Japan verifies every batch against EN 12608 standards before it’s cleared for fabrication.',
+  },
+  {
+    title: 'R&D',
+    img: infra05,
+    copy: 'An in-house R&D team works with design software, 3D printers and prototype testing facilities to develop and refine profile systems for Indian climatic conditions.',
+  },
+];
+
+const sectorImages = [sector1, sector2, sector3];
+---
+
+<BaseLayout
+  title="Manufacturing Infrastructure"
+  description="Inside the Prominance manufacturing facility — 22,000 MT annual capacity, PLC/SCADA-controlled extrusion, and in-house R&D and quality testing."
+>
+  <section class="bg-surface-alt py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-6">
+      <SectionHeading
+        eyebrow="Infrastructure"
+        heading="See what goes into every window."
+        description="A state-of-the-art extrusion facility with a 22,000 MT annual capacity, built around imported machinery and European quality compliance at every stage."
+      />
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="container-prom flex flex-col gap-16">
+      {steps.map((s, i) => (
+        <div class={`reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+          <div class="overflow-hidden rounded-3xl bg-neutral-100 shadow-[var(--shadow-card)]">
+            <Image src={s.img} alt={s.title} class="aspect-[4/3] w-full object-cover" widths={[500, 800]} sizes="(min-width: 1024px) 45vw, 90vw" />
+          </div>
+          <div class="flex flex-col gap-3">
+            <span class="text-xs font-bold uppercase tracking-wide text-primary-700">Step {i + 1}</span>
+            <h2 class="text-2xl font-extrabold text-ink sm:text-3xl">{s.title}</h2>
+            <p class="leading-relaxed text-ink-muted">{s.copy}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-neutral-900 py-16 sm:py-20">
+    <div class="container-prom flex flex-col gap-8">
+      <h2 class="reveal text-center text-2xl font-extrabold text-white sm:text-3xl">Inside the facility</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {sectorImages.map((img, i) => (
+          <div class="reveal overflow-hidden rounded-2xl" data-reveal-delay={i * 90}>
+            <Image src={img} alt="Prominance manufacturing facility" class="aspect-[4/3] w-full object-cover" widths={[400, 600]} sizes="(min-width: 640px) 33vw, 100vw" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

@@ -1,0 +1,108 @@
+---
+import Button from '../ui/Button.astro';
+import { contact } from '../../data/brand';
+
+const windowLinks = [
+  { style: 'casement', label: 'Casement' },
+  { style: 'sliding', label: 'Sliding' },
+  { style: 'tilt-turn', label: 'Tilt & Turn' },
+];
+const doorLinks = [
+  { style: 'casement', label: 'Casement' },
+  { style: 'sliding', label: 'Sliding' },
+  { style: 'slide-fold', label: 'Slide & Fold' },
+];
+const plainLinks = [
+  { href: '/why-prominance/', label: 'Why Prominance' },
+  { href: '/colours/', label: 'Colours' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/resources/', label: 'Resources' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+
+<div
+  class="invisible fixed inset-0 z-[60] bg-white opacity-0 transition-opacity duration-200 lg:hidden"
+  data-mobile-nav
+>
+  <div class="flex h-[76px] items-center justify-between border-b border-border px-5">
+    <span class="text-sm font-bold uppercase tracking-wide text-ink-muted">Menu</span>
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-neutral-100"
+      aria-label="Close menu"
+      data-mobile-nav-close
+    >
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex h-[calc(100%-76px)] flex-col overflow-y-auto px-5 py-4">
+    <details class="border-b border-border py-3" open>
+      <summary class="flex cursor-pointer list-none items-center justify-between font-bold text-lg text-ink marker:content-none">
+        Windows
+        <svg class="h-4 w-4 text-primary-700" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="mt-2 flex flex-col gap-1 pb-2 pl-2">
+        {windowLinks.map((w) => (
+          <a href={`/windows/${w.style}/`} class="rounded-lg px-3 py-2.5 text-[15px] text-ink-muted hover:bg-surface-alt">{w.label}</a>
+        ))}
+      </div>
+    </details>
+
+    <details class="border-b border-border py-3">
+      <summary class="flex cursor-pointer list-none items-center justify-between font-bold text-lg text-ink marker:content-none">
+        Doors
+        <svg class="h-4 w-4 text-primary-700" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="mt-2 flex flex-col gap-1 pb-2 pl-2">
+        {doorLinks.map((d) => (
+          <a href={`/doors/${d.style}/`} class="rounded-lg px-3 py-2.5 text-[15px] text-ink-muted hover:bg-surface-alt">{d.label}</a>
+        ))}
+      </div>
+    </details>
+
+    {plainLinks.map((l) => (
+      <a href={l.href} class="border-b border-border py-4 font-bold text-lg text-ink">{l.label}</a>
+    ))}
+
+    <div class="mt-6 flex flex-col gap-3">
+      <Button href="/quote/" size="lg" class="w-full" arrow={false}>Get a Quote</Button>
+      <a href={contact.tollFreeHref} class="text-center text-base font-bold text-primary-700">
+        Call {contact.tollFree}
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupMobileNav() {
+    const trigger = document.querySelector<HTMLButtonElement>('[data-mobile-menu-trigger]');
+    const nav = document.querySelector<HTMLElement>('[data-mobile-nav]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-mobile-nav-close]');
+    if (!trigger || !nav || !closeBtn) return;
+
+    function open() {
+      nav?.classList.remove('invisible', 'opacity-0');
+      trigger?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      nav?.classList.add('invisible', 'opacity-0');
+      trigger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    trigger.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  }
+
+  setupMobileNav();
+  document.addEventListener('astro:page-load', setupMobileNav);
+</script>

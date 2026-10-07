@@ -1,0 +1,23 @@
+# Legacy prominance.com URLs -> new site structure (generated from src/data/brand.ts legacyRedirects)
+/upvc-windows/  /windows/  301
+/upvc-windows/inventa-casement-window-system/  /windows/casement/  301
+/upvc-windows/upvc-inventa-sliding-window-system/  /windows/sliding/  301
+/upvc-windows/inventa-tilt-and-turn-window-system/  /windows/tilt-turn/  301
+/upvc-windows/optima-casement-window-system/  /windows/casement/  301
+/upvc-windows/optima-sliding-window-system/  /windows/sliding/  301
+/upvc-windows/prominance-upvc-windows-laminates-options/  /colours/  301
+/upvc-doors/  /doors/  301
+/upvc-doors/upvc-door-inventa-casement-style-system/  /doors/casement/  301
+/upvc-doors/inventa-sliding-door-system/  /doors/sliding/  301
+/upvc-doors/inventa-slide-and-fold-door-system/  /doors/slide-fold/  301
+/about-prominance/  /why-prominance/  301
+/about-prominance/why-choose-prominance-upvc/  /why-prominance/  301
+/about-prominance/prominance-infrastructure-upvc-window-profiles/  /why-prominance/infrastructure/  301
+/about-prominance/quality-assurance-accreditation-bsi-skz/  /why-prominance/quality-standards/  301
+/upvc-windows-faqs/  /resources/faqs/  301
+/prominance-upvc-windows-downloads/  /resources/downloads/  301
+/prominance-contact-us/  /contact/  301
+/upvc-windows-prominance-contact-us-today/  /quote/  301
+
+# SPA-less static site: let Astro handle its own 404 page
+/*  /404.html  404

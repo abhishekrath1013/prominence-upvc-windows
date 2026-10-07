@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubHero from '../../components/product/HubHero.astro';
+import ProductShowcase from '../../components/home/ProductShowcase.astro';
+import ComparisonTeaser from '../../components/home/ComparisonTeaser.astro';
+import ColourTeaser from '../../components/home/ColourTeaser.astro';
+import FinalCTA from '../../components/home/FinalCTA.astro';
+import heroImg from '../../assets/images/stock/villa-glass-pool-indoor-outdoor.jpg';
+---
+
+<BaseLayout
+  title="uPVC Doors"
+  description="Casement, Sliding and Slide & Fold uPVC doors — weatherproof, secure and built to connect your home to the outdoors."
+>
+  <HubHero
+    eyebrow="uPVC Doors"
+    heading="Doors that open your home outward."
+    description="From a single weatherproof entry to a wall that folds completely away — find the door that matches how you want to open your space."
+    image={heroImg}
+  />
+  <ProductShowcase category="door" hideViewAll />
+  <ComparisonTeaser />
+  <ColourTeaser />
+  <FinalCTA />
+</BaseLayout>

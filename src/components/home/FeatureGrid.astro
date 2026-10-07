@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import type { ImageMetadata } from 'astro';
+
+const icons = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/brochure/icons/*.png', { eager: true });
+const icon = (name: string) => icons[`../../assets/images/brochure/icons/${name}.png`].default;
+
+const groups = [
+  { id: 'all', label: 'All 16' },
+  { id: 'strength', label: 'Strength & weather' },
+  { id: 'comfort', label: 'Comfort & value' },
+  { id: 'care', label: 'Safety & care' },
+  { id: 'design', label: 'Design & choice' },
+];
+
+const features = [
+  { g: 'strength', icon: 'durability', title: 'Durable', text: 'Does not warp, twist or split — impact modifiers keep the material extremely long-lasting.' },
+  { g: 'strength', icon: 'weather-resistance', title: 'High weather resistance', text: 'Developed for tropical humidity; sun, rain, wind and moisture cannot affect quality.' },
+  { g: 'strength', icon: 'uv-resistance', title: 'UV resistance', text: 'The right amount of TiO₂ helps profiles keep their whiteness against sun exposure.' },
+  { g: 'strength', icon: 'impact-resistance', title: 'Impact resistance', text: 'Specially formulated to withstand high impact during handling and installation.' },
+  { g: 'strength', icon: 'stronger-couplers', title: 'Stronger couplers', text: 'Unique coupler designs give large windows stronger resistance to wind loads.' },
+  { g: 'comfort', icon: 'iaq', title: 'Energy-saving', text: 'Windows reduce energy loss by over 30%, helping lower cooling costs and keep indoor air comfortable.' },
+  { g: 'comfort', icon: 'sound-insulation', title: 'Sound insulation', text: 'Double glass units help reduce outside noise for calmer rooms.' },
+  { g: 'comfort', icon: 'cost-benefit', title: 'Cost benefit', text: 'Saves on maintenance and energy compared with timber frames.' },
+  { g: 'care', icon: 'maintenance-free', title: 'Maintenance free', text: 'Virtually dirt resistant — normal soap and water is all they need.' },
+  { g: 'care', icon: 'termite-corrosion', title: 'Termite & corrosion proof', text: 'Salts, acids, alkali and waste gases cannot corrode the window systems.' },
+  { g: 'care', icon: 'fire-retardant', title: 'Fire retardant', text: 'Once the fire source is removed, a carbonaceous layer forms and stops the spread.' },
+  { g: 'care', icon: 'recyclable', title: '100% recyclable', text: 'Lead-free and recyclable — an alternative to wood that avoids deforestation.' },
+  { g: 'design', icon: 'design-freedom', title: 'Design freedom', text: 'Bays, coupled windows, combination windows — a creative assortment of profiles.' },
+  { g: 'design', icon: 'multiple-series', title: 'Multiple series', text: 'Combine Inventa and Optima in one property, aesthetically similar and structurally optimal.' },
+  { g: 'design', icon: 'aesthetics', title: 'Aesthetics', text: 'Ranges and wood-finish laminated profiles that adapt to attractive designs.' },
+  { g: 'design', icon: 'bug-mesh', title: 'Bug-mesh options', text: 'Insect mesh available for sliding systems to keep mosquitoes out.' },
+];
+---
+
+<section id="features" class="py-20 sm:py-28" data-feature-grid>
+  <div class="container-prom flex flex-col gap-12">
+    <div class="flex flex-col items-start gap-8">
+      <SectionHeading
+        eyebrow="Product features"
+        heading="Everything a window should do. Nothing it shouldn't."
+        description="Sixteen reasons homeowners and builders choose Prominance profiles."
+      />
+      <div class="reveal -mx-5 flex gap-2 overflow-x-auto px-5 pb-1 no-scrollbar lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0" role="group" aria-label="Filter features">
+        {groups.map((g, i) => (
+          <button type="button" data-filter={g.id} aria-pressed={i === 0 ? 'true' : 'false'} class="shrink-0 whitespace-nowrap rounded-full border border-border px-4 py-2 text-sm font-bold text-ink-muted transition-all duration-300 hover:border-primary-300 hover:text-ink aria-pressed:border-primary-700 aria-pressed:bg-primary-700 aria-pressed:text-white">
+            {g.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger="45">
+      {features.map((f) => (
+        <article class="reveal group flex gap-4 rounded-2xl border border-border bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary-200 hover:shadow-[var(--shadow-card-hover)] lg:flex-col" data-group={f.g}>
+          <Image src={icon(f.icon)} alt="" class="h-14 w-14 shrink-0 transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110 lg:h-16 lg:w-16" width={64} height={64} />
+          <div class="flex flex-col gap-1.5">
+            <h3 class="text-base font-bold text-ink">{f.title}</h3>
+            <p class="text-sm leading-relaxed text-ink-muted">{f.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.94); }
+    to { opacity: 1; transform: none; }
+  }
+  [data-feature-grid] article.pop {
+    animation: pop-in 0.5s var(--ease-smooth) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-feature-grid]');
+  if (root) {
+    const btns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('article[data-group]'));
+    btns.forEach((b) =>
+      b.addEventListener('click', () => {
+        const f = b.dataset.filter;
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        let shown = 0;
+        cards.forEach((c) => {
+          const match = f === 'all' || c.dataset.group === f;
+          c.hidden = !match;
+          c.classList.remove('pop');
+          if (match) {
+            // make sure reveal state doesn't keep hidden cards invisible
+            c.classList.add('is-visible');
+            c.style.setProperty('--i', String(shown++));
+            void c.offsetWidth;
+            c.classList.add('pop');
+          }
+        });
+      })
+    );
+  }
+</script>

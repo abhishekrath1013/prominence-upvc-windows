@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import FinalCTA from '../../components/home/FinalCTA.astro';
+
+const downloads = [
+  {
+    title: 'Prominance uPVC Windows Brochure',
+    description: 'Every system with section drawings, performance data, testing and certificates (PDF, 16 MB).',
+    href: '/downloads/Prominance-uPVC-Windows-Brochure.pdf',
+  },
+  {
+    title: 'Laminates Brochure',
+    description: 'Wood-grain and colour finishes shown in real rooms, with warranty certificates (PDF, 1.4 MB).',
+    href: '/downloads/Prominance-Laminates-Brochure.pdf',
+  },
+  {
+    title: 'Accreditations & Test Results',
+    description: 'SKZ-Germany, BSI-UK and other independent lab certification documents.',
+    href: 'https://prominance.com/brochures/Prominance%20uPVC%20Windows%20Accreditations%20&%20Test%20Results.pdf',
+  },
+];
+---
+
+<BaseLayout
+  title="Downloads"
+  description="Download the Prominance product brochure and accreditation & test result documents."
+>
+  <section class="bg-surface-alt py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-6">
+      <SectionHeading
+        eyebrow="Resources"
+        heading="Downloads."
+        description="Brochures and certification documents for architects, fabricators and homeowners."
+      />
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="container-prom grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {downloads.map((d) => (
+        <a href={d.href} target="_blank" rel="noopener" class="reveal group flex items-start gap-5 rounded-2xl border border-border bg-white p-6 transition-colors hover:border-primary-300">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-700">
+            <svg class="h-6 w-6" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8m0 0 3-3m-3 3-3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <div class="flex flex-col gap-1">
+            <h3 class="font-bold text-ink group-hover:text-primary-700">{d.title}</h3>
+            <p class="text-sm leading-relaxed text-ink-muted">{d.description}</p>
+            <span class="mt-1 text-xs font-bold uppercase tracking-wide text-primary-700">Download PDF</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

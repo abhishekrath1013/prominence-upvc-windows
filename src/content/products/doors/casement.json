@@ -1,0 +1,41 @@
+{
+  "category": "door",
+  "style": "casement",
+  "title": "Casement uPVC Doors",
+  "shortName": "Casement",
+  "heroImage": "products/doors/inventa-casement",
+  "whatIsIt": "A side-hinged door for interior and exterior openings, including balcony doors, built for weatherproofing and dust resistance.",
+  "whyChooseIt": "The most weather-tight door style, with international hardware compatibility and a firm wall attachment that resists deflection over time.",
+  "idealFor": ["Balcony access doors", "Main entry doors", "Utility and service doors"],
+  "benefits": [
+    { "title": "Weatherproof & dust-resistant", "description": "Sealed construction keeps out dust and driving rain." },
+    { "title": "Sturdy, durable build", "description": "Firm wall attachment prevents deflection under regular use." },
+    { "title": "Acoustic & thermal upgrade", "description": "Optional threshold available for enhanced sound and heat insulation." }
+  ],
+  "designOptions": "Compatible with toughened or laminated glass; maximum width of 1200mm per leaf.",
+  "series": [
+    {
+      "series": "Inventa",
+      "tagline": "Weatherproof balcony & entry doors",
+      "description": "Designed for interior and exterior applications including balcony doors, with international hardware compatibility and a firm wall attachment that prevents deflection.",
+      "specs": {
+        "wallThickness": "2.3–2.5mm multi-chambered profile",
+        "steelReinforcement": "1.5mm galvanized steel, hot-dip to 125 GSM",
+        "joints": "Fusion-welded corners",
+        "weatherSeal": "Dual EPDM compression gaskets",
+        "glazing": "Toughened or laminated glass",
+        "maxLeafWidth": "1200mm per leaf"
+      }
+    }
+  ],
+  "certifications": ["SKZ – Germany", "BSI – UK", "EN 12608"],
+  "relatedFaqSlugs": ["are-upvc-windows-safe", "how-long-do-upvc-windows-last"],
+  "comparisonTraits": {
+    "spaceSaving": false,
+    "ventilation": false,
+    "easyOperation": true,
+    "largeOpenings": false,
+    "weatherSealing": true,
+    "securityLocking": true
+  }
+}

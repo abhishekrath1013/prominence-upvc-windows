@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../data/images';
+
+interface Props {
+  category: 'window' | 'door';
+  excludeStyle: string;
+}
+const { category, excludeStyle } = Astro.props;
+
+const basePath = category === 'window' ? '/windows' : '/doors';
+const products = (await getCollection('products', (p) => p.data.category === category && p.data.style !== excludeStyle));
+---
+
+{products.length > 0 && (
+  <section class="border-t border-border py-16 sm:py-20">
+    <div class="container-prom flex flex-col gap-8">
+      <h2 class="reveal text-2xl font-extrabold text-ink sm:text-3xl">Other {category === 'window' ? 'window' : 'door'} styles</h2>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {products.map((p) => (
+          <a href={`${basePath}/${p.data.style}/`} class="reveal group flex items-center gap-5 overflow-hidden rounded-2xl border border-border bg-white p-4 transition-shadow hover:shadow-[var(--shadow-card-hover)]">
+            <div class="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+              <Image src={resolveImage(p.data.heroImage)} alt={p.data.title} class="h-full w-full object-cover" width={96} height={96} />
+            </div>
+            <div class="flex flex-1 flex-col gap-1">
+              <h3 class="font-bold text-ink">{p.data.shortName}</h3>
+              <p class="text-sm text-ink-muted line-clamp-2">{p.data.whyChooseIt}</p>
+            </div>
+            <svg class="h-4 w-4 shrink-0 text-primary-700 transition-transform group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3.5 8h9M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

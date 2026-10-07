@@ -1,0 +1,42 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const options = [
+  { label: 'I want more light', href: '/doors/sliding/', hint: 'Sliding doors' },
+  { label: 'I want less noise', href: '/windows/casement/', hint: 'Casement windows' },
+  { label: 'I want better ventilation', href: '/windows/tilt-turn/', hint: 'Tilt & Turn windows' },
+  { label: 'I want to save space', href: '/windows/sliding/', hint: 'Sliding windows' },
+  { label: 'I want a modern look', href: '/doors/slide-fold/', hint: 'Slide & Fold doors' },
+  { label: 'I want maximum security', href: '/windows/casement/', hint: 'Casement windows' },
+];
+---
+
+<section id="discovery" class="py-20 sm:py-28">
+  <div class="container-prom flex flex-col gap-10">
+    <SectionHeading
+      eyebrow="Product discovery"
+      heading="What does your home need?"
+      description="Tell us what matters most, and we'll point you to the right window or door style."
+      align="center"
+      class="mx-auto"
+    />
+
+    <div class="mx-auto grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {options.map((o, i) => (
+        <a
+          href={o.href}
+          class="reveal group flex flex-col gap-3 rounded-2xl border border-border bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-primary-300 hover:shadow-[var(--shadow-card-hover)]"
+          data-reveal-delay={i * 70}
+        >
+          <span class="text-base font-bold leading-snug text-ink">{o.label}</span>
+          <span class="flex items-center gap-1.5 text-sm font-semibold text-primary-700">
+            {o.hint}
+            <svg class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3.5 8h9M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

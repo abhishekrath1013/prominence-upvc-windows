@@ -1,0 +1,244 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+
+@theme {
+  /* ---- Typography ---- */
+  --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, sans-serif;
+
+  /* ---- Primary: Prominance blue (extracted from live site CSS) ---- */
+  --color-primary-50: #eff6fc;
+  --color-primary-100: #dceaf6;
+  --color-primary-200: #b7d4ed;
+  --color-primary-300: #86b7de;
+  --color-primary-400: #4d93cb;
+  --color-primary-500: #1d71b0;
+  --color-primary-600: #0d629c;
+  --color-primary-700: #005a97;
+  --color-primary-800: #094b7d;
+  --color-primary-900: #0b3d63;
+  --color-primary-950: #072844;
+
+  /* ---- Accent: Prominance green (extracted from live site CSS) ---- */
+  --color-accent-50: #f0f9ee;
+  --color-accent-100: #ddf0d8;
+  --color-accent-200: #bce0b3;
+  --color-accent-300: #8fcb80;
+  --color-accent-400: #5fb04c;
+  --color-accent-500: #3d9b2c;
+  --color-accent-600: #2e9023;
+  --color-accent-700: #227019;
+  --color-accent-800: #166429;
+  --color-accent-900: #123f1a;
+  --color-accent-950: #0b2810;
+
+  /* ---- Warm neutrals (approachable, not clinical) ---- */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #faf9f7;
+  --color-neutral-100: #f3f1ee;
+  --color-neutral-200: #e7e3dd;
+  --color-neutral-300: #d3cdc3;
+  --color-neutral-400: #a9a093;
+  --color-neutral-500: #7d766b;
+  --color-neutral-600: #5c564d;
+  --color-neutral-700: #423e38;
+  --color-neutral-800: #2b2823;
+  --color-neutral-900: #1a1815;
+  --color-neutral-950: #0f0d0b;
+
+  /* ---- Semantic ---- */
+  --color-ink: var(--color-neutral-900);
+  --color-ink-muted: var(--color-neutral-600);
+  --color-surface: var(--color-neutral-0);
+  --color-surface-alt: var(--color-neutral-50);
+  --color-surface-strong: var(--color-neutral-100);
+  --color-border: var(--color-neutral-200);
+
+  /* ---- Motion ---- */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Shadows: soft, not luxury-black ---- */
+  --shadow-card: 0 1px 2px rgba(26, 24, 21, 0.04), 0 8px 24px -8px rgba(26, 24, 21, 0.1);
+  --shadow-card-hover: 0 2px 4px rgba(26, 24, 21, 0.06), 0 16px 32px -12px rgba(26, 24, 21, 0.16);
+  --shadow-pop: 0 12px 40px -8px rgba(11, 61, 99, 0.25);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-feature-settings: 'ss01' on;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    overflow-x: clip;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-prom {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-prom {
+      padding-inline: 2rem;
+    }
+  }
+
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  .js .reveal[data-reveal='left'] { transform: translateX(-48px); }
+  .js .reveal[data-reveal='right'] { transform: translateX(48px); }
+  .js .reveal[data-reveal='scale'] { transform: scale(0.92); }
+  .js .reveal[data-reveal='fade'] { transform: none; }
+
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.8s var(--ease-smooth),
+      transform 0.9s var(--ease-smooth);
+  }
+
+  /* Image curtain: wipes open from the bottom as it enters view */
+  .js .img-reveal {
+    clip-path: inset(0 0 100% 0 round 1.5rem);
+    transform: scale(1.06);
+  }
+  .js .img-reveal.is-visible {
+    clip-path: inset(0 0 0 0 round 1.5rem);
+    transform: none;
+    transition:
+      clip-path 1.2s var(--ease-smooth),
+      transform 1.6s var(--ease-smooth);
+  }
+
+  /* Brand gradient (mirrors the brochure's blue→green footer bar) */
+  .brand-bar {
+    background: linear-gradient(90deg, var(--color-accent-600), var(--color-primary-700));
+  }
+  .text-brand-gradient {
+    background: linear-gradient(90deg, var(--color-accent-400), var(--color-primary-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hero headline: words rise in one after another on load */
+  .hero-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .hero-word > span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: word-rise 1s var(--ease-smooth) forwards;
+    animation-delay: calc(var(--i, 0) * 90ms + 200ms);
+  }
+  @keyframes word-rise {
+    to { transform: translateY(0); }
+  }
+
+  /* Slow Ken Burns drift for the active hero slide */
+  @keyframes kenburns {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.14); }
+  }
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes cue-bounce {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    60% { transform: translateY(8px); opacity: 0.3; }
+  }
+  @keyframes spin-slow {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes anatomy-progress {
+    to { scale: 1 1; }
+  }
+  @keyframes fab-ring {
+    0% { box-shadow: 0 0 0 0 rgba(46, 144, 35, 0.45); }
+    100% { box-shadow: 0 0 0 18px rgba(46, 144, 35, 0); }
+  }
+
+  /* Stacked cross-fading panels (explorer, studio, anatomy) */
+  .stack { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .stack > * { grid-area: 1 / 1; }
+  .fade-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition:
+      opacity 0.55s var(--ease-smooth),
+      transform 0.7s var(--ease-smooth),
+      visibility 0s linear 0.55s;
+  }
+  .fade-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  [data-tilt] {
+    transition: transform 0.35s var(--ease-smooth);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* Hide scrollbars on horizontal chip scrollers */
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal,
+    .js .img-reveal {
+      opacity: 1;
+      transform: none;
+      clip-path: none;
+    }
+    .hero-word > span {
+      transform: none;
+      animation: none;
+    }
+  }
+}

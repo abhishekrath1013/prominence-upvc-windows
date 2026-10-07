@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ContactForm from '../components/forms/ContactForm.astro';
+import { contact, sampleCities } from '../data/brand';
+---
+
+<BaseLayout
+  title="Contact Us"
+  description="Get in touch with Prominance — call our toll-free number, email us, or find your nearest regional office."
+>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.1fr]">
+      <div class="flex flex-col gap-10">
+        <SectionHeading
+          eyebrow="Contact"
+          heading="Let's talk about your home."
+          description="Call, email, or send us a message — a Prominance team member will get back to you."
+        />
+
+        <div class="flex flex-col gap-4">
+          <a href={contact.tollFreeHref} class="flex items-center gap-4 rounded-2xl border border-border bg-white p-5 transition-colors hover:border-primary-300">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700">
+              <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 2.5h2.5l1 3.5-1.5 1a8 8 0 0 0 4 4l1-1.5 3.5 1V13c0 .55-.45 1-1 1C6.5 14 2 9.5 2 3.5c0-.55.45-1 1-1Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              <span class="block text-sm text-ink-muted">Toll-free</span>
+              <span class="block text-lg font-bold text-ink">{contact.tollFree}</span>
+            </div>
+          </a>
+          <a href={`mailto:${contact.email}`} class="flex items-center gap-4 rounded-2xl border border-border bg-white p-5 transition-colors hover:border-primary-300">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700">
+              <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12v8H2z" stroke="currentColor" stroke-width="1.3"/><path d="m2.5 4.5 5.5 4.5 5.5-4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              <span class="block text-sm text-ink-muted">Email</span>
+              <span class="block text-lg font-bold text-ink">{contact.email}</span>
+            </div>
+          </a>
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-white p-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700">
+              <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5c-2.5 0-4.5 2-4.5 4.5 0 3.3 4.5 8.5 4.5 8.5s4.5-5.2 4.5-8.5c0-2.5-2-4.5-4.5-4.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+            </span>
+            <div>
+              <span class="block text-sm text-ink-muted">Headquarters</span>
+              <span class="block text-[15px] font-semibold leading-snug text-ink">{contact.hq.line1}, {contact.hq.line2}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <span class="text-xs font-bold uppercase tracking-wide text-ink-muted">Also serving</span>
+          <div class="flex flex-wrap gap-2">
+            {sampleCities.map((c) => (
+              <a href={`/locations/${c.slug}/`} class="rounded-full border border-border bg-white px-3.5 py-1.5 text-sm font-semibold text-ink-muted hover:border-primary-300 hover:text-primary-700">{c.name}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-border bg-white p-6 sm:p-10">
+        <h2 class="mb-6 text-xl font-extrabold text-ink">Send us a message</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Accordion from '../ui/Accordion.astro';
+import Button from '../ui/Button.astro';
+
+const slugs = [
+  'how-long-do-upvc-windows-last',
+  'are-upvc-windows-secure',
+  'are-upvc-windows-soundproof',
+  'how-much-upvc-windows-cost',
+  'how-to-clean-upvc-windows',
+];
+const all = await getCollection('faqs');
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const items = slugs
+  .map((s) => all.find((f) => f.id === s))
+  .filter((f): f is NonNullable<typeof f> => Boolean(f))
+  .map((f) => ({ title: f.data.question, html: `<p>${esc((f.body ?? '').trim())}</p>` }));
+---
+
+<section id="faqs" class="py-20 sm:py-28">
+  <div class="container-prom grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+    <div class="flex flex-col items-start gap-8 lg:sticky lg:top-28 lg:h-fit">
+      <SectionHeading eyebrow="Straight answers" heading="Questions we hear most." description="No sales pitch — just what you'd want to know before choosing windows." />
+      <Button href="/resources/faqs/" variant="ghost">See all FAQs</Button>
+    </div>
+    <div class="reveal" data-reveal="right">
+      <Accordion items={items} />
+    </div>
+  </div>
+</section>

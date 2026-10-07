@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import Button from '../../components/ui/Button.astro';
+import FinalCTA from '../../components/home/FinalCTA.astro';
+import { certifications, standards, contact } from '../../data/brand';
+import heroImg from '../../assets/images/real/infra/facility-overview.jpg';
+import accreditations from '../../assets/images/real/brand/accreditations.png';
+
+const displayStats = [
+  { to: 22000, suffix: ' MT', label: 'Annual production capacity' },
+  { to: 13, suffix: ' yrs', label: 'Years of manufacturing experience' },
+  { to: 25000, suffix: '+ hrs', label: 'Accelerated weather testing' },
+  { to: 30, suffix: '%', label: 'Typical reduction in energy loss' },
+];
+---
+
+<BaseLayout
+  title="Why Prominance"
+  description="25,000+ hours of weather testing, SKZ-Germany and BSI-UK certification, European raw materials and 13 years of manufacturing experience."
+>
+  <section class="relative flex min-h-[56vh] items-end overflow-hidden bg-neutral-900">
+    <Image src={heroImg} alt="Prominance manufacturing facility" class="absolute inset-0 h-full w-full object-cover" widths={[800, 1600, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/30 to-neutral-950/10" aria-hidden="true"></div>
+    <div class="container-prom reveal relative z-10 flex flex-col gap-4 pb-14 pt-32">
+      <span class="text-xs font-bold uppercase tracking-[0.14em] text-accent-400">Why Prominance</span>
+      <h1 class="max-w-2xl text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+        Every claim here is backed by a test result.
+      </h1>
+      <p class="max-w-xl text-lg text-white/80">Not marketing language — independent lab data from SKZ-Germany, BSI-UK, SGS and CIPET.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="container-prom grid grid-cols-2 gap-6 sm:grid-cols-4">
+      {displayStats.map((s) => (
+        <div class="reveal flex flex-col items-center gap-1 text-center">
+          <span class="text-3xl font-extrabold text-primary-700 sm:text-4xl" data-count-to={s.to} data-count-suffix={s.suffix}>0</span>
+          <span class="max-w-[10rem] text-sm text-ink-muted">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-surface-alt py-16 sm:py-20">
+    <div class="container-prom flex flex-col gap-10">
+      <SectionHeading
+        eyebrow="Independently verified"
+        heading="Certified by the labs that set the standard."
+        description="Four independent bodies test Prominance profiles against international benchmarks."
+      />
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {certifications.map((c, i) => (
+          <div class="reveal rounded-2xl border border-border bg-white p-6" data-reveal-delay={i * 80}>
+            <span class="text-base font-extrabold text-primary-700">{c.body}</span>
+            <p class="mt-2 text-sm leading-relaxed text-ink-muted">{c.detail}</p>
+          </div>
+        ))}
+      </div>
+      <div class="reveal flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4">
+        <Image src={accreditations} alt="Prominance accreditation marks" width={480} height={80} class="h-14 w-auto object-contain" />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="container-prom grid grid-cols-1 gap-10 lg:grid-cols-2">
+      <div class="reveal flex flex-col gap-4">
+        <h2 class="text-2xl font-extrabold text-ink sm:text-3xl">Built on European raw material</h2>
+        <p class="leading-relaxed text-ink-muted">
+          Profiles use European-sourced, 100% lead-free raw material on a Calcium-Zinc based formulation — not the recycled or lead-stabilised
+          compounds still common in the market. Every batch is weighed and mixed under PLC and SCADA control so composition stays consistent from
+          the first metre to the millionth.
+        </p>
+        <Button href="/why-prominance/infrastructure/" variant="ghost" class="w-fit">See the manufacturing process</Button>
+      </div>
+      <div class="reveal flex flex-col gap-4" data-reveal-delay="100">
+        <h2 class="text-2xl font-extrabold text-ink sm:text-3xl">Tested to standards, not marketing copy</h2>
+        <p class="leading-relaxed text-ink-muted">
+          Compliance is verified against {standards.join(', ')} and more — covering weatherability, impact resistance, flexural strength and
+          flammability, not just dimensional accuracy.
+        </p>
+        <Button href="/why-prominance/quality-standards/" variant="ghost" class="w-fit">View full test results</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-surface-alt py-16 sm:py-20">
+    <div class="container-prom flex flex-col items-center gap-6 text-center">
+      <SectionHeading
+        eyebrow="Experience"
+        heading="13 years, one factory, one standard."
+        description="Every Prominance window and door — regardless of city or channel partner — comes from the same 22,000 MT facility in Coimbatore, built and tested to one specification."
+        align="center"
+        class="mx-auto"
+      />
+      <p class="max-w-lg text-sm text-ink-muted">
+        Have questions about a specific project? <a href={contact.tollFreeHref} class="font-bold text-primary-700 hover:underline">Call {contact.tollFree}</a> or request a callback below.
+      </p>
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

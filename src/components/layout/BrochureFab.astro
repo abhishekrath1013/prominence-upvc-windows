@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import coverMain from '../../assets/images/brochure/photos/cover-brochure.jpg';
+import coverLam from '../../assets/images/brochure/photos/cover-laminates.jpg';
+
+const files = [
+  {
+    title: 'Product Brochure',
+    desc: 'Systems, sections, testing & certificates',
+    href: '/downloads/Prominance-uPVC-Windows-Brochure.pdf',
+    name: 'Prominance-uPVC-Windows-Brochure.pdf',
+    size: '16 MB',
+    cover: coverMain,
+    landscape: true,
+  },
+  {
+    title: 'Laminates Brochure',
+    desc: 'Wood-grain & colour finishes',
+    href: '/downloads/Prominance-Laminates-Brochure.pdf',
+    name: 'Prominance-Laminates-Brochure.pdf',
+    size: '1.4 MB',
+    cover: coverLam,
+    landscape: false,
+  },
+];
+---
+
+<div
+  class="fixed bottom-[88px] right-4 z-[45] flex flex-col items-end gap-3 sm:right-6 lg:bottom-6"
+  data-brochure-fab
+>
+  <div
+    class="invisible w-[min(92vw,340px)] origin-bottom-right translate-y-3 scale-95 rounded-3xl border border-border bg-white p-3 opacity-0 shadow-[0_24px_60px_-12px_rgba(11,61,99,0.35)] transition-all duration-300 ease-out data-[open]:visible data-[open]:translate-y-0 data-[open]:scale-100 data-[open]:opacity-100"
+    role="dialog"
+    aria-label="Download brochures"
+    data-fab-panel
+  >
+    <p class="px-2 pb-2 pt-1 text-xs font-bold uppercase tracking-[0.14em] text-accent-700">Free downloads</p>
+    <div class="flex flex-col gap-2">
+      {files.map((f) => (
+        <a
+          href={f.href}
+          download={f.name}
+          class="group flex items-center gap-3 rounded-2xl p-2 transition-colors hover:bg-primary-50"
+        >
+          <span class={`relative shrink-0 overflow-hidden rounded-lg border border-border shadow-sm ${f.landscape ? 'h-14 w-20' : 'h-[72px] w-[51px]'}`}>
+            <Image src={f.cover} alt="" class="h-full w-full object-cover" widths={[160]} sizes="80px" />
+          </span>
+          <span class="flex min-w-0 flex-1 flex-col">
+            <span class="text-sm font-bold text-ink">{f.title}</span>
+            <span class="text-xs leading-snug text-ink-muted">{f.desc}</span>
+          </span>
+          <span class="flex shrink-0 flex-col items-center gap-0.5 text-primary-700">
+            <svg class="h-5 w-5 transition-transform duration-200 group-hover:translate-y-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 2v8m0 0 3-3m-3 3-3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="text-[10px] font-bold text-ink-muted">PDF · {f.size}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="group relative flex items-center gap-2.5 rounded-full bg-gradient-to-r from-accent-600 to-primary-700 py-3.5 pl-4 pr-5 text-sm font-bold text-white shadow-[0_12px_30px_-8px_rgba(0,90,151,0.65)] transition-transform duration-300 hover:-translate-y-0.5 active:scale-95"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    data-fab-trigger
+  >
+    <span class="pointer-events-none absolute inset-0 rounded-full" style="animation: fab-ring 2.6s ease-out infinite;" aria-hidden="true"></span>
+    <svg class="relative h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 2v8m0 0 3-3m-3 3-3-3M3 13h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="relative">Download <span class="hidden sm:inline">Brochure</span><span class="sm:hidden">PDF</span></span>
+  </button>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-brochure-fab]');
+  const trigger = root?.querySelector<HTMLButtonElement>('[data-fab-trigger]');
+  const panel = root?.querySelector<HTMLElement>('[data-fab-panel]');
+
+  if (root && trigger && panel) {
+    const set = (open: boolean) => {
+      panel.toggleAttribute('data-open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+    trigger.addEventListener('click', () => set(!panel.hasAttribute('data-open')));
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target as Node)) set(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') set(false);
+    });
+  }
+</script>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+
+const links = [
+  { href: '/resources/faqs/', title: 'FAQs', description: 'Straight answers about uPVC windows and doors.' },
+  { href: '/resources/downloads/', title: 'Downloads', description: 'Product brochure and accreditation documents.' },
+];
+---
+
+<BaseLayout title="Resources" description="FAQs and downloads for Prominance uPVC windows and doors.">
+  <section class="py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-10">
+      <SectionHeading eyebrow="Resources" heading="Everything you need to decide." />
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {links.map((l) => (
+          <a href={l.href} class="group flex flex-col gap-2 rounded-2xl border border-border bg-white p-8 transition-colors hover:border-primary-300">
+            <h2 class="text-xl font-bold text-ink group-hover:text-primary-700">{l.title}</h2>
+            <p class="text-ink-muted">{l.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

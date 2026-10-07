@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionHeading from '../../../components/ui/SectionHeading.astro';
+import FinalCTA from '../../../components/home/FinalCTA.astro';
+
+const faqs = await getCollection('faqs');
+
+const categoryMeta: Record<string, string> = {
+  general: 'General',
+  performance: 'Performance & Safety',
+  maintenance: 'Maintenance & Care',
+  buying: 'Buying & Cost',
+  technical: 'Technical',
+};
+
+const grouped = Object.entries(categoryMeta).map(([key, label]) => ({
+  key,
+  label,
+  items: faqs.filter((f) => f.data.category === key).sort((a, b) => a.data.order - b.data.order),
+}));
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.data.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.body?.trim() ?? '',
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Frequently Asked Questions"
+  structuredData={faqSchema}
+  description="Answers to common questions about uPVC windows and doors — safety, soundproofing, maintenance, cost and more."
+>
+  <section class="bg-surface-alt py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-6">
+      <SectionHeading
+        eyebrow="Resources"
+        heading="Frequently asked questions."
+        description="Straight answers about uPVC windows and doors — no sales pitch."
+      />
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="container-prom grid grid-cols-1 gap-14 lg:grid-cols-[220px_1fr]">
+      <nav class="hidden flex-col gap-1 lg:sticky lg:top-28 lg:flex lg:h-fit" aria-label="FAQ categories">
+        {grouped.map((g) => (
+          <a href={`#${g.key}`} class="rounded-lg px-3 py-2 text-sm font-semibold text-ink-muted hover:bg-surface-alt hover:text-ink">{g.label}</a>
+        ))}
+      </nav>
+
+      <div class="flex flex-col gap-14">
+        {grouped.map((g) => (
+          <div id={g.key} class="reveal scroll-mt-28 flex flex-col gap-5">
+            <h2 class="text-xl font-extrabold text-ink">{g.label}</h2>
+            <div class="flex flex-col gap-2">
+              {g.items.map((f) => (
+                <a href={`/resources/faqs/${f.id.replace(/\.md$/, '')}/`} class="flex items-center justify-between gap-4 rounded-xl border border-border bg-white px-5 py-4 transition-colors hover:border-primary-300">
+                  <span class="text-[15px] font-semibold text-ink">{f.data.question}</span>
+                  <svg class="h-4 w-4 shrink-0 text-primary-700" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8h9M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

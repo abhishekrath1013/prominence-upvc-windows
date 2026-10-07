@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import doorSliding from '../../assets/images/brochure/photos/door-sliding-life.jpg';
+import casement from '../../assets/images/brochure/photos/inventa-casement-life.jpg';
+import tiltTurn from '../../assets/images/brochure/photos/tilt-turn-life.jpg';
+import sliding from '../../assets/images/brochure/photos/inventa-sliding-life.jpg';
+import bifold from '../../assets/images/brochure/photos/bifold-life.jpg';
+
+const needs = [
+  { id: 'light', icon: 'M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z', label: 'More natural light', system: 'doors/sliding', name: 'Sliding Doors', img: doorSliding, why: 'Wide glass panels that stream daylight into the room and glide open on rollers.', points: ['Large glazed openings', 'Ideal for balconies & gardens', 'Smooth, quiet operation'] },
+  { id: 'noise', icon: 'M11 5 6 9H2v6h4l5 4V5Zm5.5 3.5a5 5 0 0 1 0 7M19 6a9 9 0 0 1 0 12', label: 'Less street noise', system: 'windows/casement', name: 'Casement Windows', img: casement, why: 'Twin gasket sealing on every edge gives the tightest seal in the range — the pick for busy roads.', points: ['Dual EPDM compression gaskets', 'Multi-point locking', 'Large fixed panes possible'] },
+  { id: 'air', icon: 'M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7', label: 'Fresh-air ventilation', system: 'windows/tilt-turn', name: 'Tilt & Turn Windows', img: tiltTurn, why: 'Tilt open for safe airflow, or turn to open fully — one window, two ways to breathe.', points: ['Tilt for secure ventilation', 'Turn for full opening', 'Easy to clean from inside'] },
+  { id: 'space', icon: 'M4 4h16v16H4V4Zm8 0v16M8 10l-2 2 2 2m8-4 2 2-2 2', label: 'Save floor space', system: 'windows/sliding', name: 'Sliding Windows', img: sliding, why: 'Panels glide sideways on a track, so nothing swings into your room or balcony.', points: ['Zero swing clearance', 'Slim vertical sight-lines', 'Bug-mesh option available'] },
+  { id: 'open', icon: 'M3 20V6l6 2v14L3 20Zm6-12 6-2v14l-6 2m6-14 6 2v12l-6 2', label: 'Open up the whole wall', system: 'doors/slide-fold', name: 'Slide & Fold Doors', img: bifold, why: 'Panels fold concertina-style for a 100% opening — indoors flows straight outdoors.', points: ['Full-width opening', 'Great for villas & patios', 'Sturdy against wind & rain'] },
+  { id: 'secure', icon: 'M12 3 5 6v6c0 4.2 3 7.7 7 9 4-1.3 7-4.8 7-9V6l-7-3Zm-3 9 2 2 4-4', label: 'Maximum security', system: 'windows/casement', name: 'Casement Windows', img: casement, why: 'Locks at 2–3 points around the sash, so force is resisted along the whole frame, not at one latch.', points: ['Multi-point locking', '1.5mm galvanised steel core', 'Fusion-welded corners'] },
+];
+---
+
+<section id="find-your-fit" class="relative overflow-hidden bg-surface-alt py-20 sm:py-28">
+  <div class="container-prom flex flex-col gap-12">
+    <SectionHeading
+      eyebrow="Find your fit"
+      heading="What matters most in your home?"
+      description="Pick a priority and we'll match you to the Prominance system built for it."
+    />
+
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
+      <div class="grid grid-cols-2 content-start gap-3 sm:grid-cols-3 lg:grid-cols-2" role="tablist" aria-label="Your priority" data-stagger="70">
+        {needs.map((n, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`need-tab-${n.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`need-panel-${n.id}`}
+            tabindex={i === 0 ? 0 : -1}
+            data-need-tab={n.id}
+            class="reveal group flex flex-col items-start gap-3 rounded-2xl border-2 border-transparent bg-white p-4 text-left shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)] aria-selected:border-primary-600 aria-selected:bg-primary-50 sm:p-5"
+          >
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-700 transition-colors duration-300 group-aria-selected:bg-primary-700 group-aria-selected:text-white">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={n.icon} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span class="text-sm font-bold leading-snug text-ink sm:text-base">{n.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="stack reveal" data-reveal="right">
+        {needs.map((n, i) => (
+          <div
+            role="tabpanel"
+            id={`need-panel-${n.id}`}
+            aria-labelledby={`need-tab-${n.id}`}
+            class={`fade-panel overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-card-hover)] ${i === 0 ? 'is-active' : ''}`}
+            data-need-panel={n.id}
+          >
+            <div class="relative aspect-[16/9] overflow-hidden">
+              <Image src={n.img} alt={`${n.name} in a Prominance installation`} class="h-full w-full object-cover" widths={[640, 960]} sizes="(min-width: 1024px) 55vw, 100vw" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
+              <span class="absolute bottom-4 left-5 rounded-full bg-accent-600 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Recommended for you</span>
+            </div>
+            <div class="flex flex-col gap-5 p-6 sm:p-8">
+              <div class="flex flex-col gap-2">
+                <h3 class="text-2xl font-extrabold text-ink sm:text-3xl">{n.name}</h3>
+                <p class="leading-relaxed text-ink-muted">{n.why}</p>
+              </div>
+              <ul class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {n.points.map((p) => (
+                  <li class="flex items-start gap-2 rounded-xl bg-surface-alt px-3 py-2.5 text-sm font-semibold text-ink">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-600" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <div class="flex flex-wrap gap-3">
+                <button type="button" data-open-system={n.system} class="group inline-flex items-center gap-2 rounded-full bg-primary-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-800">
+                  See it up close
+                  <svg class="h-4 w-4 transition-transform group-hover:translate-y-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v9m0 0-4-4m4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <Button href={`/${n.system}/`} variant="ghost">Full details</Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-need-tab]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-need-panel]'));
+
+  function select(id: string, focus = false) {
+    tabs.forEach((t) => {
+      const on = t.dataset.needTab === id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    panels.forEach((p) => p.classList.toggle('is-active', p.dataset.needPanel === id));
+  }
+
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t.dataset.needTab!));
+    t.addEventListener('keydown', (e) => {
+      const k = e.key;
+      if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].includes(k)) return;
+      e.preventDefault();
+      const next = tabs[(i + (k === 'ArrowRight' || k === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length];
+      select(next.dataset.needTab!, true);
+    });
+  });
+
+  // Hand the choice to the System Explorer below.
+  document.querySelectorAll<HTMLElement>('[data-open-system]').forEach((b) =>
+    b.addEventListener('click', () =>
+      window.dispatchEvent(new CustomEvent('select-system', { detail: b.dataset.openSystem }))
+    )
+  );
+</script>

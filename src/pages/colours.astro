@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ColourSelector from '../components/colours/ColourSelector.astro';
+import FinalCTA from '../components/home/FinalCTA.astro';
+import { laminateInfo } from '../data/brand';
+---
+
+<BaseLayout
+  title="Colour Options"
+  description="Wood grain and contemporary laminate finishes for Prominance uPVC windows and doors, imported from Europe with a 20-year warranty."
+>
+  <section class="py-16 sm:py-24">
+    <div class="container-prom flex flex-col gap-14">
+      <SectionHeading
+        eyebrow="Colour experience"
+        heading="Choose a finish, not just a colour."
+        description="Tap a swatch to preview it. Every finish shown here is a real Prominance laminate sample."
+      />
+      <ColourSelector />
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-surface-alt py-16 sm:py-20">
+    <div class="container-prom grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <div class="reveal rounded-2xl bg-white p-6">
+        <h3 class="font-bold text-ink">{laminateInfo.origin}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted">Every laminate is sourced from Europe, not locally substituted.</p>
+      </div>
+      <div class="reveal rounded-2xl bg-white p-6" data-reveal-delay="80">
+        <h3 class="font-bold text-ink">{laminateInfo.warranty}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted">Colour stability and gloss retention are backed for two decades.</p>
+      </div>
+      <div class="reveal rounded-2xl bg-white p-6" data-reveal-delay="160">
+        <h3 class="font-bold text-ink">PVDF-equipped coating</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted">{laminateInfo.coating}</p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</BaseLayout>

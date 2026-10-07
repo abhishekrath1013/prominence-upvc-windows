@@ -1,0 +1,105 @@
+---
+interface SpecBlock {
+  wallThickness?: string;
+  steelReinforcement?: string;
+  joints?: string;
+  weatherSeal?: string;
+  glazing?: string;
+  windLoad?: string;
+  locking?: string;
+  maxLeafWidth?: string;
+  openingPercent?: string;
+  configurations?: string;
+}
+interface Variant {
+  series: 'Inventa' | 'Optima';
+  tagline: string;
+  description: string;
+  specs: SpecBlock;
+}
+interface Props {
+  series: Variant[];
+  designOptions: string;
+}
+const { series, designOptions } = Astro.props;
+
+const specLabels: Record<keyof SpecBlock, string> = {
+  wallThickness: 'Profile wall thickness',
+  steelReinforcement: 'Steel reinforcement',
+  joints: 'Corner joints',
+  weatherSeal: 'Weather seal',
+  glazing: 'Glazing',
+  windLoad: 'Wind load',
+  locking: 'Locking',
+  maxLeafWidth: 'Max leaf width',
+  openingPercent: 'Opening',
+  configurations: 'Configurations',
+};
+---
+
+<section id="specs" class="bg-surface-alt py-16 sm:py-20">
+  <div class="container-prom flex flex-col gap-8">
+    <div class="reveal flex flex-col gap-2">
+      <h2 class="text-2xl font-extrabold text-ink sm:text-3xl">Specifications</h2>
+      <p class="text-ink-muted">{designOptions}</p>
+    </div>
+
+    {series.length > 1 && (
+      <div class="reveal flex w-fit gap-1 rounded-full bg-white p-1 shadow-[var(--shadow-card)]" role="tablist" data-series-tabs>
+        {series.map((s, i) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-series-tab={s.series}
+            data-active={i === 0 ? '' : undefined}
+            class="rounded-full px-5 py-2 text-sm font-bold text-ink-muted transition-colors data-[active]:bg-primary-700 data-[active]:text-white"
+          >
+            {s.series}
+          </button>
+        ))}
+      </div>
+    )}
+
+    {series.map((s, i) => (
+      <div data-series-panel={s.series} class={`reveal flex flex-col gap-6 rounded-2xl border border-border bg-white p-6 sm:p-8 ${i === 0 ? '' : 'hidden'}`}>
+        <div>
+          <span class="text-sm font-bold text-primary-700">{s.series} Series — {s.tagline}</span>
+          <p class="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-ink-muted">{s.description}</p>
+        </div>
+        <dl class="grid grid-cols-1 gap-x-8 gap-y-4 border-t border-border pt-6 sm:grid-cols-2">
+          {(Object.keys(s.specs) as (keyof SpecBlock)[])
+            .filter((k) => s.specs[k])
+            .map((k) => (
+              <div class="flex items-baseline justify-between gap-4 border-b border-border/70 pb-3">
+                <dt class="text-sm text-ink-muted">{specLabels[k]}</dt>
+                <dd class="text-right text-sm font-semibold text-ink">{s.specs[k]}</dd>
+              </div>
+            ))}
+        </dl>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  function setupSeriesTabs() {
+    document.querySelectorAll<HTMLElement>('[data-series-tabs]').forEach((root) => {
+      const tabs = root.querySelectorAll<HTMLButtonElement>('[data-series-tab]');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const key = tab.dataset.seriesTab;
+          tabs.forEach((t) => {
+            const active = t === tab;
+            t.toggleAttribute('data-active', active);
+            t.setAttribute('aria-selected', String(active));
+          });
+          document.querySelectorAll<HTMLElement>('[data-series-panel]').forEach((panel) => {
+            panel.classList.toggle('hidden', panel.dataset.seriesPanel !== key);
+          });
+        });
+      });
+    });
+  }
+  setupSeriesTabs();
+</script>

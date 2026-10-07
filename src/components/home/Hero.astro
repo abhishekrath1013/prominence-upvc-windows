@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import dusk from '../../assets/images/stock/hero-modern-home-dusk.jpg';
+import villa from '../../assets/images/stock/villa-glass-pool-indoor-outdoor.jpg';
+import living from '../../assets/images/stock/living-room-bright-windows.jpg';
+import admired from '../../assets/images/brochure/profiles/award-admired.png';
+import preferred from '../../assets/images/brochure/profiles/award-preferred.png';
+
+const slides = [
+  { src: dusk, alt: 'A modern home at dusk with large glass windows glowing with warm interior light' },
+  { src: villa, alt: 'A white villa with large glazed openings onto a pool terrace' },
+  { src: living, alt: 'A bright living room with floor-to-ceiling windows' },
+];
+
+const line1 = ['Aesthetic', 'outlook.'];
+const line2 = ['Robust', 'soul.'];
+---
+
+<section class="relative isolate flex min-h-[calc(100svh-76px)] items-end overflow-hidden bg-neutral-950" data-hero>
+  <div class="absolute inset-0 -z-10" data-parallax="-0.08">
+    <div class="stack h-full w-full">
+      {slides.map((s, i) => (
+        <div class={`hero-slide h-full w-full opacity-0 transition-opacity duration-[1600ms] ease-in-out ${i === 0 ? 'is-active !opacity-100' : ''}`} data-hero-slide>
+          <Image
+            src={s.src}
+            alt={s.alt}
+            class="hero-img h-full w-full object-cover"
+            widths={[768, 1280, 1920]}
+            sizes="100vw"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-neutral-950/90 via-neutral-950/35 to-neutral-950/15" aria-hidden="true"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/70 via-neutral-950/10 to-transparent" aria-hidden="true"></div>
+
+  <div class="container-prom relative z-10 grid items-end gap-10 pb-24 pt-28 sm:pb-32 lg:grid-cols-[1fr_auto]">
+    <div class="flex flex-col gap-7">
+      <span class="reveal inline-flex w-fit items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-md sm:text-xs" data-reveal="fade">
+        <span class="h-1.5 w-1.5 rounded-full bg-accent-400"></span>
+        uPVC windows &amp; doors · Made in Coimbatore
+      </span>
+
+      <h1 class="max-w-4xl text-[2.9rem] font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[5.5rem]">
+        <span class="block">
+          {line1.map((w, i) => <span class="hero-word mr-[0.22em]"><span style={`--i:${i}`}>{w}</span></span>)}
+        </span>
+        <span class="block">
+          {line2.map((w, i) => <span class="hero-word mr-[0.22em]"><span class="text-brand-gradient" style={`--i:${i + 2}`}>{w}</span></span>)}
+        </span>
+      </h1>
+
+      <p class="reveal max-w-xl text-base leading-relaxed text-white/85 sm:text-xl" data-reveal-delay="500">
+        Energy-efficient, secure windows and doors engineered for Indian weather — built in our own plant and backed by a 20-year colour warranty.
+      </p>
+
+      <div class="reveal flex flex-wrap items-center gap-3" data-reveal-delay="650">
+        <Button href="/quote/" variant="primary" size="lg">Get a Free Quote</Button>
+        <a
+          href="/downloads/Prominance-uPVC-Windows-Brochure.pdf"
+          download="Prominance-uPVC-Windows-Brochure.pdf"
+          class="group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-7 py-3.5 text-base font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-primary-700"
+        >
+          <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2v8m0 0 3-3m-3 3-3-3M3 13h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Download Brochure
+        </a>
+        <a href="#find-your-fit" class="px-3 py-3.5 text-sm font-bold text-white/90 underline-offset-4 hover:underline">Help me choose ↓</a>
+      </div>
+    </div>
+
+    <div class="reveal flex items-center gap-4 lg:flex-col lg:items-end" data-reveal="scale" data-reveal-delay="800">
+      <div class="flex gap-3">
+        <Image src={preferred} alt="India's Most Preferred Brand 2019-20, research by White Page" width={96} height={96} class="h-20 w-20 drop-shadow-xl sm:h-24 sm:w-24" style="animation: float-y 6s ease-in-out infinite;" />
+        <Image src={admired} alt="India's Most Admired Brand 2019-20, research by White Page" width={96} height={96} class="h-20 w-20 drop-shadow-xl sm:h-24 sm:w-24" style="animation: float-y 6s ease-in-out -3s infinite;" />
+      </div>
+      <p class="max-w-[14rem] text-xs leading-snug text-white/70 lg:text-right">Recognised as India's Most Preferred &amp; Most Admired Brand, 2019-20.</p>
+    </div>
+  </div>
+
+  <a href="#trust" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 sm:flex" aria-label="Scroll down">
+    Scroll
+    <span class="flex h-9 w-5 justify-center rounded-full border border-white/40 pt-1.5">
+      <span class="h-2 w-0.5 rounded-full bg-white" style="animation: cue-bounce 1.8s ease-in-out infinite;"></span>
+    </span>
+  </a>
+
+  <div class="absolute bottom-7 right-5 z-10 hidden gap-1.5 sm:flex md:right-8" data-hero-dots aria-hidden="true">
+    {slides.map((_, i) => <span class={`h-1 rounded-full bg-white transition-all duration-500 ${i === 0 ? 'w-8 opacity-100' : 'w-3 opacity-40'}`}></span>)}
+  </div>
+</section>
+
+<style>
+  .hero-slide.is-active .hero-img {
+    animation: kenburns 9s ease-out forwards;
+  }
+</style>
+
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('[data-hero-slide]'));
+  const dots = Array.from(document.querySelectorAll<HTMLElement>('[data-hero-dots] > span'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (slides.length > 1 && !reduce) {
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      const prev = slides[i];
+      prev.classList.remove('!opacity-100');
+      setTimeout(() => prev.classList.remove('is-active'), 1700);
+      dots[i]?.classList.replace('w-8', 'w-3');
+      dots[i]?.classList.replace('opacity-100', 'opacity-40');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active', '!opacity-100');
+      dots[i]?.classList.replace('w-3', 'w-8');
+      dots[i]?.classList.replace('opacity-40', 'opacity-100');
+    }, 6500);
+  }
+</script>
