@@ -1,151 +1,119 @@
 ---
-// Desktop-only custom cursor: the green "A" arrow from the Prominance logo,
-// tilted left like a system pointer. The arrow's tip sits exactly on the click point.
+// Custom cursor: the Prominance "A" mark, tilted left like a native arrow.
+import mark from '../../assets/prominance-a-mark.png';
 ---
 
-<div class="pointer-events-none fixed left-0 top-0 z-[9999] hidden" aria-hidden="true" data-cursor-ring>
-  <div class="cursor-ring"></div>
-</div>
-<div class="pointer-events-none fixed left-0 top-0 z-[9999] hidden" aria-hidden="true" data-cursor>
-  <svg class="cursor-arrow" width="26" height="30" viewBox="0 0 32 36" fill="none">
-    <defs>
-      <linearGradient id="cursor-g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#3d9b2c" />
-        <stop offset="1" stop-color="#227019" />
-      </linearGradient>
-    </defs>
-    <g class="cursor-tilt">
-      <path d="M16 2.5 29 32H21.2L16 24.5 10.8 32H3Z" fill="url(#cursor-g)" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" paint-order="stroke" />
-      <path d="M16 9.5 21 16.5h-3.2V22h-3.6v-5.5H11Z" fill="#fff" />
-    </g>
-  </svg>
-</div>
+<div class="uf-cursor" aria-hidden="true" data-uf-cursor data-src={mark.src}></div>
 
 <style is:global>
-  html.has-custom-cursor,
-  html.has-custom-cursor * {
+  :root {
+    --ease-precise: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-micro: 320ms;
+  }
+
+  /* Hide the native cursor while the custom one is active */
+  html.uf-custom-cursor,
+  html.uf-custom-cursor * {
     cursor: none !important;
   }
-  html.has-custom-cursor input,
-  html.has-custom-cursor textarea,
-  html.has-custom-cursor select,
-  html.has-custom-cursor dialog,
-  html.has-custom-cursor dialog * {
+  /* Keep the system cursor where a custom one would get in the way */
+  html.uf-custom-cursor input,
+  html.uf-custom-cursor textarea,
+  html.uf-custom-cursor select,
+  html.uf-custom-cursor dialog,
+  html.uf-custom-cursor dialog * {
     cursor: auto !important;
   }
-  html.has-custom-cursor input[type='text'],
-  html.has-custom-cursor input[type='email'],
-  html.has-custom-cursor input[type='tel'],
-  html.has-custom-cursor textarea {
+  html.uf-custom-cursor input[type='text'],
+  html.uf-custom-cursor input[type='email'],
+  html.uf-custom-cursor input[type='tel'],
+  html.uf-custom-cursor textarea {
     cursor: text !important;
   }
 
-  [data-cursor],
-  [data-cursor-ring] {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    will-change: transform;
-  }
-  [data-cursor].is-on,
-  [data-cursor-ring].is-on {
-    opacity: 1;
-  }
-  [data-cursor].is-native,
-  [data-cursor-ring].is-native {
-    opacity: 0 !important;
-  }
-
-  /* The tip of the arrow (16,2.5 in a 32x36 box, drawn at 26x30) is the hotspot. */
-  .cursor-arrow {
-    display: block;
-    margin: -2px 0 0 -13px;
-    overflow: visible;
-    filter: drop-shadow(0 2px 3px rgba(11, 61, 99, 0.35));
-    transform-origin: 13px 2px;
-    transform: rotate(-32deg);
-    transition: transform 0.3s var(--ease-smooth);
-  }
-  [data-cursor].is-link .cursor-arrow {
-    transform: rotate(-32deg) scale(1.3);
-  }
-  [data-cursor].is-down .cursor-arrow {
-    transform: rotate(-32deg) scale(0.85);
-  }
-
-  .cursor-ring {
-    width: 34px;
-    height: 34px;
-    margin: -17px 0 0 -17px;
-    border-radius: 9999px;
-    border: 1.5px solid rgba(61, 155, 44, 0.55);
-    background: rgba(61, 155, 44, 0);
-    transform: scale(0.4);
+  .uf-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 18px;
+    margin-left: -2px;
+    margin-top: -1px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transform-origin: 10% 6%;
+    filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.35));
+    pointer-events: none;
+    z-index: 9999;
     opacity: 0;
     transition:
-      transform 0.35s var(--ease-smooth),
-      opacity 0.25s ease,
-      background-color 0.25s ease;
+      opacity var(--duration-micro) ease,
+      width var(--duration-micro) var(--ease-precise),
+      height var(--duration-micro) var(--ease-precise),
+      margin var(--duration-micro) var(--ease-precise);
   }
-  [data-cursor-ring].is-link .cursor-ring {
-    transform: scale(1.35);
+
+  .uf-cursor.is-visible {
+    opacity: 0.9;
+  }
+
+  .uf-cursor.is-hovering {
+    width: 34px;
+    height: 31px;
+    margin-left: -3px;
+    margin-top: -2px;
     opacity: 1;
-    background: rgba(61, 155, 44, 0.12);
+  }
+
+  .uf-cursor.is-native {
+    opacity: 0;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .uf-cursor {
+      display: none;
+    }
   }
 </style>
 
 <script>
-  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const cursor = document.querySelector<HTMLElement>('[data-cursor]');
-  const ring = document.querySelector<HTMLElement>('[data-cursor-ring]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+  const cursor = document.querySelector<HTMLElement>('[data-uf-cursor]');
 
-  if (fine && cursor && ring) {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.documentElement.classList.add('has-custom-cursor');
-    cursor.classList.remove('hidden');
-    ring.classList.remove('hidden');
+  if (!reduceMotion && isFinePointer && cursor) {
+    document.documentElement.classList.add('uf-custom-cursor');
+    cursor.style.backgroundImage = `url("${cursor.dataset.src}")`;
 
-    let x = -100, y = -100, rx = -100, ry = -100;
-    let raf = 0;
+    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const target = { x: pos.x, y: pos.y };
+    let tiltDeg = -22; // tilts left like a native arrow
 
-    const render = () => {
-      rx += (x - rx) * (reduce ? 1 : 0.18);
-      ry += (y - ry) * (reduce ? 1 : 0.18);
-      cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      raf = Math.abs(x - rx) + Math.abs(y - ry) > 0.1 ? requestAnimationFrame(render) : 0;
-    };
-    const kick = () => {
-      if (!raf) raf = requestAnimationFrame(render);
-    };
+    // Elements that enlarge the cursor: anything marked data-cursor-hover, plus links and controls.
+    const hoverSel =
+      '[data-cursor-hover], a[href], button, summary, label, [role="button"], [role="tab"], [role="radio"]';
+    const nativeSel = 'input, textarea, select, dialog, [contenteditable="true"]';
 
-    const interactive = 'a[href], button, summary, label, select, [role="button"], [role="tab"], [role="radio"], [data-cert]';
-    const native = 'input, textarea, select, dialog, [contenteditable="true"]';
+    window.addEventListener('mousemove', (e) => {
+      target.x = e.clientX;
+      target.y = e.clientY;
+      cursor.classList.add('is-visible');
 
-    window.addEventListener(
-      'pointermove',
-      (e) => {
-        if (e.pointerType !== 'mouse') return;
-        x = e.clientX;
-        y = e.clientY;
-        cursor.classList.add('is-on');
-        ring.classList.add('is-on');
-        const t = e.target as Element | null;
-        const link = !!t?.closest(interactive);
-        const useNative = !!t?.closest(native);
-        cursor.classList.toggle('is-link', link);
-        ring.classList.toggle('is-link', link);
-        cursor.classList.toggle('is-native', useNative);
-        ring.classList.toggle('is-native', useNative);
-        kick();
-      },
-      { passive: true }
-    );
-
-    document.addEventListener('pointerdown', () => cursor.classList.add('is-down'));
-    document.addEventListener('pointerup', () => cursor.classList.remove('is-down'));
-    document.documentElement.addEventListener('pointerleave', () => {
-      cursor.classList.remove('is-on');
-      ring.classList.remove('is-on');
+      const t = e.target as Element | null;
+      const hovering = !!t?.closest(hoverSel);
+      cursor.classList.toggle('is-hovering', hovering);
+      cursor.classList.toggle('is-native', !!t?.closest(nativeSel));
+      tiltDeg = hovering ? -14 : -22;
     });
+
+    (function tick() {
+      pos.x += (target.x - pos.x) * 0.18; // lower = floatier
+      pos.y += (target.y - pos.y) * 0.18;
+      cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) rotate(${tiltDeg}deg)`;
+      requestAnimationFrame(tick);
+    })();
+
+    document.addEventListener('mouseleave', () => cursor.classList.remove('is-visible'));
   }
 </script>
