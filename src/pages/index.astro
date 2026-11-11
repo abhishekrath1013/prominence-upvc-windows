@@ -1,33 +1,203 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/home/Hero.astro';
-import TrustBar from '../components/home/TrustBar.astro';
-import NeedsMatcher from '../components/home/NeedsMatcher.astro';
-import SystemExplorer from '../components/home/SystemExplorer.astro';
-import FinishStudio from '../components/home/FinishStudio.astro';
-import ProfileAnatomy from '../components/home/ProfileAnatomy.astro';
-import WeatherProof from '../components/home/WeatherProof.astro';
-import FactoryJourney from '../components/home/FactoryJourney.astro';
-import FeatureGrid from '../components/home/FeatureGrid.astro';
-import CertifiedProof from '../components/home/CertifiedProof.astro';
-import FaqPreview from '../components/home/FaqPreview.astro';
-import BrochureCTA from '../components/home/BrochureCTA.astro';
+import { contact } from '../data/brand';
+import '@fontsource/instrument-serif';
+import '@fontsource-variable/inter-tight';
+import '../styles/studio.css';
+
+// Prominance's own photography (factory, testing, materials, laminates)
+const brochure = import.meta.glob<ImageMetadata>('../assets/images/brochure/photos/*.jpg', { eager: true, import: 'default' });
+const pro = (n: string) => brochure[`../assets/images/brochure/photos/${n}.jpg`];
+// HD stock photography of windows, doors and interiors
+const stock = import.meta.glob<ImageMetadata>('../assets/images/studio/*.jpg', { eager: true, import: 'default' });
+const st = (n: string) => stock[`../assets/images/studio/${n}.jpg`];
+
+const img = {
+  hero: st('hero-sliding-pool'),
+  slides: [st('slide-garden-door'), st('slide-living-sliding'), st('slide-black-window'), pro('factory-aerial')],
+  slideAlt: ['Sliding glass doors opening to a garden', 'Large sliding doors in a living room', 'Black-framed window in a bright room', 'Aerial view of the Prominance factory in Coimbatore'],
+  tilts: [st('tilt-bay-windows'), st('tilt-white-windows'), st('tilt-curtain-window'), st('tilt-bedroom-window'), st('tilt-bedroom-sliding'), st('tilt-glass-doors')],
+  marquee: pro('tooling-team'),
+  panelA: pro('raw-materials'),
+  panelB: pro('testing-machine'),
+  reveal: st('reveal-living-sliding'),
+  steps: [st('step-arched-windows'), st('step-glass-door'), pro('lam-yellow-sofa')],
+};
+const slidePos = ['50% 50%', '50% 55%', '50% 50%', '50% 50%'];
+
+const aboutWords = 'We make windows and doors where lead-free engineering, German testing and honest finish come together to outlast the weather.'.split(' ');
+const stmtWords = ['Not', 'every', 'opening', 'needs', 'to', 'be', 'grand.'];
+
+const steps = [
+  { eyebrow: 'The windows', title: 'Windows that disappear into the view.', body: 'Casement, sliding and tilt & turn systems with fusion-welded corners, dual EPDM seals and multi-point locking.', tags: 'Casement · Sliding · Tilt & turn', href: '/windows/', cta: 'Explore windows' },
+  { eyebrow: 'The doors', title: 'Wide openings, tight seals.', body: 'Casement, sliding and slide & fold doors on steel-reinforced profiles, built for years of daily use.', tags: 'Casement · Sliding · Slide & fold', href: '/doors/', cta: 'Explore doors' },
+  { eyebrow: 'The finishes', title: 'Colour that stays.', body: 'Imported European laminates with a PVDF coating and a 20-year warranty. Never painted, never faded.', tags: 'Walnut · Anthracite · Silver brush', href: '/colours/', cta: 'See finishes' },
+];
+const arrow = '<svg viewBox="0 0 26 10" fill="none"><path d="M0 5h24M20 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg>';
 ---
 
 <BaseLayout
-  title="Prominance | uPVC Windows & Doors for Indian Homes"
-  description="Energy-efficient, secure and beautifully designed uPVC windows and doors, engineered for the Indian climate. 25,000+ hours weather tested, SKZ-Germany & BSI-UK certified, 20-year colour warranty."
+  title="Prominance | Lead-free uPVC windows & doors, built to outlast the weather"
+  description="German-engineered, lead-free uPVC windows and doors extruded in Coimbatore. 25,000+ hours weather tested, SKZ Germany and BSI UK certified, 20-year laminate warranty."
 >
-  <Hero />
-  <TrustBar />
-  <NeedsMatcher />
-  <SystemExplorer />
-  <FinishStudio />
-  <ProfileAnatomy />
-  <WeatherProof />
-  <FactoryJourney />
-  <FeatureGrid />
-  <CertifiedProof />
-  <FaqPreview />
-  <BrochureCTA />
+  <div class="studio" id="studio">
+    <!-- 1 · INTRO -->
+    <section class="intro" id="intro" aria-label="Introduction">
+      <div class="intro__img" data-intro-img>
+        <Image src={img.hero} alt="Living room with large black-framed sliding doors opening to a pool" class="cover" widths={[1200, 1800, 2400]} sizes="100vw" loading="eager" />
+      </div>
+      <div class="intro__shade"></div>
+      <div class="intro__content" data-intro-content>
+        <h1 class="intro__title serif" data-intro-title>
+          <span class="line"><span>Built to outlast</span></span>
+          <span class="line"><span>the weather.</span></span>
+        </h1>
+        <div class="intro__ctas" data-intro-fade>
+          <a class="linkline" href="#story">Explore the systems <Fragment set:html={arrow} /></a>
+          <a class="linkline" href="/quote/">Request a quote <Fragment set:html={arrow} /></a>
+        </div>
+        <div class="intro__meta" data-intro-fade>
+          <span>Featured system</span><span>Inventa casement</span><span>20-year warranty</span><a href="/windows/casement/">Explore</a>
+        </div>
+        <p class="intro__tag" data-intro-fade>A window is more than its frame. It is how the weather stays outside.</p>
+      </div>
+      <div class="mist mist--bone" data-mist="intro"></div>
+    </section>
+
+    <!-- 2 · STORY: gallery → about (one pinned scene) -->
+    <section class="story stage" id="story" aria-label="Quiet rooms, whatever the weather">
+      <h2 class="story__title serif" data-story-title>Quiet rooms, whatever the weather.</h2>
+
+      {img.tilts.map((t, i) => (
+        <div class={`tilt tilt--${i + 1}`} data-tilt={i}><div class="tilt__card" data-pop><Image src={t} alt="" widths={[600, 900]} sizes="30vw" /></div></div>
+      ))}
+
+      <div class="morph" data-morph>
+        {img.slides.map((s, i) => (
+          <div class="morph__slide" data-slide={i}>
+            <Image src={s} alt={img.slideAlt[i]} widths={[900, 1400, 2000]} sizes="92vw" style={`object-position:${slidePos[i]}`} />
+          </div>
+        ))}
+        <div class="morph__ui" data-morph-ui>
+          <div class="morph__arrows">
+            <button type="button" aria-label="Previous image" data-prev><svg viewBox="0 0 16 16" fill="none"><path d="M14 8H2M7 3 2 8l5 5" stroke="currentColor" stroke-width="1.4"/></svg></button>
+            <button type="button" aria-label="Next image" data-next><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="about" data-about>
+        <span class="about__label caps" data-about-fade>About</span>
+        <p class="about__text" data-about-text>
+          <span class="slot" data-slot></span>{aboutWords.map((w) => (<><span class="w"><span>{w}</span></span>{' '}</>))}
+        </p>
+        <div class="about__rule" data-about-rule></div>
+        <p class="about__para" data-about-fade>Prominance makes uPVC window and door systems in its own factory in Coimbatore: European raw material, in-house extrusion, 25,000+ hours of weather testing, and finishes warranted for 20 years.</p>
+      </div>
+    </section>
+
+    <!-- 3 · MARQUEE -->
+    <section class="mq stage" id="marquee" aria-label="Prominance">
+      <div class="mq__wrap" data-mq-wrap>
+        <div class="mq__track" data-mq-track aria-hidden="true">
+          {[0, 1].map(() => <>{[0, 1, 2, 3].map(() => <span>Prominance</span>)}</>)}
+        </div>
+      </div>
+      <div class="mq__box" data-mq-box>
+        <Image src={img.marquee} alt="Prominance technicians inspecting extrusion dies" class="cover" widths={[800, 1400, 2000]} sizes="92vw" />
+      </div>
+      <span class="mq__hint caps">Scroll to enter</span>
+    </section>
+
+    <!-- 4 · STRUCTURE -->
+    <section class="st stage" id="structure" aria-label="Engineering and testing">
+      <div class="st__grid">
+        <div class="st__col">
+          <div class="st__layer st__layer--card st__layer--dark" data-st-a>
+            <h2 class="st__h">Engineered, not assembled.</h2>
+            <div class="st__foot">
+              <div class="st__dots"><i class="on">01</i><i>02</i></div>
+              <p class="st__p">Multi-chambered 2.3–2.5 mm walls, 1.5 mm galvanised steel, fusion-welded corners and dual EPDM seals.</p>
+            </div>
+          </div>
+          <div class="st__layer" data-st-b-img>
+            <Image src={img.panelB} alt="Laboratory testing machine used for uPVC profile testing" class="cover" widths={[800, 1400]} sizes="50vw" />
+          </div>
+        </div>
+        <div class="st__col">
+          <div class="st__layer" data-st-a-img>
+            <Image src={img.panelA} alt="European raw material used for Prominance profiles" class="cover" widths={[800, 1400]} sizes="50vw" />
+          </div>
+          <div class="st__layer st__layer--card st__layer--light" data-st-b>
+            <h2 class="st__h">Tested by people with no reason to be kind.</h2>
+            <div class="st__foot">
+              <div class="st__dots"><i>01</i><i class="on">02</i></div>
+              <p class="st__p">SKZ Germany, BSI UK, SGS and CIPET test weathering, impact, lead content and fire behaviour. Results are published.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mist mist--white" data-mist="structure"></div>
+    </section>
+
+    <!-- 5 · STATEMENT → reveal -->
+    <section class="sm stage" id="statement" aria-label="The systems">
+      <div class="sm__intro" data-sm-intro>
+        <span class="caps">The systems</span>
+        <h2 class="sm__h serif" data-sm-h>
+          {stmtWords.map((w, i) => (<><span class="w"><span>{w}</span></span>{i === 3 ? <br /> : ' '}</>))}
+        </h2>
+      </div>
+      <div class="sm__box" data-sm-box>
+        <Image src={img.reveal} alt="Bright living room with large sliding doors to the garden" class="cover" widths={[900, 1600, 2400]} sizes="100vw" />
+        <div class="sm__shade" data-sm-shade></div>
+      </div>
+      <div class="sm__over" data-sm-over>
+        <span class="caps">The systems</span>
+        <h2>A different<br />way to open.</h2>
+      </div>
+    </section>
+
+    <!-- 6 · INSIDE -->
+    <section class="in stage" id="inside" aria-label="Windows, doors and finishes">
+      {img.steps.map((s, i) => (
+        <div class="in__card" data-in-card={i}><Image src={s} alt={steps[i].eyebrow} widths={[600, 1000, 1600]} sizes="46vw" /></div>
+      ))}
+      <div class="in__count caps"><span>Inside the systems</span><span><b data-in-num>01</b> <em>/ 03</em></span></div>
+      <div class="in__copy">
+        {steps.map((s, i) => (
+          <div data-in-copy={i}>
+            <span class="caps" data-ln>{s.eyebrow}</span>
+            <h3 data-ln>{s.title}</h3>
+            <p data-ln>{s.body}</p>
+            <span class="caps" style="opacity:.6" data-ln>{s.tags}</span>
+            <a class="linkline" href={s.href} data-ln>{s.cta} <Fragment set:html={arrow} /></a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 7 · CTA -->
+    <section class="cta" id="contact">
+      <h2 class="cta__h serif" data-cta-h>Tell us about your project.</h2>
+      <div class="cta__row">
+        <a class="linkline" href="/quote/">Request a quote <Fragment set:html={arrow} /></a>
+        <a class="linkline" href="/resources/downloads/">Download the brochure <Fragment set:html={arrow} /></a>
+        <a class="linkline" href="/contact/">Partner with us <Fragment set:html={arrow} /></a>
+      </div>
+      <div class="cta__grid">
+        <div><span class="caps">Call</span><a href={contact.tollFreeHref}>{contact.tollFree}</a><br /><a href={contact.phoneHref}>{contact.phone}</a></div>
+        <div><span class="caps">Write</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+        <div><span class="caps">Factory</span>{contact.hq.line1}<br />{contact.hq.line2}</div>
+        <div><span class="caps">Promise</span>We reply within one working day.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import '../scripts/home';
+  </script>
 </BaseLayout>

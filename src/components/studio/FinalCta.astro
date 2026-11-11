@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import img from '../../assets/images/brochure/photos/inventa-casement-life.jpg';
+import { finalCta, dealersStrip } from '../../data/copy';
+---
+<section class="relative overflow-hidden bg-ink-deep text-bone">
+  <Image src={img} alt="" class="absolute inset-0 h-full w-full object-cover opacity-35" widths={[1200, 1800]} sizes="100vw" />
+  <div class="container-prom relative py-32 md:py-48">
+    <h2 class="display text-[clamp(3rem,9vw,8rem)]">
+      {finalCta.headline.map((l) => <span class="block">{l}</span>)}
+    </h2>
+    <p class="mt-8 max-w-md text-bone/75">{finalCta.sub}</p>
+    <div class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+      <a href={finalCta.primary.href} class="link-arrow">{finalCta.primary.label} <span aria-hidden="true">→</span></a>
+      <a href={finalCta.secondary.href} class="link-arrow opacity-70 hover:opacity-100">{finalCta.secondary.label} <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="mt-28 grid gap-4 border-t border-bone/15 pt-10 md:grid-cols-12">
+      <p class="display text-2xl md:col-span-5">{dealersStrip.headline}</p>
+      <p class="text-sm leading-relaxed text-bone/65 md:col-span-5">{dealersStrip.body}</p>
+      <a href={dealersStrip.cta.href} class="link-arrow self-start md:col-span-2 md:justify-self-end">Partner with us</a>
+    </div>
+  </div>
+</section>

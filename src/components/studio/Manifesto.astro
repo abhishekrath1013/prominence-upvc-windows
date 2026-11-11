@@ -1,0 +1,28 @@
+---
+import { manifesto, proof, marquee } from '../../data/copy';
+const words = [...marquee, ...marquee];
+---
+<section class="bg-bone py-28 md:py-44">
+  <div class="container-prom">
+    <p class="display reveal max-w-5xl text-[clamp(1.9rem,4.6vw,4rem)]">{manifesto}</p>
+    <dl class="mt-24 grid grid-cols-2 gap-x-6 gap-y-14 border-t border-ink/15 pt-12 md:grid-cols-4" data-stagger>
+      {proof.map((p) => (
+        <div class="reveal">
+          <dt class="display text-[clamp(2.4rem,5vw,4.2rem)]">{p.value}<span class="ml-1 text-[0.4em] text-stone">{p.unit}</span></dt>
+          <dd class="mt-3 max-w-[16rem] text-sm leading-relaxed text-ink-muted">{p.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+<div class="overflow-hidden border-y border-ink/10 bg-bone-deep py-6" aria-hidden="true">
+  <div class="marquee-track">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {words.map((w) => (
+          <span class="display whitespace-nowrap px-8 text-[clamp(1.6rem,3.2vw,2.6rem)] text-ink/70">{w}<span class="ml-16 text-stone">·</span></span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>

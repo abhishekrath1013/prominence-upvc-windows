@@ -16,6 +16,7 @@ interface Props {
 }
 
 const { title, description, noIndex = false, structuredData } = Astro.props;
+const isHome = Astro.url.pathname === '/';
 const pageTitle = title.includes(brand.name) ? title : `${title} | ${brand.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -88,9 +89,9 @@ const organizationSchema = {
       <slot />
     </main>
     <Footer />
-    <StickyCTA />
-    <BrochureFab />
-    <CustomCursor />
+    {!isHome && <StickyCTA />}
+    {!isHome && <BrochureFab />}
+    {!isHome && <CustomCursor />}
     <script>
       import { initMotion } from '../utils/motion';
       initMotion();

@@ -4,6 +4,7 @@ import logo from '../../assets/images/real/brand/logo.png';
 import { brand, contact, sampleCities } from '../../data/brand';
 
 const currentYear = new Date().getFullYear();
+const wrap = Astro.url.pathname === '/' ? 'w-full px-[2vw]' : 'container-prom';
 
 const columns = [
   {
@@ -53,7 +54,7 @@ const socialLinks = [
 ---
 
 <footer class="border-t border-border bg-neutral-900 text-neutral-300">
-  <div class="container-prom grid grid-cols-2 gap-x-8 gap-y-12 py-16 md:grid-cols-6">
+  <div class={`${wrap} grid grid-cols-2 gap-x-8 gap-y-12 py-16 md:grid-cols-6`}>
     <div class="col-span-2 flex flex-col gap-5">
       <Image src={logo} alt="Prominance" height={36} width={136} class="brightness-0 invert" />
       <p class="max-w-xs text-sm leading-relaxed text-neutral-400">{brand.tagline}</p>
@@ -84,7 +85,7 @@ const socialLinks = [
   </div>
 
   <div class="border-t border-white/10">
-    <div class="container-prom flex flex-col gap-3 py-6">
+    <div class={`${wrap} flex flex-col gap-3 py-6`}>
       <span class="text-xs font-bold uppercase tracking-wide text-neutral-500">Also serving</span>
       <div class="flex flex-wrap gap-x-5 gap-y-2">
         {sampleCities.map((c) => (
@@ -96,7 +97,7 @@ const socialLinks = [
   </div>
 
   <div class="border-t border-white/10">
-    <div class="container-prom flex flex-col items-center justify-between gap-3 py-6 text-xs text-neutral-500 sm:flex-row">
+    <div class={`${wrap} flex flex-col items-center justify-between gap-3 py-6 text-xs text-neutral-500 sm:flex-row`}>
       <span>© {currentYear} {brand.legalName}. All rights reserved.</span>
       <div class="flex gap-5">
         <a href="/privacy/" class="hover:text-white">Privacy Policy</a>

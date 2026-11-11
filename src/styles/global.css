@@ -1,9 +1,17 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/manrope';
+@import '@fontsource-variable/fraunces';
 
 @theme {
   /* ---- Typography ---- */
   --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+
+  /* ---- Studio palette (makeover): bone, ink, stone ---- */
+  --color-bone: #f4f1ec;
+  --color-bone-deep: #ebe6de;
+  --color-ink-deep: #14110f;
+  --color-stone: #8a8278;
 
   /* ---- Primary: Prominance blue (extracted from live site CSS) ---- */
   --color-primary-50: #eff6fc;
@@ -46,10 +54,10 @@
   --color-neutral-950: #0f0d0b;
 
   /* ---- Semantic ---- */
-  --color-ink: var(--color-neutral-900);
+  --color-ink: var(--color-ink-deep);
   --color-ink-muted: var(--color-neutral-600);
-  --color-surface: var(--color-neutral-0);
-  --color-surface-alt: var(--color-neutral-50);
+  --color-surface: var(--color-bone);
+  --color-surface-alt: var(--color-bone-deep);
   --color-surface-strong: var(--color-neutral-100);
   --color-border: var(--color-neutral-200);
 
@@ -240,5 +248,44 @@
       transform: none;
       animation: none;
     }
+  }
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    letter-spacing: -0.025em;
+    line-height: 0.98;
+  }
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid currentColor;
+    transition: gap 0.35s var(--ease-smooth), opacity 0.2s;
+  }
+  .link-arrow:hover { gap: 1.1rem; }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
   }
 }

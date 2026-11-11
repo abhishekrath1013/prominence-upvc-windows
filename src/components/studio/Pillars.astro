@@ -1,0 +1,20 @@
+---
+import { pillars } from '../../data/copy';
+---
+<section class="bg-bone py-28 md:py-44">
+  <div class="container-prom grid gap-16 md:grid-cols-12">
+    <div class="md:col-span-4">
+      <p class="eyebrow mb-5">What you feel</p>
+      <h2 class="display reveal text-[clamp(2.2rem,4.6vw,4rem)] md:sticky md:top-32">Less noise.<br />Less heat.<br />Less worry.</h2>
+    </div>
+    <ol class="divide-y divide-ink/15 border-y border-ink/15 md:col-span-8" data-stagger>
+      {pillars.map((p, i) => (
+        <li class="reveal grid grid-cols-[3rem_1fr] gap-4 py-8 md:grid-cols-[4rem_14rem_1fr] md:items-baseline">
+          <span class="eyebrow">0{i + 1}</span>
+          <h3 class="display text-3xl">{p.title}</h3>
+          <p class="col-span-2 text-ink-muted md:col-span-1">{p.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
