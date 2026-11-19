@@ -563,7 +563,7 @@ const pins = [
       flex-direction: column;
       align-items: flex-start;
       gap: 1.6rem;
-      padding: 4.5rem 1.25rem 2.5rem;
+      padding: 4.5rem clamp(1.25rem, 5vw, 2.5rem) 2.5rem;
     }
     .cx {
       display: flex;
@@ -587,9 +587,22 @@ const pins = [
     .cx[data-state='open'] .cx__panel {
       display: block;
     }
+    .cx[data-state='open'] {
+      flex-direction: column;
+    }
     .cx__panel-in {
-      padding: 1.25rem 1.25rem 2.5rem;
+      height: auto;
+      padding: 1.25rem clamp(1.25rem, 5vw, 2.5rem) 2.5rem;
       border-left: 0;
+    }
+    .cx__items {
+      flex: none;
+      min-height: 0;
+      padding-block: 1.25rem 0.5rem;
+    }
+    .cx[data-state='open'] .cx__fig {
+      height: clamp(260px, 52vw, 380px);
+      margin-top: 2.5rem;
     }
     .cx__item {
       grid-template-columns: 1fr;

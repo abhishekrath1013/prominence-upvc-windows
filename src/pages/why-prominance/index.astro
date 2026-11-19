@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button.astro';
 import FinalCTA from '../../components/home/FinalCTA.astro';
 import { certifications, standards, contact } from '../../data/brand';
 import heroImg from '../../assets/images/real/infra/facility-overview.jpg';
-import accreditations from '../../assets/images/real/brand/accreditations.png';
+import accreditations from '../../assets/images/real/brand/accreditations-full.png';
 
 const displayStats = [
   { to: 22000, suffix: ' MT', label: 'Annual production capacity' },
@@ -58,8 +58,18 @@ const displayStats = [
           </div>
         ))}
       </div>
-      <div class="reveal flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4">
-        <Image src={accreditations} alt="Prominance accreditation marks" width={480} height={80} class="h-14 w-auto object-contain" />
+      <!-- The full accreditation strip from the brochure (BSI, SKZ, ift, ASTM, SGS, RoHS, lead-free, UWDMA, IGBC, CIPET, ISO 9001).
+           Wide screens show it as one row; phones show the same image as two rows so no logo is cut or shrunk to nothing. -->
+      <div class="reveal rounded-2xl bg-white p-4 sm:p-6" role="group" aria-label="Accreditation marks">
+        <Image src={accreditations} alt="Accreditation marks: BSI United Kingdom, SKZ Germany, ift Rosenheim, ASTM International, SGS, RoHS compliant, lead-free, UWDMA member, Indian Green Building Council, CIPET and ISO 9001:2015" width={1800} height={157} widths={[900, 1400, 1800]} sizes="(min-width: 1320px) 1240px, 90vw" class="mx-auto hidden h-auto w-full max-w-[1240px] sm:block" />
+        <div class="flex flex-col gap-4 sm:hidden" aria-hidden="true">
+          <div class="overflow-hidden" style="aspect-ratio: 5.33">
+            <Image src={accreditations} alt="" width={1800} height={157} widths={[900, 1400]} sizes="90vw" class="block h-auto max-w-none" style="width: 215% !important" loading="lazy" />
+          </div>
+          <div class="overflow-hidden" style="aspect-ratio: 6.13">
+            <Image src={accreditations} alt="" width={1800} height={157} widths={[900, 1400]} sizes="90vw" class="block h-auto max-w-none" style="width: 186.9% !important; margin-left: -86.9%" loading="lazy" />
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -62,26 +62,30 @@ import { warranty } from '../../data/home';
     user-select: none;
   }
   .hw__row {
-    display: flex;
-    align-items: baseline;
-    gap: 3cqw;
+    display: block;
+    font-size: 40cqw;
+    line-height: 1;
     white-space: nowrap;
+  }
+  .hw__row > span {
+    display: inline-block;
   }
   .hw__n {
     font-weight: 200;
-    font-size: 41cqw;
+    font-size: 40cqw;
     letter-spacing: -0.065em;
     color: var(--color-brand-green);
   }
   .hw__dash {
     width: 7cqw;
     height: 2.6cqw;
-    transform: translateY(-14cqw);
+    margin-inline: 3cqw;
+    vertical-align: 13cqw; /* an empty inline-block sits on the baseline by its bottom edge: raise it to the middle of the digits */
     background: linear-gradient(90deg, var(--color-brand-green), var(--color-brand-blue));
   }
   .hw__unit {
     font-weight: 300;
-    font-size: 19.5cqw;
+    font-size: 19cqw;
     letter-spacing: -0.05em;
     color: var(--color-brand-blue);
   }

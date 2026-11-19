@@ -67,7 +67,9 @@ function init() {
   gsap.set(hm('uq-card'), { opacity: 0, y: 60, scale: 0.97 });
   gsap.set(hm('uq-bg'), { scale: 1.16 });
 
-  gsap.set('.fr__stage', { opacity: 0, x: 70, scale: 0.96 });
+  // glides in from the right on desktop, from below on phones (a sideways offset would widen the page)
+  const wide = matchMedia('(min-width: 961px)').matches;
+  gsap.set('.fr__stage', { opacity: 0, x: wide ? 70 : 0, y: wide ? 0 : 50, scale: 0.96 });
   gsap.set('[data-reveal]', { opacity: 0, y: 30 });
 
   gsap.set(hm('hp-line'), { yPercent: 118 });
@@ -123,7 +125,7 @@ function init() {
 
   /* ---------------- frames: the stage glides in; panel copy uses [data-reveal] ---------------- */
   reveal($$('.fr')[0], (tl) => {
-    tl.to('.fr__stage', { opacity: 1, x: 0, scale: 1, duration: 1.8, ease: EASE_SOFT }, 0.2)
+    tl.to('.fr__stage', { opacity: 1, x: 0, y: 0, scale: 1, duration: 1.8, ease: EASE_SOFT }, 0.2)
       .to('[data-reveal]', { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, ease: EASE_SOFT }, 0);
   }, 'top 62%');
 
