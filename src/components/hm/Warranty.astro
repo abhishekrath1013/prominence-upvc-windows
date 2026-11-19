@@ -1,0 +1,138 @@
+---
+// "20-YEAR WARRANTY" — the aluminium "21-DAY DELIVERY" lockup, rebuilt for the brochure's strongest promise.
+// The big figures are a lockup sized in its own width (cqw), so it scales as one piece.
+import { warranty } from '../../data/home';
+---
+
+<section class="hw" aria-label="20-year warranty">
+  <div class="hw__bg" aria-hidden="true"></div>
+
+  <div class="hw__stage">
+    <div class="hw__graphic" role="img" aria-label="20-year warranty">
+      <div class="hw__row">
+        <span class="hw__n" data-hm="hw-n">{warranty.big.n}</span>
+        <span class="hw__dash" data-hm="hw-dash"></span>
+        <span class="hw__unit" data-hm="hw-unit">{warranty.big.unit}</span>
+      </div>
+      <span class="hw__word" data-hm="hw-word">{warranty.big.word}</span>
+    </div>
+
+    <div class="hw__copy">
+      <p>{warranty.lead.map((l) => <span data-hm="hw-copy">{l}</span>)}</p>
+      <p class="hw__small" data-hm="hw-copy">{warranty.small}</p>
+      <p class="hw__way" data-hm="hw-copy">{warranty.way}</p>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .hw {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 72svh;
+    display: grid;
+    align-items: center;
+    background: #e8f0f5;
+  }
+  .hw__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 55% 80% at 18% 60%, rgb(255 255 255 / 0.9), transparent 70%),
+      radial-gradient(ellipse 40% 60% at 90% 100%, rgb(7 110 161 / 0.12), transparent 70%),
+      linear-gradient(180deg, #eef4f8, #dde8ef);
+  }
+  .hw__stage {
+    width: 100%;
+    max-width: 1326px;
+    margin-inline: auto;
+    padding: clamp(3.5rem, 9svh, 6rem) clamp(1.25rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+  .hw__graphic {
+    container-type: inline-size;
+    color: var(--color-brand-navy);
+    font-family: var(--font-display);
+    line-height: 1;
+    user-select: none;
+  }
+  .hw__row {
+    display: flex;
+    align-items: baseline;
+    gap: 3cqw;
+    white-space: nowrap;
+  }
+  .hw__n {
+    font-weight: 200;
+    font-size: 41cqw;
+    letter-spacing: -0.065em;
+    color: var(--color-brand-green);
+  }
+  .hw__dash {
+    width: 7cqw;
+    height: 2.6cqw;
+    transform: translateY(-14cqw);
+    background: linear-gradient(90deg, var(--color-brand-green), var(--color-brand-blue));
+  }
+  .hw__unit {
+    font-weight: 300;
+    font-size: 19.5cqw;
+    letter-spacing: -0.05em;
+    color: var(--color-brand-blue);
+  }
+  .hw__word {
+    display: block;
+    margin-top: 1.5cqw;
+    padding-left: 0.6cqw;
+    font-weight: 600;
+    font-size: 8.4cqw;
+    letter-spacing: 0.62em;
+    white-space: nowrap;
+  }
+  .hw__copy p {
+    text-wrap: pretty;
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    font-weight: 400;
+    color: rgb(11 43 64 / 0.72);
+  }
+  .hw__copy p > span {
+    display: block;
+  }
+  .hw__copy .hw__small {
+    margin-top: 1.1rem;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    font-weight: 600;
+    color: var(--color-accent-700);
+  }
+  .hw__copy .hw__way {
+    margin-top: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2.1vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-brand-navy);
+  }
+  @media (max-width: 860px) {
+    .hw {
+      min-height: 0;
+    }
+    .hw__stage {
+      grid-template-columns: 1fr;
+    }
+    .hw__graphic {
+      max-width: 24rem;
+    }
+    .hw__copy p > span {
+      display: inline;
+    }
+  }
+</style>

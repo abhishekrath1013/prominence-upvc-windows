@@ -1,0 +1,223 @@
+---
+// "Let Life In. Keep the Worries Out." — the client-approved four-tile section, in the aluminium "Unique solutions" layout:
+// heading top-left, four frosted cards in a staggered grid, the last one full width. Copy is verbatim from the content doc.
+import { Image } from 'astro:assets';
+import bg from '../../assets/images/stock/open-living-dining-windows.jpg';
+import { comfort } from '../../data/home';
+---
+
+<section class="hc" aria-labelledby="hc-title">
+  <Image src={bg} alt="" class="hc__bg" data-hm="uq-bg" widths={[900, 1600]} sizes="115vw" loading="lazy" />
+  <div class="hc__veil" aria-hidden="true"></div>
+
+  <div class="hc__stage">
+    <div class="hc__head">
+      <h2 id="hc-title" class="hc__title" aria-label={comfort.titleLabel}>
+        {
+          comfort.title.map((l) => (
+            <span class="ln" aria-hidden="true">
+              <span class="ln__t" data-hm="uq-line">{l}</span>
+            </span>
+          ))
+        }
+      </h2>
+      <p class="hc__intro" data-hm="uq-card">{comfort.intro}</p>
+      <a href={comfort.cta.href} class="hc__cta" data-hm="uq-card">
+        {comfort.cta.label}
+        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"></path></svg>
+      </a>
+    </div>
+
+    {
+      comfort.cards.map((c, i) => (
+        <article class={`hc__card hc__c${i + 1}`} data-hm="uq-card">
+          <span class="hc__num" aria-hidden="true">{c.n}</span>
+          <h3>{c.title[0]}<br />{c.title[1]}</h3>
+          <div class="hc__body">
+            <p>{c.text}</p>
+            <p class="hc__proof"><span>Feature proof</span>{c.proof}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style is:global>
+  .hc {
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    background: #eef3f6;
+    /* the hero is pinned beneath; this section slides over it */
+    box-shadow: 0 -30px 60px -30px rgb(13 31 45 / 0.35);
+  }
+  .hc__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 45% 50%;
+  }
+  .hc__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, rgb(244 248 250 / 0.9) 0%, rgb(244 248 250 / 0.74) 55%, rgb(244 248 250 / 0.92) 100%),
+      linear-gradient(90deg, rgb(244 248 250 / 0.7), transparent 60%);
+  }
+  .hc__stage {
+    width: 100%;
+    max-width: 1326px;
+    margin-inline: auto;
+    padding: clamp(5rem, 10svh, 7rem) clamp(1.25rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 16px;
+  }
+  .hc__head {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    padding: 0 clamp(0rem, 1.5vw, 1.5rem) 0 0;
+  }
+  .hc__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: var(--color-brand-navy);
+  }
+  .hc__title .ln:nth-child(3) .ln__t {
+    color: var(--color-brand-blue);
+  }
+  .hc__intro {
+    margin-top: 1.4rem;
+    max-width: 30rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgb(11 43 64 / 0.78);
+  }
+  .hc__cta {
+    margin-top: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--color-brand-blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-blue);
+    transition: gap 0.4s var(--ease-smooth);
+  }
+  .hc__cta:hover {
+    gap: 1.5rem;
+  }
+  .hc__card {
+    position: relative;
+    padding: clamp(1.8rem, 3.2vw, 2.6rem) clamp(1.25rem, 2vw, 1.75rem) clamp(1.5rem, 2.6vw, 2.1rem);
+    background: rgb(255 255 255 / 0.8);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    box-shadow: 0 24px 50px -34px rgb(13 31 45 / 0.5);
+  }
+  .hc__c1 { grid-column: 2; grid-row: 1; }
+  .hc__c2 { grid-column: 1; grid-row: 2; }
+  .hc__c3 { grid-column: 2; grid-row: 2; }
+  .hc__c4 {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    align-items: start;
+  }
+  .hc__num {
+    position: absolute;
+    top: 0.7rem;
+    right: 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+    line-height: 1.2;
+    color: var(--color-brand-blue);
+  }
+  .hc__card h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.6rem, 2.9vw, 2.6rem);
+    line-height: 1.16;
+    letter-spacing: -0.04em;
+    color: var(--color-brand-navy);
+  }
+  .hc__body {
+    margin-top: 0.9rem;
+    max-width: 27rem;
+  }
+  .hc__body p {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: rgb(11 43 64 / 0.72);
+  }
+  .hc__proof {
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgb(11 43 64 / 0.1);
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    font-weight: 600;
+    color: var(--color-accent-700) !important;
+  }
+  .hc__proof span {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(11 43 64 / 0.45);
+  }
+  .hc__c4 .hc__body {
+    margin-top: 0;
+  }
+
+  @media (max-width: 860px) {
+    .hc {
+      display: block;
+    }
+    .hc__stage {
+      grid-template-columns: 1fr;
+      padding-top: 4.5rem;
+      padding-bottom: 3.5rem;
+      gap: 0.75rem;
+    }
+    .hc__head,
+    .hc__c1,
+    .hc__c2,
+    .hc__c3,
+    .hc__c4 {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .hc__head {
+      margin-bottom: 1rem;
+    }
+    .hc__c4 {
+      display: block;
+    }
+    .hc__c4 .hc__body {
+      margin-top: 0.9rem;
+    }
+  }
+</style>

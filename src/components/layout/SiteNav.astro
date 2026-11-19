@@ -1,0 +1,227 @@
+---
+// The Prominance top bar — same layout and menus as the aluminium site (three links, centred logo, "Get a Quote"),
+// in the light theme. On phones it folds into a menu that also lists the rest of the site.
+//   variant="home"  → transparent, sits inside the hero and scrolls away with it
+//   variant="page"  → frosted white bar on every other page; tucks away on the way down, returns on the way up
+import { Image } from 'astro:assets';
+import logo from '../../assets/images/real/brand/logo.png';
+
+interface Props {
+  variant?: 'home' | 'page';
+}
+const { variant = 'page' } = Astro.props;
+
+const mainLinks = [
+  { label: 'Products', href: '/products/' },
+  { label: 'About us', href: '/why-prominance/' },
+  { label: 'Blog', href: '/resources/' },
+];
+const moreLinks = [
+  { label: 'Windows', href: '/windows/' },
+  { label: 'Doors', href: '/doors/' },
+  { label: 'Finishes', href: '/colours/' },
+  { label: 'Projects', href: '/projects/' },
+  { label: 'Compare materials', href: '/compare/' },
+  { label: 'Questions', href: '/resources/faqs/' },
+  { label: 'Downloads', href: '/resources/downloads/' },
+  { label: 'Contact us', href: '/contact/' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path.startsWith(href);
+---
+
+<header class={`pn-nav pn-nav--${variant}`} {...(variant === 'page' ? { 'data-header': '' } : {})} data-pn-nav>
+  <nav class="pn-nav__links" aria-label="Primary">
+    {mainLinks.map((l) => <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>)}
+  </nav>
+  <a href="/" class="pn-nav__logo" aria-label="Prominance uPVC Window Systems — home">
+    <Image src={logo} alt="Prominance uPVC Window Systems" width={240} height={65} widths={[260, 520]} sizes="200px" loading="eager" />
+  </a>
+  <div class="pn-nav__right">
+    <a href="/quote/" class="pn-nav__quote">Get a Quote</a>
+    <button type="button" class="pn-nav__burger" aria-expanded="false" aria-controls="pn-nav-menu" data-pn-toggle>
+      <span>Menu</span>
+    </button>
+  </div>
+
+  <div id="pn-nav-menu" class="pn-nav__menu" hidden>
+    <ul>
+      {[...mainLinks, ...moreLinks].map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      <li class="pn-nav__menu-cta"><a href="/quote/">Get a Quote</a></li>
+    </ul>
+  </div>
+</header>
+
+<style is:global>
+  .pn-nav {
+    z-index: 150;
+    height: 90px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 clamp(1rem, 2vw, 1.625rem);
+    color: var(--color-brand-navy);
+  }
+  .pn-nav--home {
+    position: absolute;
+    inset: 0 0 auto 0;
+  }
+  /* every other page: a frosted white bar that tucks away while you read downwards (motion.ts toggles .is-hidden) */
+  .pn-nav--page {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 76px;
+    background: rgb(255 255 255 / 0.86);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    border-bottom: 1px solid rgb(13 31 45 / 0.07);
+    transition: transform 0.7s var(--ease-smooth), background-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .pn-nav--page.is-scrolled {
+    background: rgb(255 255 255 / 0.94);
+    box-shadow: 0 12px 30px -22px rgb(13 31 45 / 0.4);
+  }
+  .pn-nav--page.is-hidden {
+    transform: translateY(-110%);
+  }
+  .pn-nav__links {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pn-nav__links a,
+  .pn-nav__quote {
+    transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .pn-nav__links a {
+    position: relative;
+    padding-block: 0.4rem;
+  }
+  .pn-nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--color-brand-green);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--ease-smooth);
+  }
+  .pn-nav__links a:hover::after,
+  .pn-nav__links a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .pn-nav__logo img {
+    width: 190px;
+    height: auto;
+  }
+  .pn-nav__right {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .pn-nav__quote {
+    padding: 0.6rem 1.15rem;
+    border: 1px solid rgb(11 43 64 / 0.4);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pn-nav__quote:hover {
+    background: var(--color-brand-blue);
+    border-color: var(--color-brand-blue);
+    color: #fff;
+  }
+  .pn-nav__burger,
+  .pn-nav__menu {
+    display: none;
+  }
+  @media (max-width: 800px) {
+    .pn-nav,
+    .pn-nav--page {
+      grid-template-columns: auto 1fr;
+      height: 72px;
+    }
+    .pn-nav__links {
+      display: none;
+    }
+    .pn-nav__logo img {
+      width: 150px;
+    }
+    .pn-nav__burger {
+      display: block;
+      padding: 0.55rem 0.9rem;
+      border: 1px solid rgb(11 43 64 / 0.4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .pn-nav__quote {
+      display: none;
+    }
+    .pn-nav__menu {
+      position: absolute;
+      top: 72px;
+      left: 0.75rem;
+      right: 0.75rem;
+      max-height: calc(100svh - 88px);
+      overflow-y: auto;
+      padding: 0.5rem 1.25rem 1rem;
+      background: rgb(255 255 255 / 0.98);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgb(13 31 45 / 0.08);
+      border-radius: 14px;
+      box-shadow: 0 30px 60px -24px rgb(13 31 45 / 0.35);
+    }
+    .pn-nav__menu:not([hidden]) {
+      display: block;
+    }
+    .pn-nav__menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .pn-nav__menu a {
+      display: block;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgb(13 31 45 / 0.08);
+      font-size: 0.95rem;
+    }
+    .pn-nav__menu li:last-child a {
+      margin-top: 0.9rem;
+      border: 0;
+      border-radius: 999px;
+      background: var(--color-brand-blue);
+      color: #fff;
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-pn-toggle]');
+  const menu = document.getElementById('pn-nav-menu');
+  toggle?.addEventListener('click', () => {
+    if (!menu) return;
+    const open = menu.hasAttribute('hidden');
+    menu.toggleAttribute('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && !menu.hasAttribute('hidden')) {
+      menu.setAttribute('hidden', '');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>

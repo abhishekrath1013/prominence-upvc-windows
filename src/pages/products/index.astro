@@ -1,0 +1,382 @@
+---
+// Products hub — the "Products" item of the top bar. Windows and doors in one place, each card linking to its own page,
+// plus the doc's "where will it go?" guide. Copy: docs/Prominance-Website-Content.docx §4.1 (Segment 4, approved cards) and §4.2/4.6.
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const photos = import.meta.glob('../../assets/images/brochure/photos/*-life.jpg', { eager: true, import: 'default' }) as Record<string, any>;
+const photo = (n: string) => photos[`../../assets/images/brochure/photos/${n}-life.jpg`];
+
+// card copy for the three windows and the door family is the client-approved Segment 4 wording
+const cards = [
+  {
+    key: 'casement',
+    group: 'Windows',
+    name: 'Casement Windows',
+    text: 'Designed for effective ventilation and dependable closure, with an elegant appearance that suits a wide range of home styles.',
+    tech: 'Optima and Inventa series',
+    cta: 'Explore Casement Windows',
+    href: '/windows/casement/',
+    img: photo('inventa-casement'),
+    alt: 'Living room with a white uPVC casement window',
+  },
+  {
+    key: 'sliding',
+    group: 'Windows',
+    name: 'Sliding Windows',
+    text: 'Smooth, space-saving operation that makes everyday living effortless. Ideal for rooms where convenient movement and efficient use of space matter.',
+    tech: 'Optima and Inventa series',
+    cta: 'Explore Sliding Windows',
+    href: '/windows/sliding/',
+    img: photo('inventa-sliding'),
+    alt: 'Room with a wide uPVC sliding window',
+  },
+  {
+    key: 'tilt',
+    group: 'Windows',
+    name: 'Tilt & Turn Windows',
+    text: 'A versatile window system offering controlled ventilation and convenient operation through a thoughtfully engineered opening mechanism.',
+    tech: 'Inventa Z-sash',
+    cta: 'Explore Tilt & Turn Windows',
+    href: '/windows/tilt-turn/',
+    img: photo('tilt-turn'),
+    alt: 'Bedroom with a tilt-and-turn uPVC window',
+  },
+  {
+    key: 'door-casement',
+    group: 'Doors',
+    name: 'Casement Doors',
+    text: 'A side-hinged door for balcony and entry openings, built for weatherproofing and dust resistance.',
+    tech: 'Inventa · up to 1200 mm per leaf',
+    cta: 'Explore Casement Doors',
+    href: '/doors/casement/',
+    img: photo('door-casement'),
+    alt: 'Balcony with a uPVC casement door',
+  },
+  {
+    key: 'door-sliding',
+    group: 'Doors',
+    name: 'Sliding Doors',
+    text: 'Large glass panels that slide horizontally, built for maximum daylight and airflow across wide openings.',
+    tech: 'Inventa · 3-track, 3 or 6 shutters',
+    cta: 'Explore Sliding Doors',
+    href: '/doors/sliding/',
+    img: photo('door-sliding'),
+    alt: 'Living room opening to a garden through uPVC sliding doors',
+  },
+  {
+    key: 'door-fold',
+    group: 'Doors',
+    name: 'Slide & Fold Doors',
+    text: 'Each leaf folds and slides back concertina-style, opening the entire width of the wall.',
+    tech: 'Inventa · 100% opening',
+    cta: 'Explore Slide & Fold Doors',
+    href: '/doors/slide-fold/',
+    img: photo('bifold'),
+    alt: 'Slide-and-fold uPVC doors opening a room onto a terrace',
+  },
+];
+
+// doc §4.1 Segment 4, "Where it will go" (brochure-backed)
+const guide = [
+  ['Hall or bedroom on a busy road', 'Inventa Casement', 'Tightest seal in the range, supports large fixed glass.'],
+  ['Bedroom wanting privacy and fresh air', 'Tilt & Turn, or Casement', 'Tilts for safe ventilation, or opens fully.'],
+  ['Balcony or large opening', 'Sliding door, or Slide-and-Fold door', 'Wide, light-filled opening; Slide-and-Fold opens up to 100%.'],
+  ['Guest room, walkway or staircase', 'Optima Sliding', 'Compact, space-saving, for small-to-medium openings.'],
+  ['Hall or bedroom needing space saved', 'Inventa Sliding', 'Slim separators and up to 66% opening, no swing space.'],
+];
+const groups = ['Windows', 'Doors'];
+---
+
+<BaseLayout
+  title="uPVC Windows and Doors: Casement, Sliding, Tilt & Turn | Prominance"
+  description="Prominance makes four kinds of opening: sliding windows, casement windows, tilt-and-turn windows and door systems, each in the Optima or Inventa series."
+>
+  <section class="pr-hero">
+    <div class="pr-wrap">
+      <p class="pr-eyebrow">Products</p>
+      <h1 class="pr-title">A window for every way of living.</h1>
+      <p class="pr-lede">
+        From contemporary apartments to spacious independent homes, Prominance offers thoughtfully designed windows and doors to suit different spaces, opening requirements and architectural preferences.
+      </p>
+      <p class="sr-only">Prominance makes four kinds of opening: sliding windows, casement windows, tilt-and-turn windows and door systems, each in the Optima or Inventa series.</p>
+      <div class="pr-actions">
+        <a href="/#designer" class="pr-btn" data-flush>Try the designer</a>
+        <a href="/quote/" class="pr-btn pr-btn--ghost">Request your quote</a>
+      </div>
+    </div>
+  </section>
+
+  {
+    groups.map((g) => (
+      <section class="pr-group" aria-labelledby={`pr-${g}`}>
+        <div class="pr-wrap">
+          <h2 id={`pr-${g}`} class="pr-h2">
+            <span>{g === 'Windows' ? '01' : '02'}</span>
+            {g === 'Windows' ? 'uPVC windows' : 'Door systems'}
+          </h2>
+          <div class="pr-grid">
+            {cards
+              .filter((c) => c.group === g)
+              .map((c) => (
+                <a href={c.href} class="pr-card reveal" aria-label={c.cta}>
+                  <div class="pr-card__img">
+                    <Image src={c.img} alt={c.alt} widths={[520, 800, 1100]} sizes="(max-width: 900px) 92vw, 30vw" loading="lazy" />
+                  </div>
+                  <div class="pr-card__body">
+                    <p class="pr-card__tech">{c.tech}</p>
+                    <h3>{c.name}</h3>
+                    <p>{c.text}</p>
+                    <span class="pr-card__cta">
+                      {c.cta}
+                      <svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"></path></svg>
+                    </span>
+                  </div>
+                </a>
+              ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="pr-group pr-group--tint" aria-labelledby="pr-guide">
+    <div class="pr-wrap">
+      <h2 id="pr-guide" class="pr-h2"><span>03</span>Find it by how you live</h2>
+      <div class="pr-table" role="table" aria-label="Where it will go and the suggested system">
+        <div class="pr-row pr-row--head" role="row">
+          <span role="columnheader">Where it will go</span><span role="columnheader">Suggested pick</span><span role="columnheader">Why</span>
+        </div>
+        {
+          guide.map(([where, pick, why]) => (
+            <div class="pr-row reveal" role="row">
+              <span role="cell">{where}</span><b role="cell">{pick}</b><span role="cell">{why}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="pr-foot">
+        Still unsure? <a href="/compare/">Compare uPVC, aluminium and wood</a> or <a href="/quote/">ask a technical advisor</a>. No pressure, no jargon.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .pr-wrap {
+    max-width: 1326px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 4rem);
+  }
+  .pr-hero {
+    padding: clamp(8rem, 18svh, 11rem) 0 clamp(3rem, 7svh, 5rem);
+    background:
+      radial-gradient(ellipse 50% 60% at 90% 0%, rgb(7 110 161 / 0.12), transparent 70%),
+      linear-gradient(180deg, #eaf1f6, #fff);
+  }
+  .pr-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--color-brand-green);
+  }
+  .pr-title {
+    margin-top: 1rem;
+    max-width: 14ch;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--color-brand-navy);
+  }
+  .pr-lede {
+    margin-top: 1.6rem;
+    max-width: 38rem;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    color: rgb(11 43 64 / 0.75);
+  }
+  .pr-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .pr-btn {
+    display: inline-grid;
+    place-items: center;
+    padding: 1.05rem 1.9rem;
+    border: 1px solid var(--color-brand-blue);
+    border-radius: 6px;
+    background: var(--color-brand-blue);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    transition: filter 0.3s ease, transform 0.3s var(--ease-smooth);
+  }
+  .pr-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+  }
+  .pr-btn--ghost {
+    background: transparent;
+    color: var(--color-brand-blue);
+  }
+  .pr-group {
+    padding: clamp(3rem, 8svh, 5.5rem) 0;
+  }
+  .pr-group--tint {
+    background: var(--color-bone);
+  }
+  .pr-h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    margin-bottom: clamp(1.5rem, 4svh, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.8rem, 3.4vw, 3rem);
+    letter-spacing: -0.04em;
+    color: var(--color-brand-navy);
+  }
+  .pr-h2 span {
+    font-weight: 700;
+    font-size: 0.5em;
+    letter-spacing: 0;
+    color: var(--color-brand-blue);
+  }
+  .pr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .pr-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.5s var(--ease-smooth), box-shadow 0.5s var(--ease-smooth);
+  }
+  .pr-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .pr-card__img {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-bone-deep);
+  }
+  .pr-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-smooth);
+  }
+  .pr-card:hover .pr-card__img img {
+    transform: scale(1.05);
+  }
+  .pr-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.5rem 1.5rem 1.6rem;
+  }
+  .pr-card__tech {
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-green);
+  }
+  .pr-card h3 {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.6rem;
+    letter-spacing: -0.035em;
+    color: var(--color-brand-navy);
+  }
+  .pr-card__body > p:not(.pr-card__tech) {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgb(11 43 64 / 0.72);
+  }
+  .pr-card__cta {
+    margin-top: auto;
+    padding-top: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-brand-blue);
+    transition: gap 0.4s var(--ease-smooth);
+  }
+  .pr-card:hover .pr-card__cta {
+    gap: 1.3rem;
+  }
+  .pr-table {
+    border-top: 1px solid rgb(11 43 64 / 0.15);
+  }
+  .pr-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.4fr;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgb(11 43 64 / 0.1);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgb(11 43 64 / 0.78);
+  }
+  .pr-row b {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-blue);
+  }
+  .pr-row--head {
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(11 43 64 / 0.45);
+  }
+  .pr-foot {
+    margin-top: 1.8rem;
+    font-size: 0.95rem;
+    color: rgb(11 43 64 / 0.7);
+  }
+  .pr-foot a {
+    font-weight: 700;
+    color: var(--color-brand-blue);
+    border-bottom: 1px solid currentColor;
+  }
+  @media (max-width: 960px) {
+    .pr-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .pr-grid {
+      grid-template-columns: 1fr;
+    }
+    .pr-row {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+    .pr-row--head {
+      display: none;
+    }
+  }
+</style>

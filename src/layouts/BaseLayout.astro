@@ -1,7 +1,8 @@
 ---
+import { Font } from 'astro:assets';
 import '../styles/global.css';
-import Header from '../components/layout/Header.astro';
-import Footer from '../components/layout/Footer.astro';
+import SiteNav from '../components/layout/SiteNav.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
 import StickyCTA from '../components/layout/StickyCTA.astro';
 import BrochureFab from '../components/layout/BrochureFab.astro';
 import CustomCursor from '../components/layout/CustomCursor.astro';
@@ -13,9 +14,11 @@ interface Props {
   ogImagePath?: string;
   noIndex?: boolean;
   structuredData?: Record<string, unknown>;
+  /** "none" = the page draws its own top bar (the home page puts it inside the hero) */
+  nav?: 'default' | 'none';
 }
 
-const { title, description, noIndex = false, structuredData } = Astro.props;
+const { title, description, noIndex = false, structuredData, nav = 'default' } = Astro.props;
 const isHome = Astro.url.pathname === '/';
 const pageTitle = title.includes(brand.name) ? title : `${title} | ${brand.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -66,34 +69,44 @@ const organizationSchema = {
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
 
-    <meta name="theme-color" content="#005a97" />
+    <meta name="theme-color" content="#ffffff" />
 
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
 
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <Font cssVariable="--font-sans-raw" preload />
+    <Font cssVariable="--font-poppins-raw" preload />
     <slot name="head" />
   </head>
-  <body class="flex min-h-screen flex-col bg-surface text-ink font-sans antialiased">
+  <body class="bg-surface font-sans text-ink antialiased">
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-primary-700 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-sm focus:text-bone"
     >
       Skip to content
     </a>
-    <div class="fixed inset-x-0 top-0 z-[60] h-[3px] bg-transparent" aria-hidden="true">
-      <div class="brand-bar h-full origin-left" style="transform: scaleX(0)" data-scroll-progress></div>
-    </div>
-    <Header />
-    <main id="main-content" class="flex-1">
+    {!isHome && (
+      <div class="pointer-events-none fixed inset-x-0 top-0 z-[160] h-[2px] bg-transparent" aria-hidden="true">
+        <div class="brand-bar h-full origin-left" style="transform: scaleX(0)" data-scroll-progress></div>
+      </div>
+    )}
+
+    {nav !== 'none' && <SiteNav variant="page" />}
+
+    <main id="main-content" class="relative z-[2] bg-surface">
       <slot />
     </main>
-    <Footer />
+    <SiteFooter />
+    {!isHome && <div class="h-[68px] lg:hidden" aria-hidden="true" />}
+
     {!isHome && <StickyCTA />}
     {!isHome && <BrochureFab />}
     {!isHome && <CustomCursor />}
     <script>
+      import { initLenis } from '../scripts/site';
       import { initMotion } from '../utils/motion';
+      initLenis(); // smooth scrolling, same engine as the aluminium site
       initMotion();
     </script>
   </body>

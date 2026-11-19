@@ -1,0 +1,325 @@
+---
+// Hero — the brand ambassador stands inside a window-shaped arch with his arms open ("Let life in"), and the headline is
+// split around his head: "Built to outlast" on the left, "the weather." on the right. Buttons and the three proof figures
+// sit either side of his torso. A different composition from the aluminium hero, same ingredients: the top bar inside the
+// hero, masked headline lines, one primary button.
+import { Image } from 'astro:assets';
+import bg from '../../assets/images/stock/villa-glass-pool-indoor-outdoor.jpg';
+import srk from '../../assets/home/srk-welcome.png';
+import SiteNav from '../layout/SiteNav.astro';
+import { hero } from '../../data/home';
+---
+
+<section class="hh" data-panel aria-labelledby="hh-title">
+  <Image src={bg} alt="" class="hh__bg" data-hm="hero-bg" widths={[1200, 1800, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <div class="hh__veil" aria-hidden="true"></div>
+
+  <SiteNav variant="home" />
+
+  <div class="hh__grid">
+    <h1 id="hh-title" aria-label={hero.seoH1}>
+      <span class="hh__half hh__half--l" aria-hidden="true">
+        {hero.titleLeft.map((l) => <><span class="ln"><span class="ln__t" data-hm="hero-line">{l}</span></span>{' '}</>)}
+      </span>
+      <span class="hh__half hh__half--r" aria-hidden="true">
+        {hero.titleRight.map((l) => <><span class="ln"><span class="ln__t" data-hm="hero-line">{l}</span></span>{' '}</>)}
+      </span>
+    </h1>
+    <p class="sr-only">{hero.directAnswer}</p>
+
+    <!-- the window the ambassador stands in -->
+    <div class="hh__fig">
+      <div class="hh__arch" data-hm="hero-arch" aria-hidden="true"><i></i></div>
+      <Image src={srk} alt="Brand ambassador Shah Rukh Khan with arms open in welcome" class="hh__srk" data-hm="hero-srk" widths={[700, 1030]} sizes="(max-width: 900px) 128vw, min(64vw, 1150px)" loading="eager" />
+    </div>
+
+    <div class="hh__left">
+      <p class="hh__sub" data-hm="hero-fade">{hero.sub}</p>
+      <div class="hh__cta" data-hm="hero-fade">
+        <a href={hero.primary.href} class="hh__btn">{hero.primary.label}</a>
+        <a href={hero.secondary.href} class="hh__btn hh__btn--ghost">{hero.secondary.label}</a>
+      </div>
+      <p class="hh__trust" data-hm="hero-fade">{hero.trust}</p>
+    </div>
+
+    <ul class="hh__proof" data-hm="hero-proof" aria-label="Proof points">
+      {
+        hero.proof.map((p) => (
+          <li>
+            <b>{p.value}</b>
+            <span>{p.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style is:global>
+  .hh {
+    --aw: min(30vw, 440px); /* arch width */
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    height: 100svh;
+    min-height: 700px;
+    background: #e3eef5;
+    color: var(--color-brand-navy);
+  }
+  .hh__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 45%;
+    filter: saturate(0.9);
+  }
+  /* a pale wash over the photograph, brightest behind the ambassador */
+  .hh__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 46% 70% at 50% 60%, rgb(255 255 255 / 0.55), transparent 72%),
+      linear-gradient(180deg, rgb(236 245 251 / 0.82) 0%, rgb(236 245 251 / 0.7) 55%, rgb(236 245 251 / 0.88) 100%);
+  }
+
+  .hh__grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr var(--aw) 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(1rem, 2.4vw, 2.5rem);
+    padding: 118px clamp(1.25rem, 4vw, 4rem) clamp(1.25rem, 4svh, 3rem);
+  }
+
+  /* the figure: an arch (a white uPVC window frame with glass and a mullion) and the ambassador in front of it */
+  .hh__fig {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hh__arch {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    translate: -50% 0;
+    width: var(--aw);
+    height: 84%;
+    border-radius: 999px 999px 0 0;
+    background: linear-gradient(180deg, #ffffff, #eef3f7);
+    box-shadow: 0 40px 80px -40px rgb(13 31 45 / 0.5), inset 0 0 0 1px rgb(13 31 45 / 0.06);
+    transform-origin: 50% 100%;
+  }
+  .hh__arch i {
+    position: absolute;
+    inset: 12px 12px 0;
+    border-radius: 999px 999px 0 0;
+    background:
+      linear-gradient(90deg, transparent calc(50% - 5px), #fff calc(50% - 5px) calc(50% + 5px), transparent calc(50% + 5px)),
+      linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.32) 30% 40%, transparent 40% 48%, rgb(255 255 255 / 0.18) 48% 52%, transparent 52%),
+      linear-gradient(180deg, #7dbbe4 0%, #b5dcf3 55%, #e3f2fb 100%);
+    box-shadow: inset 0 0 0 3px rgb(11 43 64 / 0.14);
+  }
+  .hh__srk {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    translate: -50% 0;
+    width: auto;
+    height: min(88svh, 64vw);
+    max-width: none;
+    filter: drop-shadow(0 24px 30px rgb(13 31 45 / 0.28));
+    transform-origin: 50% 100%;
+  }
+
+  .hh h1 {
+    position: relative;
+    z-index: 2;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6.1vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    color: var(--color-brand-navy);
+  }
+  .hh__half {
+    display: block;
+  }
+  .hh__half--l {
+    grid-column: 1;
+    text-align: right;
+  }
+  .hh__half--r {
+    grid-column: 3;
+    text-align: left;
+    color: var(--color-brand-blue);
+  }
+
+  /* below the arms: copy and buttons on the left, proof figures on the right */
+  .hh__left {
+    position: relative;
+    z-index: 2;
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    max-width: 30rem;
+  }
+  .hh__eyebrow {
+    margin-bottom: 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-brand-blue);
+  }
+  .hh__sub {
+    max-width: 24rem;
+    font-size: clamp(0.88rem, 1vw, 1rem);
+    line-height: 1.6;
+    color: rgb(11 43 64 / 0.82);
+  }
+  .hh__cta {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .hh__btn {
+    display: inline-grid;
+    place-items: center;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid var(--color-brand-blue);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #0a7db8 0%, #076ea1 55%, #065a85 100%);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    box-shadow: 0 14px 30px -14px rgb(7 110 161 / 0.7);
+    transition: filter 0.3s ease, transform 0.3s var(--ease-smooth), background-color 0.3s ease;
+  }
+  .hh__btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+  }
+  .hh__btn--ghost {
+    background: rgb(255 255 255 / 0.7);
+    color: var(--color-brand-blue);
+    box-shadow: none;
+  }
+  .hh__btn--ghost:hover {
+    background: #fff;
+    filter: none;
+  }
+  .hh__trust {
+    margin-top: 0.8rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgb(11 43 64 / 0.62);
+  }
+  .hh__proof {
+    position: relative;
+    z-index: 2;
+    grid-column: 3;
+    grid-row: 2;
+    align-self: end;
+    justify-self: start;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .hh__proof li {
+    padding: 0.7rem 1.1rem;
+    border-left: 3px solid var(--color-brand-green);
+    background: rgb(255 255 255 / 0.72);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 18px 40px -30px rgb(13 31 45 / 0.5);
+  }
+  .hh__proof b {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--color-brand-blue);
+  }
+  .hh__proof span {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(11 43 64 / 0.65);
+  }
+
+  /* phone: headline, then the ambassador in his arch, then a white panel that hides the cut at his waist */
+  @media (max-width: 900px) {
+    .hh {
+      --aw: min(62vw, 300px);
+      height: auto;
+      min-height: 0;
+    }
+    .hh__grid {
+      position: relative;
+      inset: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 96px 0 0;
+    }
+    .hh h1 {
+      display: block;
+      padding-inline: 1.25rem;
+      font-size: clamp(2.4rem, 11vw, 4rem);
+    }
+    .hh__half {
+      display: inline;
+      text-align: left;
+    }
+    .hh__half .ln,
+    .hh__half .ln__t {
+      display: inline;
+      overflow: visible;
+      padding: 0;
+      margin: 0;
+    }
+    .hh__fig {
+      position: relative;
+      inset: auto;
+      height: min(96vw, 420px);
+      margin-top: 1.4rem;
+    }
+    .hh__arch {
+      height: 86%;
+    }
+    .hh__srk {
+      width: 128vw;
+      height: auto;
+    }
+    .hh__left {
+      max-width: none;
+      padding: 1.6rem 1.25rem 0.5rem;
+      background: #fff;
+    }
+    .hh__proof {
+      grid-column: auto;
+      justify-self: stretch;
+      padding: 1rem 1.25rem 2rem;
+      background: #fff;
+    }
+  }
+</style>

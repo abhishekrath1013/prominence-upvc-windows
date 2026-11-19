@@ -1,0 +1,346 @@
+---
+// Contact section, same as the other Prominance site: slate gradient, brand ambassador, copy on the left, the white
+// enquiry card on the right. Design coordinates are a 1326px stage scaled to the viewport (--z); below 1100px it stacks.
+// Only the copy and contacts differ (src/data/home.ts, src/data/brand.ts).
+import { Image } from "astro:assets";
+import ambassador from "../../assets/home/ambassador.png";
+import { cta } from "../../data/home";
+import { contact } from "../../data/brand";
+---
+
+<section class="cta" id="contact" data-cta aria-labelledby="cta-title">
+  <div class="cta__stage">
+    <Image
+      class="cta__man"
+      src={ambassador}
+      alt=""
+      width={1027}
+      height={1532}
+      widths={[480, 800, 1027]}
+      sizes="(max-width: 1100px) 0px, 560px"
+      loading="lazy"
+      decoding="async"
+    />
+    <div class="cta__copy">
+      <p class="cta__eyebrow">{cta.eyebrow}</p>
+      <h2 id="cta-title" aria-label={cta.titleLabel}>{cta.title.map((l, i) => <>{l}{i < cta.title.length - 1 && <br />}</>)}</h2>
+      <p class="cta__lead">{cta.lead}</p>
+      <div class="cta__talk">
+        <p class="cta__eyebrow">{cta.talk}</p>
+        <a class="cta__phone" href={cta.phoneHref}>{cta.phone}</a>
+        <a class="cta__mail" href={`mailto:${cta.email}`}>{cta.email}</a>
+      </div>
+    </div>
+
+    <form class="cta-card" id="lead" novalidate data-endpoint-email={contact.email}>
+      <h3>Let’s find your perfect fit.</h3>
+      <p class="cta-card__sub">Request a free consultation</p>
+      <div class="cta-fields">
+        <label><span class="cta-sr">Full name</span><input name="name" type="text" placeholder="Enter your full name" autocomplete="name" required /></label>
+        <label><span class="cta-sr">Mobile number</span><input name="phone" type="tel" placeholder="Mobile number (+91)" autocomplete="tel" required /></label>
+        <label><span class="cta-sr">Email</span><input name="email" type="email" placeholder="Email" autocomplete="email" /></label>
+        <label><span class="cta-sr">City</span><input name="city" type="text" placeholder="Your city" autocomplete="address-level2" /></label>
+        <label>
+          <span class="cta-sr">I’m interested in</span>
+          <select name="interest">
+            <option value="">I’m interested in</option>
+            {cta.form.interests.map((o) => <option>{o}</option>)}
+          </select>
+        </label>
+      </div>
+      <p class="cta-card__fine">By submitting, you agree to be contacted about your enquiry.</p>
+      <button class="cta-card__btn" type="submit"><span>Request a callback</span><i aria-hidden="true">→</i></button>
+      <p class="cta-card__ok" role="status" aria-live="polite" hidden>Opening your email app so you can send this request — our team will call you back shortly.</p>
+    </form>
+  </div>
+</section>
+
+<style is:global>
+  .cta {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    height: calc(914px * var(--z, 1));
+    background: linear-gradient(180deg, #5c5e6d 0%, #5c5e6d 34%, #2f2f37 64%, #1e1e20 88%, #191919 100%);
+    clip-path: inset(-300px 0 0 0); /* the character can rise above the section but is cut at the bottom */
+  }
+  .cta__stage {
+    position: relative;
+    width: 1326px;
+    height: 914px;
+    margin: 0 auto;
+    zoom: var(--z, 1);
+  }
+  .cta__man {
+    position: absolute;
+    left: 225px;
+    top: -24px;
+    width: auto;
+    max-width: none;
+    height: 931px;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .cta__copy > * {
+    position: absolute;
+    left: 80px;
+    margin: 0;
+  }
+  .cta__eyebrow {
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.92);
+    white-space: nowrap;
+  }
+  .cta__copy > .cta__eyebrow {
+    top: 98px;
+  }
+  .cta__talk .cta__eyebrow {
+    color: rgb(255 255 255 / 0.5);
+  }
+  .cta__copy h2 {
+    font-family: var(--font-sans);
+    top: 119px;
+    width: 360px;
+    white-space: nowrap;
+    font-weight: 200;
+    font-size: 46px;
+    line-height: 56px;
+    letter-spacing: -1.5px;
+    color: #dadbde;
+  }
+  .cta__lead {
+    top: 399px;
+    width: 302px;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 400;
+    color: rgb(255 255 255 / 0.9);
+  }
+  .cta__talk {
+    top: 527px;
+    width: 260px;
+  }
+  .cta__talk > * {
+    position: static;
+    display: block;
+  }
+  .cta__phone {
+    margin-top: 6px;
+    font-weight: 200;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.5px;
+    color: rgb(255 255 255 / 0.5);
+  }
+  .cta__mail {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+    color: rgb(255 255 255 / 0.5);
+  }
+  .cta__phone,
+  .cta__mail {
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .cta__phone:hover,
+  .cta__mail:hover {
+    color: #fff;
+  }
+
+  .cta-card {
+    position: absolute;
+    left: 754px;
+    top: 75px;
+    width: 493px;
+    height: 659px;
+    background: #fff;
+    color: #1d1d1d;
+    border-radius: 14px;
+    padding: 31px 34px 0;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.3);
+    z-index: 2;
+  }
+  .cta-card h3 {
+    font-family: var(--font-sans);
+    font-weight: 200;
+    font-size: 31px;
+    line-height: 36px;
+    letter-spacing: -1.4px;
+    color: #1d1d1d;
+  }
+  .cta-card__sub {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+    color: #444;
+  }
+  .cta-fields {
+    margin-top: 21px;
+    display: grid;
+    gap: 8px;
+  }
+  .cta-fields label {
+    display: block;
+  }
+  .cta-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .cta-fields input,
+  .cta-fields select {
+    width: 100%;
+    height: 72px;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid #d9dcdc;
+    border-radius: 0;
+    background: transparent;
+    font: 400 13px var(--font-sans);
+    color: #222;
+    outline: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .cta-fields select {
+    color: #444;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' fill='none' stroke='%23444' stroke-width='1.2'%3E%3Cpath d='M.5.5l4 4 4-4'/%3E%3C/svg%3E") left 106px bottom 33px no-repeat; /* chevron sits right after the label, level with the text */
+  }
+  .cta-fields input::placeholder {
+    color: #444;
+    opacity: 1;
+  }
+  .cta-fields input:focus,
+  .cta-fields select:focus {
+    border-bottom-color: var(--color-brand-blue);
+  }
+  .cta-fields input:user-invalid {
+    border-bottom-color: #d64545;
+  }
+  .cta-card__fine {
+    margin-top: 21px;
+    font-size: 11px;
+    line-height: 17px;
+    font-weight: 400;
+    color: #555;
+  }
+  .cta-card__btn {
+    margin-top: 21px;
+    width: 100%;
+    height: 64px;
+    padding: 0 20px 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 0;
+    background: var(--color-brand-blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+  .cta-card__btn i {
+    font-style: normal;
+    font-size: 16px;
+    letter-spacing: 0;
+    transition: transform 0.3s;
+  }
+  .cta-card__btn:hover {
+    background: #055c88;
+  }
+  .cta-card__btn:hover i {
+    transform: translateX(4px);
+  }
+  .cta-card__ok {
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #076ea1;
+  }
+
+  @media (max-width: 1100px) {
+    .cta {
+      height: auto;
+      padding: 0 0 56px;
+    }
+    .cta__stage {
+      zoom: 1;
+      width: auto;
+      height: auto;
+      padding: 120px 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    .cta__man {
+      display: none;
+    }
+    .cta__copy > * {
+      position: static;
+      margin: 0 0 22px;
+    }
+    .cta__copy h2 {
+      width: auto;
+      max-width: 14em;
+    }
+    .cta__lead {
+      width: auto;
+      max-width: 30em;
+    }
+    .cta__talk {
+      width: auto;
+    }
+    .cta-card {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      padding: 31px 26px 30px;
+    }
+  }
+</style>
+
+<script>
+  // scale the 1326px design stage to the width it is shown at
+  const cta = document.querySelector<HTMLElement>("[data-cta]");
+  if (cta) {
+    const scale = () => {
+      const z = Math.max(0.6, Math.min(1.25, cta.clientWidth / 1326));
+      cta.style.setProperty("--z", z.toFixed(3));
+    };
+    scale();
+    if ("ResizeObserver" in window) new ResizeObserver(scale).observe(document.body);
+    else addEventListener("resize", scale);
+
+    // no backend yet: hand the enquiry to the visitor's email app (same behaviour as the rest of the site)
+    const form = cta.querySelector<HTMLFormElement>("#lead");
+    const ok = cta.querySelector<HTMLElement>(".cta-card__ok");
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const d = new FormData(form);
+      const to = form.dataset.endpointEmail ?? "info@prominance.com";
+      const subject = encodeURIComponent(`Callback request — ${d.get("name") ?? "Website"}`);
+      const body = encodeURIComponent(
+        `Name: ${d.get("name")}\nMobile: ${d.get("phone")}\nEmail: ${d.get("email") || "-"}\nCity: ${d.get("city") || "-"}\nInterested in: ${d.get("interest") || "-"}`
+      );
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+      if (ok) ok.hidden = false;
+    });
+  }
+</script>

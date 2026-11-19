@@ -51,7 +51,7 @@ const faqSchema = {
 
   <section class="py-16 sm:py-20">
     <div class="container-prom grid grid-cols-1 gap-14 lg:grid-cols-[220px_1fr]">
-      <nav class="hidden flex-col gap-1 lg:sticky lg:top-28 lg:flex lg:h-fit" aria-label="FAQ categories">
+      <nav class="hidden flex-col gap-1 self-start lg:flex" aria-label="FAQ categories" data-pin data-pin-top="112">
         {grouped.map((g) => (
           <a href={`#${g.key}`} class="rounded-lg px-3 py-2 text-sm font-semibold text-ink-muted hover:bg-surface-alt hover:text-ink">{g.label}</a>
         ))}

@@ -4,7 +4,7 @@ import logo from '../../assets/images/real/brand/logo.png';
 import { brand, contact, sampleCities } from '../../data/brand';
 
 const currentYear = new Date().getFullYear();
-const wrap = Astro.url.pathname === '/' ? 'w-full px-[2vw]' : 'container-prom';
+const wrap = 'mx-auto w-full max-w-[1560px] px-[clamp(1.25rem,4vw,4rem)]';
 
 const columns = [
   {
@@ -53,55 +53,61 @@ const socialLinks = [
 ];
 ---
 
-<footer class="border-t border-border bg-neutral-900 text-neutral-300">
-  <div class={`${wrap} grid grid-cols-2 gap-x-8 gap-y-12 py-16 md:grid-cols-6`}>
-    <div class="col-span-2 flex flex-col gap-5">
-      <Image src={logo} alt="Prominance" height={36} width={136} class="brightness-0 invert" />
-      <p class="max-w-xs text-sm leading-relaxed text-neutral-400">{brand.tagline}</p>
-      <div class="flex flex-col gap-1 text-sm text-neutral-400">
-        <a href={contact.tollFreeHref} class="font-bold text-white hover:text-accent-400">{contact.tollFree} (Toll Free)</a>
-        <a href={contact.phoneHref} class="hover:text-white">{contact.phone}</a>
-        <a href={`mailto:${contact.email}`} class="hover:text-white">{contact.email}</a>
-      </div>
-      <div class="flex gap-3 pt-2">
-        {socialLinks.map((s) => (
-          <a href={s.href} aria-label={s.label} class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-bold hover:bg-accent-600 hover:text-white">
-            {s.label[0]}
-          </a>
-        ))}
-      </div>
-    </div>
-
-    {columns.map((col) => (
-      <div class="flex flex-col gap-3">
-        <h3 class="text-sm font-bold uppercase tracking-wide text-white">{col.title}</h3>
-        <ul class="flex flex-col gap-2.5">
-          {col.links.map((l) => (
-            <li><a href={l.href} class="text-sm text-neutral-400 hover:text-white">{l.label}</a></li>
+<footer class="relative z-[1] overflow-hidden bg-bone-deep text-ink" data-footer-reveal>
+  <div class="relative">
+    <div class={`${wrap} grid grid-cols-2 gap-x-8 gap-y-14 pb-16 pt-24 md:grid-cols-6`}>
+      <div class="col-span-2 flex flex-col gap-6">
+        <Image src={logo} alt="Prominance" height={38} width={142} />
+        <p class="display max-w-sm text-[1.7rem] leading-[1.15] text-ink">{brand.short}</p>
+        <div class="flex flex-col gap-1.5 text-sm text-ink-muted">
+          <a href={contact.tollFreeHref} class="font-medium text-ink transition-colors hover:text-accent-700">{contact.tollFree} <span class="font-normal text-ink-muted">(Toll Free)</span></a>
+          <a href={contact.phoneHref} class="transition-colors hover:text-ink">{contact.phone}</a>
+          <a href={`mailto:${contact.email}`} class="transition-colors hover:text-ink">{contact.email}</a>
+        </div>
+        <div class="flex gap-5 pt-1">
+          {socialLinks.map((s) => (
+            <a href={s.href} class="text-[0.64rem] font-medium uppercase tracking-[0.22em] text-ink-muted transition-colors hover:text-accent-700">
+              {s.label}
+            </a>
           ))}
-        </ul>
+        </div>
       </div>
-    ))}
-  </div>
 
-  <div class="border-t border-white/10">
-    <div class={`${wrap} flex flex-col gap-3 py-6`}>
-      <span class="text-xs font-bold uppercase tracking-wide text-neutral-500">Also serving</span>
-      <div class="flex flex-wrap gap-x-5 gap-y-2">
-        {sampleCities.map((c) => (
-          <a href={`/locations/${c.slug}/`} class="text-sm text-neutral-400 hover:text-white">{c.name}</a>
-        ))}
-        <span class="text-sm text-neutral-600">+ 15 more cities across India</span>
+      {columns.map((col) => (
+        <div class="flex flex-col gap-5">
+          <h3 class="font-sans text-[0.64rem] font-medium uppercase tracking-[0.28em] text-accent-700">{col.title}</h3>
+          <ul class="flex flex-col gap-3">
+            {col.links.map((l) => (
+              <li><a href={l.href} class="text-[0.92rem] text-ink-muted transition-colors hover:text-ink">{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="border-t border-ink/10">
+      <div class={`${wrap} flex flex-col gap-3 py-7 md:flex-row md:items-center md:gap-10`}>
+        <span class="text-[0.64rem] font-medium uppercase tracking-[0.28em] text-accent-700">Also serving</span>
+        <div class="flex flex-wrap gap-x-7 gap-y-2">
+          {sampleCities.map((c) => (
+            <a href={`/locations/${c.slug}/`} class="text-sm text-ink-muted transition-colors hover:text-ink">{c.name}</a>
+          ))}
+          <span class="text-sm text-ink-muted/60">+ 15 more cities across India</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="border-t border-white/10">
-    <div class={`${wrap} flex flex-col items-center justify-between gap-3 py-6 text-xs text-neutral-500 sm:flex-row`}>
-      <span>© {currentYear} {brand.legalName}. All rights reserved.</span>
-      <div class="flex gap-5">
-        <a href="/privacy/" class="hover:text-white">Privacy Policy</a>
-        <a href="/terms/" class="hover:text-white">Terms & Conditions</a>
+    <div class="pointer-events-none select-none overflow-hidden" aria-hidden="true">
+      <p class="display whitespace-nowrap text-center text-[clamp(4rem,19.5vw,22rem)] leading-[0.8] text-ink/[0.055]">Prominance</p>
+    </div>
+
+    <div class="border-t border-ink/10">
+      <div class={`${wrap} flex flex-col items-center justify-between gap-3 py-6 text-xs text-ink-muted sm:flex-row`}>
+        <span>© {currentYear} {brand.legalName}. All rights reserved.</span>
+        <div class="flex gap-6">
+          <a href="/privacy/" class="transition-colors hover:text-ink">Privacy Policy</a>
+          <a href="/terms/" class="transition-colors hover:text-ink">Terms &amp; Conditions</a>
+        </div>
       </div>
     </div>
   </div>

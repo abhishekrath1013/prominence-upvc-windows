@@ -1,0 +1,177 @@
+---
+// Footer — identical to the Uniframe (aluminium) footer: Prominance lock-up, Explore links, corporate head office, social row.
+// Only the data differs: uPVC logo, address and contacts from src/data/brand.ts.
+import { Image } from "astro:assets";
+import logo from "../../assets/images/real/brand/logo.png";
+import { brand, contact } from "../../data/brand";
+const year = new Date().getFullYear();
+
+const explore = [
+  { label: "Home", href: "/" },
+  { label: "About us", href: "/why-prominance/" },
+  { label: "Products", href: "/products/" },
+  { label: "Blog", href: "/resources/" },
+  { label: "Contact us", href: "/contact/" },
+];
+const social = [
+  { label: "Facebook", href: contact.social.facebook },
+  { label: "Instagram", href: contact.social.instagram },
+  { label: "YouTube", href: contact.social.youtube },
+  { label: "LinkedIn", href: contact.social.linkedin },
+];
+---
+
+<footer class="uff">
+  <div class="uff__grid">
+    <div class="uff__brand">
+      <a href="/" aria-label="Prominance uPVC Window Systems — home">
+        <Image src={logo} alt="Prominance uPVC Window Systems" width={240} height={65} widths={[260, 520]} sizes="201px" loading="lazy" />
+      </a>
+      <p class="uff__tag">Aesthetic outlook.<br />Robust soul.</p>
+      <p class="uff__sub">Lead-free uPVC windows and doors,<br />engineered for Indian homes.</p>
+    </div>
+
+    <div class="uff__col">
+      <h4>Explore</h4>
+      <ul>
+        {explore.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div class="uff__col">
+      <h4>Corporate head office</h4>
+      <address>
+        {brand.legalName}<br />
+        {contact.hq.line1},<br />
+        {contact.hq.line2}
+      </address>
+      <p class="uff__contact">
+        <a href={contact.tollFreeHref}>{contact.tollFree}</a><br />
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="uff__legal">
+    <p>© {year} {brand.legalName}. All rights reserved.</p>
+    <p>
+      {
+        social.map((l, i) => (
+          <>
+            <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+            {i < social.length - 1 ? " / " : ""}
+          </>
+        ))
+      }
+    </p>
+  </div>
+</footer>
+
+<style is:global>
+  .uff {
+    position: relative;
+    z-index: 2;
+    background: #191919;
+    color: #fff;
+    padding: 50px clamp(1.25rem, 4.83vw, 4rem) 0;
+    border-radius: 0;
+  }
+  .uff__grid {
+    margin: 0 auto;
+    max-width: 1326px;
+    display: grid;
+    grid-template-columns: 34.2% 23.4% 1fr;
+    padding-bottom: 14px;
+  }
+  .uff__brand img {
+    width: 201px;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
+  .uff__tag {
+    margin-top: 40px;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 36px;
+    letter-spacing: -0.3px;
+    color: #fff;
+  }
+  .uff__sub {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 26px;
+    font-weight: 400;
+    color: rgb(255 255 255 / 0.75);
+  }
+  .uff h4 {
+    margin-top: 24px;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .uff__col ul {
+    margin-top: 22px;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+  }
+  .uff address {
+    margin-top: 22px;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+  }
+  .uff__contact {
+    margin-top: 40px;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+  }
+  .uff a {
+    transition: opacity 0.2s;
+  }
+  .uff a:hover {
+    opacity: 0.65;
+  }
+  .uff__legal {
+    margin: 0 auto;
+    max-width: 1326px;
+    border-top: 1px solid #486266;
+    padding: 24px 0 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 400;
+    color: rgb(255 255 255 / 0.9);
+  }
+  @media (max-width: 900px) {
+    .uff__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem 1.5rem;
+    }
+    .uff__brand {
+      grid-column: 1 / -1;
+    }
+    .uff__tag {
+      margin-top: 1.5rem;
+    }
+    .uff__legal {
+      flex-direction: column;
+    }
+  }
+  @media (max-width: 520px) {
+    .uff__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

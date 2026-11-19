@@ -1,42 +1,32 @@
+import { gsap, ScrollTrigger, initSmooth, scrollToTarget, reducedMotion } from './smooth';
+
 let started = false;
 
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /**
- * Sitewide motion: Lenis smooth scroll, scroll-progress bar, reveal-on-scroll
- * (`.reveal`, `.img-reveal`, optional `data-stagger` parents), count-up numbers,
- * parallax (`data-parallax="0.12"`), SVG line-draw (`data-draw`) and card tilt
- * (`data-tilt`). Everything degrades to the static layout under reduced motion.
+ * Sitewide motion: GSAP ScrollSmoother, a header that tucks away on the way down,
+ * reveal-on-scroll (`.reveal`, `.img-reveal`, optional `data-stagger` parents),
+ * count-up numbers (`data-count-to`), SVG line-draw (`data-draw`),
+ * sticky columns (`data-pin`) and the footer curtain (`data-footer-reveal`).
+ * Everything degrades to the static layout under reduced motion.
  */
 export function initMotion() {
   if (started) return;
   started = true;
 
-  if (!reduced()) initLenis();
+  initSmooth();
 
   initStagger();
   initRevealObserver();
   initCountUp();
-  initScrollEffects();
+  initProgress();
   initDraw();
-  initTilt();
   initAnchors();
+  initHeader();
+  initPins();
+  initFooterReveal();
 }
 
-async function initLenis() {
-  const { default: Lenis } = await import('lenis');
-  const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
-  (window as any).__lenis = lenis;
-  document.documentElement.classList.add('lenis');
-
-  const raf = (time: number) => {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  };
-  requestAnimationFrame(raf);
-}
-
-/** Smooth in-page anchors (works with or without Lenis). */
+/** Smooth in-page anchors (works with or without ScrollSmoother). */
 function initAnchors() {
   document.addEventListener('click', (e) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"], a[href^="/#"]');
@@ -46,15 +36,13 @@ function initAnchors() {
     const target = document.querySelector<HTMLElement>(url.hash);
     if (!target) return;
     e.preventDefault();
-    scrollToEl(target);
+    scrollToTarget(target, a.hasAttribute('data-flush') ? 0 : -84);
     history.replaceState(null, '', url.hash);
   });
 }
 
 export function scrollToEl(el: HTMLElement, offset = -84) {
-  const lenis = (window as any).__lenis;
-  if (lenis) lenis.scrollTo(el, { offset, duration: 1.4 });
-  else el.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+  scrollToTarget(el, offset);
 }
 
 /** Children of [data-stagger] get cascading reveal delays. */
@@ -79,8 +67,7 @@ function initRevealObserver() {
         const delay = target.dataset.revealDelay;
         if (delay) target.style.transitionDelay = `${delay}ms`;
         target.classList.add('is-visible');
-        // Drop the delay once finished so hover transitions stay snappy.
-        if (delay) setTimeout(() => (target.style.transitionDelay = ''), 1400 + Number(delay));
+        if (delay) setTimeout(() => (target.style.transitionDelay = ''), 1600 + Number(delay));
         observer.unobserve(target);
       }
     },
@@ -93,85 +80,43 @@ function initCountUp() {
   const els = document.querySelectorAll<HTMLElement>('[data-count-to]');
   if (!els.length) return;
 
-  const animate = (el: HTMLElement) => {
+  els.forEach((el) => {
     const to = parseFloat(el.dataset.countTo ?? '0');
     const suffix = el.dataset.countSuffix ?? '';
     const decimals = el.dataset.countDecimals ? parseInt(el.dataset.countDecimals) : 0;
-    const fmt = (v: number) =>
-      (decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-IN')) + suffix;
+    const fmt = (v: number) => (decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-IN')) + suffix;
 
-    if (reduced()) {
+    if (reducedMotion()) {
       el.textContent = fmt(to);
       return;
     }
-    const duration = 1800;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / duration, 1);
-      el.textContent = fmt(to * (1 - Math.pow(1 - p, 4)));
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          animate(entry.target as HTMLElement);
-          observer.unobserve(entry.target);
-        }
-      }
-    },
-    { threshold: 0.5 }
-  );
-  els.forEach((el) => observer.observe(el));
+    const state = { v: 0 };
+    el.textContent = fmt(0);
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      once: true,
+      onEnter: () =>
+        gsap.to(state, {
+          v: to,
+          duration: 2.2,
+          ease: 'power3.out',
+          onUpdate: () => (el.textContent = fmt(state.v)),
+          onComplete: () => (el.textContent = fmt(to)),
+        }),
+    });
+  });
 }
 
-/** Scroll progress bar + parallax layers, driven by one rAF-throttled scroll listener. */
-function initScrollEffects() {
+/** Hairline progress bar along the very top of the viewport. */
+function initProgress() {
   const bar = document.querySelector<HTMLElement>('[data-scroll-progress]');
-  const layers = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
-  const visible = new Set<HTMLElement>();
-  const doParallax = !reduced() && layers.length > 0;
-
-  if (doParallax) {
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          const el = e.target as HTMLElement;
-          e.isIntersecting ? visible.add(el) : visible.delete(el);
-        }),
-      { rootMargin: '20% 0px 20% 0px' }
-    );
-    layers.forEach((l) => io.observe(l));
-  }
-
-  let ticking = false;
-  const update = () => {
-    ticking = false;
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - window.innerHeight;
-    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(window.scrollY / max, 1) : 0})`;
-
-    if (doParallax) {
-      const vh = window.innerHeight;
-      visible.forEach((el) => {
-        const speed = parseFloat(el.dataset.parallax || '0.1');
-        const rect = el.parentElement!.getBoundingClientRect();
-        const offset = rect.top + rect.height / 2 - vh / 2;
-        el.style.transform = `translate3d(0, ${(-offset * speed).toFixed(1)}px, 0)`;
-      });
-    }
-  };
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
+  if (!bar) return;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate: (self) => (bar.style.transform = `scaleX(${self.progress.toFixed(4)})`),
+  });
 }
 
 /** SVG paths with [data-draw] animate their stroke when scrolled into view. */
@@ -181,9 +126,9 @@ function initDraw() {
   paths.forEach((p) => {
     const len = p.getTotalLength();
     p.style.strokeDasharray = `${len}`;
-    p.style.strokeDashoffset = reduced() ? '0' : `${len}`;
+    p.style.strokeDashoffset = reducedMotion() ? '0' : `${len}`;
   });
-  if (reduced()) return;
+  if (reducedMotion()) return;
   const io = new IntersectionObserver(
     (entries) =>
       entries.forEach((e) => {
@@ -198,17 +143,58 @@ function initDraw() {
   paths.forEach((p) => io.observe(p));
 }
 
-/** Gentle 3D tilt that follows the pointer (fine pointers only). */
-function initTilt() {
-  if (reduced() || !window.matchMedia('(pointer: fine)').matches) return;
-  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((el) => {
-    const max = parseFloat(el.dataset.tilt || '6');
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.transform = `perspective(900px) rotateX(${(-y * max).toFixed(2)}deg) rotateY(${(x * max).toFixed(2)}deg)`;
+/** Header: tucks away while reading downwards, returns on the way back up, frosts once scrolled. */
+function initHeader() {
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (!header) return;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate: (self) => {
+      const y = self.scroll();
+      header.classList.toggle('is-scrolled', y > 40);
+      const open = document.querySelector('[data-menu].open');
+      const hide = self.direction === 1 && y > 420 && !open;
+      if (self.direction === -1 || y < 420) header.classList.remove('is-hidden');
+      else if (hide) header.classList.add('is-hidden');
+    },
+  });
+}
+
+/**
+ * `position: sticky` cannot work inside ScrollSmoother's transformed content, so sticky
+ * columns use `data-pin` instead: pinned from `data-pin-top` px until their parent ends.
+ */
+function initPins() {
+  document.querySelectorAll<HTMLElement>('[data-pin]').forEach((el) => {
+    const top = parseInt(el.dataset.pinTop || '112', 10);
+    const mq = el.dataset.pinMin ? `(min-width: ${el.dataset.pinMin}px)` : '(min-width: 1024px)';
+    gsap.matchMedia().add(mq, () => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: `top top+=${top}`,
+        endTrigger: el.parentElement!,
+        end: 'bottom bottom',
+        pin: true,
+        pinSpacing: false,
+      });
     });
-    el.addEventListener('pointerleave', () => (el.style.transform = ''));
+  });
+}
+
+/** The footer is drawn up from beneath the last section, like a curtain being raised. */
+function initFooterReveal() {
+  const footer = document.querySelector<HTMLElement>('[data-footer-reveal]');
+  if (!footer || reducedMotion()) return;
+  gsap.matchMedia().add('(min-width: 900px)', () => {
+    gsap.fromTo(
+      footer.firstElementChild,
+      { yPercent: -22 },
+      {
+        yPercent: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: footer, start: 'top bottom', end: 'top 25%', scrub: true },
+      }
+    );
   });
 }

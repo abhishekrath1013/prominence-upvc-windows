@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import logo from '../../assets/images/real/brand/logo.png';
 import { contact } from '../../data/brand';
 
-const isHome = Astro.url.pathname === '/';
+const path = Astro.url.pathname;
 const nav = [
   { href: '/windows/', label: 'Windows' },
   { href: '/doors/', label: 'Doors' },
@@ -17,69 +17,135 @@ const overlay = [
   { href: '/resources/downloads/', label: 'Downloads' },
   { href: '/contact/', label: 'Contact' },
 ];
+const isActive = (href: string) => path.startsWith(href);
 ---
 
-<header class="fixed inset-x-0 top-0 z-50" data-header>
-  <div class={`flex h-20 items-center justify-between gap-6 ${isHome ? 'px-[2vw]' : 'container-prom'}`}>
-    <a href="/" class="flex shrink-0 items-center" aria-label="Prominance home">
-      {isHome
-        ? <span class="rounded-full bg-bone/90 px-5 py-2.5 backdrop-blur-md"><Image src={logo} alt="Prominance uPVC Window Systems" height={30} width={113} loading="eager" /></span>
-        : <Image src={logo} alt="Prominance" height={34} width={128} loading="eager" />}
-    </a>
-
-    <nav class={`hidden items-center gap-8 ${isHome ? '' : 'lg:flex'}`} aria-label="Primary">
-      {nav.map((n) => (
-        <a href={n.href} class="nav-link text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-ink">{n.label}</a>
-      ))}
-    </nav>
-
-    <div class="flex items-center gap-3">
-      <a href="/quote/" class={`${isHome ? '!hidden' : ''} hidden rounded-full bg-ink px-5 py-2.5 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:bg-primary-700 sm:inline-flex`}>
-        Request a quote
+<header class="site-header fixed inset-x-0 top-0 z-50" data-header>
+  <div class="mx-auto max-w-[1560px] px-[clamp(0.75rem,2vw,2rem)] pt-3 sm:pt-4">
+    <div class="header-bar flex h-[3.75rem] items-center justify-between gap-6 rounded-full pl-6 pr-2.5 sm:h-16 sm:pl-8">
+      <a href="/" class="flex shrink-0 items-center" aria-label="Prominance home">
+        <Image src={logo} alt="Prominance uPVC Window Systems" height={32} width={120} loading="eager" />
       </a>
-      <button
-        type="button"
-        class={isHome ? "flex h-11 items-center gap-2 rounded-full bg-bone/90 px-5 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-ink backdrop-blur-md" : "flex h-11 items-center gap-2 rounded-full border border-ink/20 bg-bone/70 px-4 text-[0.72rem] font-semibold uppercase tracking-[0.16em] backdrop-blur lg:hidden"}
-        aria-expanded="false"
-        aria-controls="site-menu"
-        data-menu-toggle
-      >
-        <span data-menu-label>Menu</span>
-      </button>
+
+      <nav class="hidden items-center gap-9 lg:flex" aria-label="Primary">
+        {nav.map((n) => (
+          <a
+            href={n.href}
+            class:list={['nav-link text-[0.68rem] font-medium uppercase tracking-[0.24em] text-ink', { 'is-active': isActive(n.href) }]}
+            aria-current={isActive(n.href) ? 'page' : undefined}
+          >
+            {n.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href="/quote/"
+          class="quote-btn hidden h-11 items-center rounded-full bg-ink px-6 text-[0.66rem] font-medium uppercase tracking-[0.22em] text-bone transition-colors duration-500 hover:bg-accent-700 sm:inline-flex"
+        >
+          Request a quote
+        </a>
+        <button
+          type="button"
+          class="flex h-11 items-center gap-2.5 rounded-full border border-ink/15 px-5 text-[0.66rem] font-medium uppercase tracking-[0.22em] text-ink transition-colors hover:border-ink/40 lg:hidden"
+          aria-expanded="false"
+          aria-controls="site-menu"
+          data-menu-toggle
+        >
+          <span class="relative block h-[7px] w-5" aria-hidden="true">
+            <span class="absolute inset-x-0 top-0 h-px bg-current transition-transform duration-500" data-bar="1"></span>
+            <span class="absolute inset-x-0 bottom-0 h-px bg-current transition-transform duration-500" data-bar="2"></span>
+          </span>
+          <span data-menu-label>Menu</span>
+        </button>
+      </div>
     </div>
   </div>
-  {!isHome && <div class="absolute inset-x-0 top-0 -z-10 h-20 bg-bone/80 backdrop-blur-md" data-header-bg></div>}
 </header>
 
 <div
   id="site-menu"
-  class="fixed inset-0 z-40 flex flex-col justify-between bg-ink-deep px-6 pb-10 pt-28 text-bone opacity-0 transition-opacity duration-300 invisible"
+  class="invisible fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-bone px-[6vw] pb-10 pt-32 opacity-0 transition-[opacity,visibility] duration-500"
   data-menu
 >
-  <ul class="flex flex-col gap-2">
+  <ul class="flex flex-col">
     {overlay.map((n, i) => (
-      <li>
-        <a href={n.href} class="display block py-1 text-[clamp(2.2rem,9vw,3.6rem)]" style={`transition-delay:${i * 40}ms`}>{n.label}</a>
+      <li class="menu-item overflow-hidden border-b border-ink/10" style={`--i:${i}`}>
+        <a href={n.href} class="flex items-baseline justify-between gap-6 py-3.5">
+          <span class="display text-[clamp(2.2rem,9vw,3.8rem)]">{n.label}</span>
+          <span class="text-[0.62rem] tracking-[0.28em] text-accent-700">0{i + 1}</span>
+        </a>
       </li>
     ))}
   </ul>
-  <div class="flex flex-col gap-2 text-sm text-bone/70">
-    <a href={contact.tollFreeHref} class="text-bone">{contact.tollFree}</a>
+  <div class="mt-10 flex flex-col gap-1.5 text-sm text-ink-muted">
+    <a href={contact.tollFreeHref} class="text-ink">{contact.tollFree}</a>
     <a href={`mailto:${contact.email}`}>{contact.email}</a>
   </div>
 </div>
 
-<style>
-  .nav-link { position: relative; padding-block: 0.4rem; }
+<style is:global>
+  .site-header {
+    transition: transform 0.7s var(--ease-smooth);
+    will-change: transform;
+  }
+  .site-header.is-hidden {
+    transform: translateY(-140%);
+  }
+  .header-bar {
+    background: color-mix(in srgb, var(--color-bone) 62%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-ink-deep) 8%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(1.4);
+    backdrop-filter: blur(22px) saturate(1.4);
+    transition:
+      background-color 0.6s var(--ease-smooth),
+      box-shadow 0.6s var(--ease-smooth);
+  }
+  .site-header.is-scrolled .header-bar {
+    background: color-mix(in srgb, var(--color-bone) 86%, transparent);
+    box-shadow: 0 18px 40px -26px rgba(60, 45, 20, 0.35);
+  }
+  .nav-link {
+    position: relative;
+    padding-block: 0.5rem;
+  }
   .nav-link::after {
     content: '';
-    position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-    background: currentColor;
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s var(--ease-smooth);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.15rem;
+    height: 1px;
+    background: var(--color-accent-600);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s var(--ease-smooth);
   }
-  .nav-link:hover::after { transform: scaleX(1); }
-  [data-menu].open { opacity: 1; visibility: visible; }
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  [data-menu].open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .menu-item > a {
+    transform: translateY(105%);
+    transition: transform 0.9s var(--ease-smooth);
+  }
+  [data-menu].open .menu-item > a {
+    transform: none;
+    transition-delay: calc(var(--i) * 55ms + 150ms);
+  }
+  [data-menu-toggle][aria-expanded='true'] [data-bar='1'] {
+    transform: translateY(3px) rotate(45deg);
+  }
+  [data-menu-toggle][aria-expanded='true'] [data-bar='2'] {
+    transform: translateY(-3px) rotate(-45deg);
+  }
 </style>
 
 <script>
@@ -91,9 +157,18 @@ const overlay = [
     menu.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', String(open));
     if (label) label.textContent = open ? 'Close' : 'Menu';
-    document.documentElement.style.overflow = open ? 'hidden' : '';
+    // freeze the page behind the menu (ScrollSmoother when present, native otherwise)
+    const smoother = (window as any).__smoother;
+    if (smoother) smoother.paused(open);
+    else document.documentElement.style.overflow = open ? 'hidden' : '';
+    document.querySelector('[data-header]')?.classList.remove('is-hidden');
   };
   toggle?.addEventListener('click', () => setOpen(!menu?.classList.contains('open')));
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
+  });
 </script>

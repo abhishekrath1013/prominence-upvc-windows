@@ -10,22 +10,19 @@ interface Props {
 const { items, class: className = '' } = Astro.props;
 ---
 
-<div class={`divide-y divide-border rounded-2xl border border-border bg-white ${className}`}>
+<div class={`divide-y divide-ink/10 border-y border-ink/10 ${className}`}>
   {
     items.map((item, i) => (
-      <details class="group px-5 py-1 open:pb-4 sm:px-6" open={i === 0}>
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-ink marker:content-none">
-          <span>{item.title}</span>
-          <svg
-            class="h-5 w-5 shrink-0 text-primary-700 transition-transform duration-200 group-open:rotate-45"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-          </svg>
+      <details class="group py-1 open:pb-5" open={i === 0}>
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 marker:content-none">
+          <span class="display text-[clamp(1.3rem,2vw,1.7rem)] leading-[1.2] text-ink">{item.title}</span>
+          <span class="relative grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/20 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-bone">
+            <svg class="h-3 w-3 transition-transform duration-500 group-open:rotate-45" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+            </svg>
+          </span>
         </summary>
-        <div class="pr-8 text-[15px] leading-relaxed text-ink-muted">
+        <div class="max-w-3xl pr-12 text-[0.98rem] leading-[1.75] text-ink-muted">
           {item.html ? <Fragment set:html={item.html} /> : <slot name={`item-${i}`} />}
         </div>
       </details>

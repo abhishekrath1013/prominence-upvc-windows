@@ -1,0 +1,250 @@
+import { gsap, ScrollTrigger, SplitText, initSmooth, reducedMotion } from '../utils/smooth';
+
+/*
+ * Home page choreography.
+ *  – ScrollSmoother (created in utils/smooth) provides the buttery scroll.
+ *  – Z-index scroll: the hero stays put while the aluminium scene slides over it; the six
+ *    promise cards pin and stack like paper; the in-house block rides over the last card.
+ *  – The aluminium scene and the craft rail are pinned and scrubbed (desktop); on phones
+ *    they fall back to a plain list and a native swipe rail.
+ */
+
+const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel)!;
+const $$ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const home = document.getElementById('home') as HTMLElement;
+
+/** Masked line-by-line headline reveal. `now` plays immediately, otherwise on scroll. */
+function splitReveal(el: HTMLElement, now = false, delay = 0) {
+  SplitText.create(el, {
+    type: 'lines',
+    mask: 'lines',
+    autoSplit: true,
+    linesClass: 'split-line',
+    onSplit(self) {
+      el.style.visibility = 'visible';
+      return gsap.from(self.lines, {
+        yPercent: 112,
+        duration: 1.35,
+        ease: 'power4.out',
+        stagger: 0.11,
+        delay,
+        scrollTrigger: now ? undefined : { trigger: el, start: 'top 90%', once: true },
+      });
+    },
+  });
+}
+
+/* ───────────────────────── 1 · hero ───────────────────────── */
+function hero(mm: gsap.MatchMedia) {
+  const root = $('[data-hero]');
+  const inner = $('[data-hero-inner]');
+  const arch = $('[data-hero-arch]');
+  const img = $('[data-hero-img]');
+
+  splitReveal($('[data-hero-title]'), true, 0.25);
+  gsap.fromTo('[data-hero-fade]', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.3, ease: 'power3.out', stagger: 0.12, delay: 0.7 });
+  gsap.fromTo(arch, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'power4.inOut', delay: 0.15, clearProps: 'clipPath' });
+  gsap.from(img, { scale: 1.28, duration: 2.6, ease: 'power3.out', delay: 0.15 });
+
+  // the image drifts as the page leaves
+  gsap.to(img, {
+    yPercent: 7,
+    ease: 'none',
+    scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
+  });
+
+  mm.add('(min-width: 900px)', () => {
+    // z-index scroll: the hero stays in place while the aluminium scene slides over it
+    ScrollTrigger.create({ trigger: root, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
+    gsap.to(inner, {
+      scale: 0.93,
+      opacity: 0.45,
+      ease: 'none',
+      scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
+    });
+  });
+}
+
+/* ───────────────────────── 2 · aluminium ───────────────────────── */
+function aluminium(mm: gsap.MatchMedia) {
+  mm.add('(min-width: 900px)', () => {
+    const stage = $('[data-alu-stage]');
+    const shots = $$('[data-alu-shot]');
+    const items = $$('[data-alu-item]');
+    const texts = $$('[data-alu-text]');
+    const num = $('[data-alu-num]');
+    const N = shots.length;
+
+    // every photo after the first waits below, then wipes up over the one before it
+    shots.slice(1).forEach((s) => gsap.set(s, { clipPath: 'inset(100% 0% 0% 0%)' }));
+    shots.slice(1).forEach((s) => gsap.set($('img', s), { scale: 1.28 }));
+
+    let active = 0;
+    const setActive = (i: number) => {
+      if (i === active) return;
+      active = i;
+      items.forEach((el, k) => el.classList.toggle('is-active', k === i));
+      texts.forEach((el, k) => el.classList.toggle('is-active', k === i));
+      num.textContent = pad(i + 1);
+    };
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: stage,
+        start: 'top top',
+        end: () => `+=${N * window.innerHeight * 0.7}`,
+        pin: true,
+        scrub: 0.7,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setActive(Math.min(N - 1, Math.floor(self.progress * N + 0.18))),
+      },
+    });
+    shots.forEach((s, i) => {
+      if (i === 0) return;
+      const at = i - 0.38;
+      tl.to(s, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.76, ease: 'power2.inOut' }, at);
+      tl.to($('img', s), { scale: 1, duration: 1.05, ease: 'power2.out' }, at);
+      tl.to($('img', shots[i - 1]), { scale: 1.1, duration: 1.05 }, at);
+    });
+    tl.to({}, { duration: 0.001 }, N - 0.001); // timeline length == N, so progress × N is the step index
+  });
+
+  mm.add('(max-width: 899px)', () => {
+    $$('[data-m-reveal]').forEach((el) =>
+      gsap.from(el, { opacity: 0, y: 46, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } }),
+    );
+  });
+}
+
+/* ───────────────────────── 3 · why prominance ───────────────────────── */
+function promises() {
+  const stack = $('[data-why-stack]');
+  const cards = $$('[data-why-card]');
+
+  cards.forEach((card, i) => {
+    const inner = $('[data-why-inner]', card);
+    const shade = $('[data-why-shade]', card);
+    const fits = () => card.offsetHeight <= window.innerHeight * 1.04;
+
+    if (i < cards.length - 1 && fits()) {
+      // z-index scroll: each card pins, the next one slides over it
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top top',
+        endTrigger: stack,
+        end: 'bottom bottom',
+        pin: true,
+        pinSpacing: false,
+        anticipatePin: 1,
+      });
+      const cover = { trigger: cards[i + 1], start: 'top bottom', end: 'top top', scrub: true };
+      gsap.to(inner, { scale: 0.93, yPercent: -2, ease: 'none', scrollTrigger: cover });
+      gsap.to(shade, { opacity: 0.2, ease: 'none', scrollTrigger: cover });
+    }
+
+    const photo = card.querySelector<HTMLElement>('img[data-why-img]');
+    if (photo) {
+      gsap.fromTo(photo, { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: true } });
+    }
+    const swatches = $$('.swatch', card);
+    if (swatches.length) {
+      gsap.from(swatches, {
+        opacity: 0,
+        scale: 0.88,
+        duration: 1.1,
+        ease: 'power3.out',
+        stagger: 0.09,
+        scrollTrigger: { trigger: card, start: 'top 55%', once: true },
+      });
+    }
+    gsap.from($$('.why__num, .why__text .eyebrow, .why__body', card), {
+      opacity: 0,
+      y: 28,
+      duration: 1.1,
+      ease: 'power3.out',
+      stagger: 0.1,
+      scrollTrigger: { trigger: card, start: 'top 70%', once: true },
+    });
+  });
+}
+
+/* ───────────────────────── 4 · in-house ───────────────────────── */
+function house(mm: gsap.MatchMedia) {
+  const media = $('[data-house-media]');
+  gsap.fromTo($('[data-house-img]'), { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.fromTo(media, { clipPath: 'inset(12% 8% 12% 8% round 24px)' }, { clipPath: 'inset(0% 0% 0% 0% round 24px)', ease: 'none', scrollTrigger: { trigger: media, start: 'top 95%', end: 'top 35%', scrub: true } });
+
+  mm.add('(min-width: 900px)', () => {
+    const rail = $('[data-rail]');
+    const track = $('[data-rail-track]');
+    const bar = $('[data-rail-bar]');
+    const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+
+    const slide = gsap.to(track, {
+      x: () => -dist(),
+      ease: 'none',
+      scrollTrigger: { trigger: rail, start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true },
+    });
+    gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: rail, start: 'top top', end: () => `+=${dist()}`, scrub: true, invalidateOnRefresh: true } });
+    $$('[data-rail-panel]').forEach((panel) => {
+      gsap.fromTo($('img', panel), { xPercent: -3.5 }, {
+        xPercent: 3.5,
+        ease: 'none',
+        scrollTrigger: { trigger: panel, containerAnimation: slide, start: 'left right', end: 'right left', scrub: true },
+      });
+    });
+  });
+}
+
+/* ───────────────────────── 5 · cta & doorways ───────────────────────── */
+function closing() {
+  $$('[data-door]').forEach((door) => {
+    gsap.fromTo($('[data-door-img]', door), { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: door, start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.from($('.door__arch', door), {
+      clipPath: 'inset(18% 12% 0% 12%)',
+      duration: 1.6,
+      ease: 'power3.out',
+      clearProps: 'clipPath',
+      scrollTrigger: { trigger: door, start: 'top 85%', once: true },
+    });
+  });
+}
+
+/* ───────────────────────── shared ───────────────────────── */
+function fades() {
+  $$('[data-fade]').forEach((el) =>
+    gsap.fromTo(el, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.3, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } }),
+  );
+}
+
+async function boot() {
+  if (reducedMotion()) {
+    home.classList.add('home--static');
+    return;
+  }
+  try {
+    initSmooth(); // must exist before any pinned ScrollTrigger
+    await (document as any).fonts?.ready;
+
+    const mm = gsap.matchMedia();
+    hero(mm);
+    aluminium(mm);
+    promises();
+    house(mm);
+    closing();
+    fades();
+    $$('[data-split]').filter((el) => !el.hasAttribute('data-hero-title')).forEach((el) => splitReveal(el));
+
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+    ScrollTrigger.refresh();
+  } catch (err) {
+    console.error('[home] motion setup failed, showing static layout', err);
+    home.classList.add('home--fail');
+  }
+}
+
+boot();

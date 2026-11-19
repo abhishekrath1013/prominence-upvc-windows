@@ -12,20 +12,18 @@ const { eyebrow, heading, description, align = 'left', light = false, class: cla
 const alignClass = align === 'center' ? 'text-center items-center mx-auto' : 'text-left items-start';
 ---
 
-<div class={`reveal flex max-w-2xl flex-col gap-4 ${alignClass} ${className}`}>
+<div class={`reveal flex max-w-3xl flex-col gap-5 ${alignClass} ${className}`}>
   {
     eyebrow && (
-      <span
-        class={`text-xs font-bold uppercase tracking-[0.14em] ${light ? 'text-accent-300' : 'text-accent-700'}`}
-      >
+      <span class={`eyebrow ${light ? '!text-accent-300' : ''}`}>
         {eyebrow}
       </span>
     )
   }
   <h2
-    class={`text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-4xl lg:text-[2.75rem] ${light ? 'text-white' : 'text-ink'}`}
+    class={`text-[clamp(2.4rem,5vw,4.4rem)] leading-[1.02] ${light ? 'text-white' : 'text-ink'}`}
   >
     {heading}
   </h2>
-  {description && <p class={`text-lg leading-relaxed ${light ? 'text-white/80' : 'text-ink-muted'}`}>{description}</p>}
+  {description && <p class={`max-w-xl text-[1.05rem] leading-[1.7] ${light ? 'text-white/75' : 'text-ink-muted'}`}>{description}</p>}
 </div>

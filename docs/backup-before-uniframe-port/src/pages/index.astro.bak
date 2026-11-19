@@ -1,0 +1,247 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact } from '../data/brand';
+import '../styles/home.css';
+
+// ── Imagery ────────────────────────────────────────────────────────────────
+const studioImgs = import.meta.glob<ImageMetadata>('../assets/images/studio/*.jpg', { eager: true, import: 'default' });
+const stockImgs = import.meta.glob<ImageMetadata>('../assets/images/stock/*.jpg', { eager: true, import: 'default' });
+const proImgs = import.meta.glob<ImageMetadata>('../assets/images/brochure/photos/*.jpg', { eager: true, import: 'default' });
+const swatchImgs = import.meta.glob<ImageMetadata>('../assets/images/brochure/laminates/swatch-*.jpg', { eager: true, import: 'default' });
+const studio = (n: string) => studioImgs[`../assets/images/studio/${n}.jpg`];
+const stock = (n: string) => stockImgs[`../assets/images/stock/${n}.jpg`];
+const pro = (n: string) => proImgs[`../assets/images/brochure/photos/${n}.jpg`];
+const swatch = (n: string) => swatchImgs[`../assets/images/brochure/laminates/swatch-${n}.jpg`];
+
+// ── Copy (from "Prominance Landing Page Copy") ─────────────────────────────
+const aluminium = [
+  { title: 'Slim sightlines', body: 'Ultra-thin frames for unobstructed panoramic views.', img: studio('slide-black-window'), alt: 'Bright room with a slim black-framed window', pos: '50% 45%' },
+  { title: 'Extreme durability', body: 'High-grade aluminium resists warping, cracking, and bending for decades.', img: stock('modern-house-wood-cladding'), alt: 'Modern house with black-framed glazing', pos: '50% 60%' },
+  { title: 'Zero maintenance', body: 'Powder-coated finishes don’t need repainting, and can be cleaned easily.', img: stock('living-room-dark-accent'), alt: 'Open living space with black-framed glazing', pos: '50% 50%' },
+  { title: 'Superior weatherproofing', body: 'Precision-engineered seals offer protection from rain, dust and extreme heat.', img: studio('step-glass-door'), alt: 'Glazed balcony door with curtains', pos: '50% 50%' },
+  { title: 'Corrosion resistant', body: 'Rust-proof metal resists moisture and oxidation, looking fresh for a lifetime.', img: stock('villa-pool-exterior'), alt: 'White villa with glazing beside a swimming pool', pos: '50% 55%' },
+  { title: 'Eco-friendly', body: '100% recyclable material retains structural integrity without compromising on quality.', img: studio('slide-garden-door'), alt: 'Sliding glass door opening to a green garden', pos: '50% 50%' },
+];
+
+const promises = [
+  { label: 'Tailored to your dream', head: 'You dream it. We craft it.', body: 'Custom-engineered windows and doors tailored to match your vision.', img: studio('step-arched-windows'), alt: 'Custom arched windows in a sunlit room' },
+  { label: 'Quality and durability', head: 'Excellence meets endurance.', body: 'Precision-built aluminium frames designed for quality and robustness.', img: stock('commercial-office-lounge'), alt: 'Light-filled lounge with slim metal-framed glazing' },
+  { label: 'Comprehensive offerings', head: 'Anything. And everything.', body: 'A comprehensive lineup of impressive styles and finishes.', swatches: true },
+  { label: 'Seamless experience', head: 'Stellar service, start to finish.', body: 'Seamless execution from initial measurement to installation.', img: stock('villa-pool-staircase'), alt: 'Open-plan living space with floor-to-ceiling glazing' },
+  { label: 'Expert guidance at every step', head: 'Be guided by pros.', body: 'Expert advice to help you pick the perfect windows.', img: stock('living-room-bright-windows'), alt: 'Bright living room with tall windows' },
+  { label: 'Exceptional support', head: 'Solid support. Now and forever.', body: 'Dependable after-sales care and responsive service beyond installation.', img: stock('living-room-cozy-window'), alt: 'Calm living room with a bright window' },
+];
+const swatches = [
+  { name: 'Walnut', img: swatch('walnut') },
+  { name: 'Anthracite', img: swatch('anthracite') },
+  { name: 'Golden oak', img: swatch('golden-oak') },
+  { name: 'Silver brush', img: swatch('silver-brush') },
+  { name: 'Mahogany', img: swatch('mahogany') },
+  { name: 'Dark oak', img: swatch('dark-oak') },
+];
+
+const craft = [
+  { label: 'Precision in every blend', head: 'Perfect blend. Every single time.', img: pro('batching'), alt: 'High-speed mixers blending uPVC compound' },
+  { label: 'Expert tooling. Lasting precision.', head: 'The tech is European. The goal is perfection.', img: pro('tooling-team'), alt: 'Prominance technicians inspecting extrusion dies' },
+  { label: 'Tested rigorously. Developed in-house.', head: 'Born in our lab. Tested to the limit.', img: pro('testing-machine'), alt: 'Laboratory testing machine' },
+];
+
+// "Anything. And everything." → one sentence per line
+const sentences = (s: string) => s.split(/(?<=\.)\s+/);
+const pad = (n: number) => String(n).padStart(2, '0');
+const arrow = '<svg viewBox="0 0 26 10" fill="none" aria-hidden="true"><path d="M0 5h24M20 1l4 4-4 4" stroke="currentColor" stroke-width="1.1"/></svg>';
+---
+
+<BaseLayout
+  title="Prominance | Lead-free uPVC & aluminium windows and doors, built to outlast the weather"
+  description="Precision-engineered uPVC and aluminium windows and doors, manufactured in-house at Coimbatore since 2011. 22,000 MT annual capacity, European tooling, rigorous in-house testing."
+>
+  <div class="home" id="home">
+    <!-- ═══ 1 · HERO ═══ -->
+    <section class="hero" id="hero" aria-label="Introduction" data-hero>
+      <div class="hero__inner" data-hero-inner>
+        <div class="hero__copy">
+          <p class="eyebrow" data-hero-fade>uPVC &amp; aluminium window systems</p>
+          <h1 class="hero__title display" data-hero-title>
+            Built to outlast <em>the weather.</em>
+          </h1>
+          <p class="hero__lede" data-hero-fade>A window is more than its frame. It is how the weather stays outside.</p>
+          <div class="hero__cta" data-hero-fade>
+            <a class="btn btn--solid" href="#aluminium" data-flush>Explore the systems <Fragment set:html={arrow} /></a>
+            <a class="btn btn--line" href="/quote/">Request a quote</a>
+          </div>
+        </div>
+
+        <figure class="hero__media" data-hero-media>
+          <div class="hero__arch" data-hero-arch>
+            <Image src={studio('hero-sliding-pool')} alt="Living room with large black-framed sliding doors opening to a pool" class="hero__img" data-hero-img widths={[900, 1400, 2000]} sizes="(min-width: 900px) 46vw, 92vw" loading="eager" />
+          </div>
+        </figure>
+
+        <div class="hero__foot" data-hero-fade>
+          <span class="hero__cue"><i></i>Scroll</span>
+          <span class="hero__since">Manufacturing since 2011 · Coimbatore, India</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 2 · ALUMINIUM — pinned scene, images stack over one another ═══ -->
+    <section class="alu" id="aluminium" aria-labelledby="alu-title">
+      <!-- desktop: pinned stage -->
+      <div class="alu__stage" data-alu-stage>
+        <div class="alu__left">
+          <h2 class="alu__title display" id="alu-title" data-split>Aluminium</h2>
+          <ol class="alu__list" data-alu-list>
+            {aluminium.map((a, i) => (
+              <li class={`alu__item${i === 0 ? ' is-active' : ''}`} data-alu-item={i}>
+                <span class="alu__num">{pad(i + 1)}</span>
+                <span class="alu__name">{a.title}</span>
+              </li>
+            ))}
+          </ol>
+          <div class="alu__desc" data-alu-desc aria-live="polite">
+            {aluminium.map((a, i) => (
+              <p class={i === 0 ? 'is-active' : ''} data-alu-text={i}>{a.body}</p>
+            ))}
+          </div>
+        </div>
+
+        <div class="alu__frame" data-alu-frame>
+          {aluminium.map((a, i) => (
+            <div class="alu__shot" data-alu-shot={i}>
+              <Image src={a.img} alt={a.alt} widths={[800, 1200, 1600]} sizes="52vw" style={`object-position:${a.pos}`} loading={i === 0 ? 'eager' : 'lazy'} />
+            </div>
+          ))}
+          <div class="alu__count"><b data-alu-num>01</b><span>/ 06</span></div>
+        </div>
+      </div>
+
+      <!-- mobile: simple stacked list -->
+      <div class="alu__mobile">
+        <h2 class="alu__title display">Aluminium</h2>
+        <ol>
+          {aluminium.map((a, i) => (
+            <li class="alu__card" data-m-reveal>
+              <div class="alu__cardimg"><Image src={a.img} alt={a.alt} widths={[600, 900]} sizes="92vw" style={`object-position:${a.pos}`} /></div>
+              <div class="alu__cardtext"><span class="alu__num">{pad(i + 1)}</span><h3 class="display">{a.title}</h3><p>{a.body}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══ 3 · WHY PROMINANCE — cards stack over each other (z-index scroll) ═══ -->
+    <section class="why" id="why" aria-label="Why Prominance">
+      <div class="why__stack" data-why-stack>
+        {promises.map((p, i) => (
+          <article class={`why__card why__card--${i + 1}`} data-why-card>
+            <div class="why__inner" data-why-inner>
+              <div class="why__text">
+                <span class="why__num">{pad(i + 1)}<i>/ 06</i></span>
+                <p class="eyebrow">{p.label}</p>
+                <h3 class="why__head display" data-split>
+                  {sentences(p.head).map((s, k) => (<>{k > 0 && <br />}{s}</>))}
+                </h3>
+                <p class="why__body">{p.body}</p>
+              </div>
+              <div class="why__media">
+                {p.swatches ? (
+                  <div class="why__swatches" data-why-img>
+                    {swatches.map((s) => (
+                      <figure class="swatch">
+                        <Image src={s.img} alt="" widths={[360, 560]} sizes="14vw" />
+                        <figcaption>{s.name}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                ) : (
+                  <div class="why__photo" data-why-photo>
+                    <Image src={p.img!} alt={p.alt!} widths={[700, 1100, 1500]} sizes="(min-width: 900px) 46vw, 92vw" data-why-img />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div class="why__shade" data-why-shade></div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══ 4 · IN-HOUSE EXPERTISE ═══ -->
+    <section class="house" id="expertise" aria-labelledby="house-title">
+      <div class="house__top">
+        <div class="house__copy">
+          <p class="eyebrow" data-fade>In-house expertise</p>
+          <h2 class="house__title display" id="house-title" data-split>In-house expertise that’s <em>outstanding.</em></h2>
+          <div class="house__stat" data-fade>
+            <div class="house__figure"><span data-count-to="22000">22,000</span><small>MT</small></div>
+            <p>annual production capacity</p>
+            <p class="house__since">Manufacturing since 2011</p>
+          </div>
+        </div>
+        <div class="house__media" data-house-media>
+          <Image src={pro('factory-aerial')} alt="Aerial view of the Prominance factory in Coimbatore" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 46vw, 92vw" data-house-img />
+        </div>
+      </div>
+
+      <div class="rail" data-rail>
+        <div class="rail__track" data-rail-track>
+          {craft.map((c, i) => (
+            <article class="rail__panel" data-rail-panel>
+              <Image src={c.img} alt={c.alt} widths={[900, 1400, 1900]} sizes="(min-width: 900px) 66vw, 92vw" data-rail-img />
+              <div class="rail__card">
+                <span class="rail__num">{pad(i + 1)}</span>
+                <p class="eyebrow">{c.label}</p>
+                <h3 class="display">{c.head}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div class="rail__bar" aria-hidden="true"><i data-rail-bar></i></div>
+      </div>
+    </section>
+
+    <!-- ═══ 5 · LET'S BUILD SOMETHING BETTER ═══ -->
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <p class="eyebrow" data-fade>Let’s build something better…</p>
+      <h2 class="cta__title display" id="cta-title" data-split>Better frames make <em>better homes.</em></h2>
+      <p class="cta__sub" data-fade>Ready to upgrade your view?<br />Speak to our specialists.</p>
+      <div class="cta__buttons" data-fade>
+        <a class="btn btn--solid" href="/quote/">Request a quote <Fragment set:html={arrow} /></a>
+        <a class="btn btn--line" href={contact.tollFreeHref}>Call {contact.tollFree}</a>
+      </div>
+    </section>
+
+    <!-- ═══ 6 · uPVC & ALUMINIUM ═══ -->
+    <section class="doors" aria-label="Our systems">
+      <article class="door" data-door>
+        <a class="door__arch" href="/windows/" aria-label="Explore uPVC windows and doors">
+          <Image src={studio('tilt-white-windows')} alt="White uPVC windows in a bright sunroom" widths={[700, 1100, 1500]} sizes="(min-width: 900px) 44vw, 92vw" data-door-img />
+        </a>
+        <div class="door__text">
+          <p class="eyebrow">Designed for India. Sealed for comfort.</p>
+          <h3 class="display" data-split>It’s built to take on <em>tough Indian conditions.</em></h3>
+          <p class="door__sub">So, you can take life easy.</p>
+          <a class="linkline" href="/windows/">Explore uPVC <Fragment set:html={arrow} /></a>
+        </div>
+      </article>
+
+      <article class="door door--b" data-door>
+        <a class="door__arch" href="/contact/" aria-label="Enquire about aluminium windows and doors">
+          <Image src={stock('villa-glass-pool-indoor-outdoor')} alt="Contemporary villa with large aluminium-framed glazing beside a pool" widths={[700, 1100, 1500]} sizes="(min-width: 900px) 44vw, 92vw" data-door-img />
+        </a>
+        <div class="door__text">
+          <p class="eyebrow">Designed for India. Engineered to endure</p>
+          <h3 class="display" data-split>The finish is captivating. <em>The quality, enduring.</em></h3>
+          <a class="linkline" href="/contact/">Enquire about aluminium <Fragment set:html={arrow} /></a>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    import '../scripts/home';
+  </script>
+</BaseLayout>
