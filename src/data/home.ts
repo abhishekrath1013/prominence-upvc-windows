@@ -177,7 +177,7 @@ export const frameList = [
 export const craft = {
   statement: ['From powder', 'to profile.', 'One roof.', 'One standard.'],
   statementLabel: 'From powder to profile. One roof. One standard.',
-  alt: 'The Prominance extrusion hall in Coimbatore, with uPVC profile extrusion lines running side by side',
+  alt: 'Aerial view of the Prominance manufacturing campus',
   cta: { label: 'Take the factory tour', href: '/why-prominance/infrastructure/' },
   // doc: Segment 9 — the six stations, shown under the photograph
   stations: [
