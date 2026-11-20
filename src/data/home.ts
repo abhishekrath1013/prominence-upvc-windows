@@ -193,10 +193,13 @@ export const craft = {
 /* ---------------------------------- 5 · the 20-year lockup (replaces "21-day") */
 export const warranty = {
   big: { n: '20', unit: 'YEAR', word: 'WARRANTY' },
+  // client-supplied copy. CONFIRM: "6 lakh sq. ft." is the figure from the aluminium site; check it is the UPVC facility's area.
   lead: [
-    'Twenty years is a test result, not a slogan. ',
-    'After 25,000 hours of accelerated weathering, colour change measured ΔE 1.6 against a European limit of 5. ',
-    'Tested by independent labs in Germany and the UK.',
+    'Spanning an impressive 6 lakh sq. ft., ',
+    'our world-class manufacturing facility ',
+    'brings together cutting-edge robotics, ',
+    'sophisticated automation and an ',
+    'unwavering pursuit of excellence.',
   ],
   // The brochure states the warranty is "against colour degradation"; the terms are not published yet.
   // CONFIRM: what is covered, who honours it, transferability, how to claim.
