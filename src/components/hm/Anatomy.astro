@@ -4,20 +4,21 @@
 // "View components" slides the drawing left and opens the panel: the brochure's close-up of the part, what it is for, and
 // the proof detail. Every description is also plain text in the page.
 import { Image } from 'astro:assets';
-import windowImg from '../../assets/images/brochure/profiles/inventa-casement.png';
+import windowImg from '../../assets/home/window-full.png';
 import { anatomy, components } from '../../data/home';
 
 const imgs = import.meta.glob('../../assets/images/real/diagrams/*.jpg', { eager: true, import: 'default' }) as Record<string, any>;
 const img = (n: string) => imgs[`../../assets/images/real/diagrams/${n}.jpg`];
 const pad = (n: number) => String(n).padStart(2, '0');
-// pin positions as % of the photograph: profile, steel, lock, gasket, drain, weld
+// pin positions as % of the full-window photograph: profile (left jamb), steel (top rail), lock (handles),
+// gasket (glass edge), drain (bottom rail / sill), weld (top-left corner)
 const pins = [
-  { x: 12.5, y: 71 },
-  { x: 16.5, y: 88 },
-  { x: 71, y: 30 },
-  { x: 49, y: 37 },
-  { x: 40, y: 79 },
-  { x: 64, y: 66 },
+  { x: 6.5, y: 50 },
+  { x: 28, y: 3.8 },
+  { x: 49.5, y: 36 },
+  { x: 70, y: 7.6 },
+  { x: 30, y: 90.5 },
+  { x: 8, y: 7 },
 ];
 ---
 
@@ -27,7 +28,7 @@ const pins = [
   <!-- the drawing: centred while idle, left half once opened -->
   <figure class="cx__fig" data-cx-fig>
     <div class="cx__draw">
-      <Image src={windowImg} alt="Cut-away corner of a Prominance uPVC casement window: multi-chambered profile, red steel reinforcement, glazing gasket and welded corner" class="cx__window" widths={[480, 820]} sizes="(max-width: 1023px) 80vw, 40vw" loading="lazy" />
+      <Image src={windowImg} alt="Front view of a complete Prominance uPVC casement window: frame, sashes, glazing, handles, hinges and sill" class="cx__window" widths={[600, 900, 1200]} sizes="(max-width: 1023px) 80vw, 40vw" loading="lazy" />
       <span class="cx__shadow" aria-hidden="true"></span>
 
       {
@@ -178,7 +179,7 @@ const pins = [
   }
   .cx__shadow {
     position: absolute;
-    left: 14%;
+    left: 6%;
     right: 6%;
     bottom: -3%;
     height: 5%;

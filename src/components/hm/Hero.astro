@@ -6,6 +6,7 @@
 import { Image } from 'astro:assets';
 import bg from '../../assets/images/stock/villa-glass-pool-indoor-outdoor.jpg';
 import srk from '../../assets/home/srk-welcome.png';
+import windowImg from '../../assets/home/window-hero.png';
 import SiteNav from '../layout/SiteNav.astro';
 import { hero } from '../../data/home';
 ---
@@ -29,7 +30,10 @@ import { hero } from '../../data/home';
 
     <!-- the window the ambassador stands in -->
     <div class="hh__fig">
-      <div class="hh__arch" data-hm="hero-arch" aria-hidden="true"><i></i></div>
+      <div class="hh__arch" data-hm="hero-arch" aria-hidden="true">
+        <i></i>
+        <Image src={windowImg} alt="" widths={[600, 900, 1200]} sizes="(max-width: 900px) 60vw, 34vw" loading="eager" />
+      </div>
       <Image src={srk} alt="Brand ambassador Shah Rukh Khan with arms open in welcome" class="hh__srk" data-hm="hero-srk" widths={[700, 1030]} sizes="(max-width: 900px) 128vw, min(64vw, 1150px)" loading="eager" />
     </div>
 
@@ -103,27 +107,30 @@ import { hero } from '../../data/home';
     z-index: 0;
     pointer-events: none;
   }
+  /* a real uPVC window (photographic PNG, clear glass): the sky shows through its panes, the ambassador stands in front */
   .hh__arch {
     position: absolute;
     left: 50%;
     bottom: 0;
     translate: -50% 0;
-    width: var(--aw);
-    height: 84%;
-    border-radius: 999px 999px 0 0;
-    background: linear-gradient(180deg, #ffffff, #eef3f7);
-    box-shadow: 0 40px 80px -40px rgb(13 31 45 / 0.5), inset 0 0 0 1px rgb(13 31 45 / 0.06);
+    width: calc(var(--aw) * 1.12);
+    aspect-ratio: 1400 / 1870;
     transform-origin: 50% 100%;
+    filter: drop-shadow(0 30px 40px rgb(13 31 45 / 0.35));
   }
   .hh__arch i {
     position: absolute;
-    inset: 12px 12px 0;
-    border-radius: 999px 999px 0 0;
+    inset: 2.5% 3% 2%;
     background:
-      linear-gradient(90deg, transparent calc(50% - 5px), #fff calc(50% - 5px) calc(50% + 5px), transparent calc(50% + 5px)),
       linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.32) 30% 40%, transparent 40% 48%, rgb(255 255 255 / 0.18) 48% 52%, transparent 52%),
       linear-gradient(180deg, #7dbbe4 0%, #b5dcf3 55%, #e3f2fb 100%);
-    box-shadow: inset 0 0 0 3px rgb(11 43 64 / 0.14);
+  }
+  .hh__arch img {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
   }
   .hh__srk {
     position: absolute;
@@ -308,6 +315,7 @@ import { hero } from '../../data/home';
       margin-top: 1.25rem;
     }
     .hh__arch {
+      width: auto;
       height: 88%;
     }
     .hh__srk {
