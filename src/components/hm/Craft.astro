@@ -1,6 +1,6 @@
 ---
 // Statement + factory — the aluminium "Built with precision…" screen: a big uppercase statement over a pale texture, the
-// factory aerial opening beneath it. Under the photograph, the six factory stations from the content doc.
+// factory aerial opening beneath it. A frosted strip over the photograph carries the facility sentence.
 import { Image } from 'astro:assets';
 import factory from '../../assets/home/factory.webp';
 import { craft } from '../../data/home';
@@ -29,9 +29,6 @@ import { craft } from '../../data/home';
     <Image src={factory} alt={craft.alt} widths={[1200, 1800, 2400]} sizes="100vw" loading="lazy" />
     <div class="hp__strip">
       <p class="hp__note">{craft.note}</p>
-      <ol class="hp__stations" aria-label="The six factory stations">
-        {craft.stations.map((s, i) => <li><b>{String(i + 1).padStart(2, '0')}</b>{s}</li>)}
-      </ol>
     </div>
   </div>
 </section>
@@ -108,7 +105,7 @@ import { craft } from '../../data/home';
     object-fit: cover;
     object-position: 50% 52%; /* frames the glazed fronts and the car park, not just the roofs */
   }
-  /* the frosted strip over the photograph: the facility sentence on top, the six stations beneath */
+  /* the frosted strip over the photograph: the facility sentence, running the full width */
   .hp__strip {
     position: absolute;
     left: clamp(0.75rem, 2vw, 1.625rem);
@@ -122,40 +119,12 @@ import { craft } from '../../data/home';
     overflow: hidden;
   }
   .hp__note {
-    max-width: 62rem;
-    padding: 1.05rem 1rem 0.95rem;
-    font-size: clamp(0.92rem, 1.2vw, 1.12rem);
-    line-height: 1.5;
+    padding: clamp(1rem, 2.2svh, 1.5rem) clamp(1.1rem, 2vw, 1.75rem);
+    font-size: clamp(0.85rem, 1.04vw, 1.05rem);
+    line-height: 1.55;
     font-weight: 400;
+    text-wrap: pretty;
     color: rgb(11 43 64 / 0.82);
-  }
-  .hp__stations {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid rgb(11 43 64 / 0.1);
-  }
-  .hp__stations li {
-    padding: 0.95rem 1rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-brand-navy);
-  }
-  .hp__stations li + li {
-    border-left: 1px solid rgb(11 43 64 / 0.1);
-  }
-  .hp__stations b {
-    display: block;
-    margin-bottom: 0.2rem;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--color-brand-blue);
   }
   @media (max-width: 860px) {
     .hp {
@@ -172,10 +141,8 @@ import { craft } from '../../data/home';
       border-radius: 0;
     }
     .hp__note {
-      padding-inline: 1.25rem;
-    }
-    .hp__stations {
-      grid-template-columns: repeat(2, 1fr);
+      padding: 1.4rem 1.25rem 1.6rem;
+      font-size: 1rem;
     }
     .hp__factory {
       display: grid;
